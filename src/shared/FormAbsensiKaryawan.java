@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Form;
+package shared;
+
+
 
 /**
  *
@@ -17,6 +19,7 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
      */
     public FormAbsensiKaryawan() {
         initComponents();
+
     }
 
     /**
@@ -35,6 +38,8 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jcomboRole1 = new javax.swing.JComboBox<>();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -57,10 +62,10 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
         jammasuk = new javax.swing.JSpinner();
         jLabel25 = new javax.swing.JLabel();
         jcomboRole2 = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jcombojbtn = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
 
         jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
         jTextField1.setText("Data Karyawan");
@@ -98,6 +103,29 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
                 jcomboRole1ActionPerformed(evt);
             }
         });
+
+        jPanel3.setBackground(new java.awt.Color(0, 51, 102));
+
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel26.setText("PENGGAJIAN");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel26)
+                .addGap(117, 117, 117))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -224,33 +252,33 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(0, 51, 102));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("ABSENSI KARYAWAN");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel4)
-                .addContainerGap(73, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         jcombojbtn.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hadir", "Izin", "Sakit" }));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Status");
+
+        jPanel4.setBackground(new java.awt.Color(0, 51, 102));
+
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setText("ABSENSI KARYAWAN");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel27)
+                .addGap(59, 59, 59))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -290,16 +318,16 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
                             .addComponent(jcombojbtn, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addComponent(textnama, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19)
@@ -307,7 +335,7 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel20))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jcomboRole2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -354,11 +382,67 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIDActionPerformed
 
     private void btnsimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsimpanActionPerformed
-        // TODO add your handling code here:
+        String nama = textnama.getText();
+    String idKaryawan = textID.getText();
+    String jabatan = jcomboRole2.getSelectedItem().toString();
+    java.util.Date tanggal = jdate.getDate();
+    java.util.Date jamMasukVal = (java.util.Date) jammasuk.getValue();
+    java.util.Date jamPulangVal = (java.util.Date) jampulang.getValue();
+    String status = jcombojbtn.getSelectedItem().toString();
+
+    if (nama.isEmpty() || idKaryawan.isEmpty() || tanggal == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Data tidak boleh kosong!", 
+            "Error", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        java.sql.Connection conn = model.koneksi.getKoneksi();
+
+        String sql = "INSERT INTO absensi_karyawan (nama, id_karyawan, jabatan, tanggal, jam_masuk, jam_pulang, status) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, nama);
+        pst.setString(2, idKaryawan);
+        pst.setString(3, jabatan);
+
+        // Convert tanggal ke java.sql.Date
+        pst.setDate(4, new java.sql.Date(tanggal.getTime()));
+
+        // Convert jam masuk & pulang ke TIME (HH:mm:ss)
+        pst.setTime(5, new java.sql.Time(jamMasukVal.getTime()));
+        pst.setTime(6, new java.sql.Time(jamPulangVal.getTime()));
+
+        pst.setString(7, status);
+
+        pst.executeUpdate();
+
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Data Berhasil Disimpan!");
+
+        // Kosongkan Form
+        textnama.setText("");
+        textID.setText("");
+        jdate.setDate(null);
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Error: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnsimpanActionPerformed
 
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
-        // TODO add your handling code here:
+    textID.setText("");
+    jdate.setDate(null);
+    jammasuk.setValue(new java.util.Date());
+    jampulang.setValue(new java.util.Date());
+    jcombojbtn.setSelectedIndex(0);
+    jcomboRole2.setSelectedIndex(0);
+    this.dispose();
     }//GEN-LAST:event_btnbatalActionPerformed
 
     private void textnamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textnamaActionPerformed
@@ -421,12 +505,14 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner jammasuk;
     private javax.swing.JSpinner jampulang;

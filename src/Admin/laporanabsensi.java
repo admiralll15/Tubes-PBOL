@@ -1,4 +1,4 @@
-package Form;
+package Admin;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -90,7 +90,7 @@ public class laporanabsensi extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nama Karyawan", "ID", "Jabatan", "Tanggal", "Jam Masuk", "Jam Pulang", "Status"
+                "ID", "INama", "Jabatan", "Tanggal", "Jam Masuk", "Jam Pulang", "Status"
             }
         ));
         jScrollPane2.setViewportView(tblabsensi);
@@ -258,18 +258,12 @@ public class laporanabsensi extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblabsensi;
     // End of variables declaration//GEN-END:variables

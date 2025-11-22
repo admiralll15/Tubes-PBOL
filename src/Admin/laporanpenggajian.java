@@ -1,8 +1,10 @@
+package Admin;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Form;
+
 
 /**
  *
@@ -146,7 +148,7 @@ public class laporanpenggajian extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nama", "ID", "Jabatan", "Kehadiran", "Lembur", "Potongan", "Total Gaji"
+                "ID", "Nama", "Jabatan", "Kehadiran", "Lembur", "Potongan", "Total Gaji"
             }
         ) {
             boolean[] canEdit = new boolean [] {
