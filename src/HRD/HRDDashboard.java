@@ -3,10 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package HRD;
+import javax.swing.JOptionPane;
+import shared.FormAbsensiKaryawan; // Untuk Absensi Harian
+import Karyawan.FormSlipGaji;      // Untuk Slip Gaji
+import Admin.laporanabsensi;       // Untuk Laporan
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class HRDDashboard extends javax.swing.JFrame {
     
@@ -17,6 +21,7 @@ public class HRDDashboard extends javax.swing.JFrame {
      */
     public HRDDashboard() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -33,6 +38,8 @@ public class HRDDashboard extends javax.swing.JFrame {
         Btnhitunggaji = new javax.swing.JButton();
         btnIzindancuti = new javax.swing.JButton();
         btnlaporan = new javax.swing.JButton();
+        Btnhitunggaji1 = new javax.swing.JButton();
+        Btnhitunggaji2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,7 +50,7 @@ public class HRDDashboard extends javax.swing.JFrame {
         jLabel9.setText("HRD");
 
         Btnhitunggaji.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        Btnhitunggaji.setText("Hitung Gaji");
+        Btnhitunggaji.setText("Slip Gaji");
         Btnhitunggaji.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnhitunggajiActionPerformed(evt);
@@ -51,7 +58,7 @@ public class HRDDashboard extends javax.swing.JFrame {
         });
 
         btnIzindancuti.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        btnIzindancuti.setText("Izin dan Cuti");
+        btnIzindancuti.setText("Hitung Gaji");
         btnIzindancuti.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIzindancutiActionPerformed(evt);
@@ -59,10 +66,26 @@ public class HRDDashboard extends javax.swing.JFrame {
         });
 
         btnlaporan.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        btnlaporan.setText("Laporan");
+        btnlaporan.setText("Laporan Absensi");
         btnlaporan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnlaporanActionPerformed(evt);
+            }
+        });
+
+        Btnhitunggaji1.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        Btnhitunggaji1.setText("Absensi Harian");
+        Btnhitunggaji1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btnhitunggaji1ActionPerformed(evt);
+            }
+        });
+
+        Btnhitunggaji2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        Btnhitunggaji2.setText("Penerimaan Izin");
+        Btnhitunggaji2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btnhitunggaji2ActionPerformed(evt);
             }
         });
 
@@ -70,32 +93,46 @@ public class HRDDashboard extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(Btnhitunggaji)
-                .addGap(18, 18, 18)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(Btnhitunggaji1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnlaporan, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(btnIzindancuti)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnlaporan, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel9)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(21, 21, 21))
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(187, 187, 187)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Btnhitunggaji)
+                    .addComponent(jLabel9))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGap(47, 47, 47)
+                    .addComponent(Btnhitunggaji2)
+                    .addContainerGap(291, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGap(5, 5, 5)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Btnhitunggaji)
-                    .addComponent(btnlaporan)
+                    .addComponent(Btnhitunggaji1)
                     .addComponent(btnIzindancuti))
-                .addGap(0, 152, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addComponent(btnlaporan)
+                .addGap(47, 47, 47)
+                .addComponent(Btnhitunggaji)
+                .addGap(0, 59, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                    .addContainerGap(156, Short.MAX_VALUE)
+                    .addComponent(Btnhitunggaji2)
+                    .addGap(128, 128, 128)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -113,16 +150,49 @@ public class HRDDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnhitunggajiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnhitunggajiActionPerformed
-
+      try {
+            // Membuka Form Slip Gaji (Ada di paket Karyawan)
+            new FormSlipGaji().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal membuka Slip Gaji: " + e.getMessage());
+        }
     }//GEN-LAST:event_BtnhitunggajiActionPerformed
 
     private void btnIzindancutiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzindancutiActionPerformed
-        // TODO add your handling code here:
+       try {
+            // Membuka Form Hitung Gaji (Ada di paket HRD)
+            new FormHitungGaji().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal membuka Hitung Gaji: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnIzindancutiActionPerformed
 
     private void btnlaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlaporanActionPerformed
-        // TODO add your handling code here:
+       try {
+            // Membuka Laporan Absensi (Ada di paket Admin)
+            new laporanabsensi().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal membuka Laporan: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnlaporanActionPerformed
+
+    private void Btnhitunggaji1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btnhitunggaji1ActionPerformed
+        try {
+            // Membuka Form Absensi (Ada di paket shared)
+            new FormAbsensiKaryawan().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal membuka Absensi: " + e.getMessage());
+        }
+    }//GEN-LAST:event_Btnhitunggaji1ActionPerformed
+
+    private void Btnhitunggaji2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btnhitunggaji2ActionPerformed
+        try {
+            // Membuka Form Approval Cuti (Ada di paket HRD)
+            new FormIzinCuti().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal membuka Form Izin: " + e.getMessage());
+        }
+    }//GEN-LAST:event_Btnhitunggaji2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,6 +221,8 @@ public class HRDDashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Btnhitunggaji;
+    private javax.swing.JButton Btnhitunggaji1;
+    private javax.swing.JButton Btnhitunggaji2;
     private javax.swing.JButton btnIzindancuti;
     private javax.swing.JButton btnlaporan;
     private javax.swing.JLabel jLabel9;

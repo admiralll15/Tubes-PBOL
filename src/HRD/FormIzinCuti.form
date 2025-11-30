@@ -26,39 +26,25 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel17" alignment="0" min="-2" pref="114" max="-2" attributes="0"/>
-                                  <Component id="jLabel18" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
-                                  <Component id="jLabel20" alignment="0" min="-2" pref="109" max="-2" attributes="0"/>
-                                  <Component id="jLabel19" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jLabel13" alignment="0" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="jLabel14" min="-2" pref="79" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="-2" pref="230" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="textketerangan" alignment="0" pref="196" max="32767" attributes="0"/>
-                          <Component id="textstatus" alignment="0" pref="196" max="32767" attributes="0"/>
-                          <Component id="textID" alignment="0" pref="196" max="32767" attributes="0"/>
-                          <Component id="jDatetglmulai" max="32767" attributes="0"/>
-                          <Component id="jDatetglselesai" max="32767" attributes="0"/>
-                          <Component id="textNama" alignment="1" pref="196" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="jLabel17" alignment="0" min="-2" pref="114" max="-2" attributes="0"/>
+                  <Component id="jLabel18" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
+                  <Component id="jLabel20" alignment="0" min="-2" pref="109" max="-2" attributes="0"/>
+                  <Component id="jLabel19" alignment="0" min="-2" pref="96" max="-2" attributes="0"/>
+                  <Component id="jLabel13" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jLabel14" min="-2" pref="79" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace pref="343" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="textketerangan" alignment="0" pref="196" max="32767" attributes="0"/>
+                      <Component id="textstatus" alignment="0" pref="196" max="32767" attributes="0"/>
+                      <Component id="textID" alignment="0" pref="196" max="32767" attributes="0"/>
+                      <Component id="textNama" alignment="1" pref="196" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="btnsetuju" min="-2" pref="95" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btntolak" min="-2" pref="95" max="-2" attributes="0"/>
@@ -88,16 +74,10 @@
                   <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jDatetglmulai" alignment="0" min="-2" pref="31" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jDatetglselesai" min="-2" pref="31" max="-2" attributes="0"/>
-                  <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="textstatus" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="jLabel13" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -107,13 +87,13 @@
                   <Component id="textketerangan" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btntolak" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                   <Component id="btnbatal" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                   <Component id="btnsetuju" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
+              <EmptySpace pref="75" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -238,10 +218,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Batal"/>
       </Properties>
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="jDatetglmulai">
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="jDatetglselesai">
     </Component>
     <Component class="javax.swing.JTextField" name="textNama">
       <Events>

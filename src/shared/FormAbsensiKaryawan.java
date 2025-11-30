@@ -3,7 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package shared;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import model.koneksi;     
+import model.UserSession; 
 
 
 /**
@@ -17,9 +22,40 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
     /**
      * Creates new form FormAbsensiKaryawan
      */
-    public FormAbsensiKaryawan() {
+   public FormAbsensiKaryawan() {
         initComponents();
-
+        this.setLocationRelativeTo(null); // Tengah layar
+        
+        // --- 1. AUTO-FILL DATA DARI SESSION ---
+        String idSaya = UserSession.getKaryawanId();
+        String namaSaya = UserSession.getNamaKaryawan();
+        String jabatanSaya = UserSession.getJabatanKaryawan();
+        
+        // Tempel ke Textfield
+        textID.setText(idSaya);
+        textnama.setText(namaSaya);
+        
+        // Set Jabatan di ComboBox (jcomboRole2)
+        if(jabatanSaya != null) {
+            jcomboRole2.setSelectedItem(jabatanSaya);
+        }
+        
+        // Kunci Field agar tidak bisa diubah manual
+        textID.setEditable(false);
+        textnama.setEditable(false);
+        jcomboRole2.setEnabled(false); // Matikan combo box jabatan
+        
+        // --- 2. SET WAKTU DEFAULT ---
+        jdate.setDate(new java.util.Date()); // Tanggal hari ini
+        
+        // Format Spinner Jam agar tampil HH:mm:ss
+        javax.swing.JSpinner.DateEditor deMasuk = new javax.swing.JSpinner.DateEditor(jammasuk, "HH:mm:ss");
+        jammasuk.setEditor(deMasuk);
+        jammasuk.setValue(new java.util.Date()); // Jam sekarang
+        
+        javax.swing.JSpinner.DateEditor dePulang = new javax.swing.JSpinner.DateEditor(jampulang, "HH:mm:ss");
+        jampulang.setEditor(dePulang);
+        jampulang.setValue(new java.util.Date()); // Jam sekarang
     }
 
     /**
@@ -382,57 +418,51 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIDActionPerformed
 
     private void btnsimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsimpanActionPerformed
-        String nama = textnama.getText();
-    String idKaryawan = textID.getText();
-    String jabatan = jcomboRole2.getSelectedItem().toString();
-    java.util.Date tanggal = jdate.getDate();
-    java.util.Date jamMasukVal = (java.util.Date) jammasuk.getValue();
-    java.util.Date jamPulangVal = (java.util.Date) jampulang.getValue();
-    String status = jcombojbtn.getSelectedItem().toString();
+       String idKaryawan = textID.getText();
+        String status = jcombojbtn.getSelectedItem().toString(); // Mengambil Status (Hadir/Izin/Sakit)
+        
+        // Validasi
+        if (idKaryawan.isEmpty() || jdate.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Data tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    if (nama.isEmpty() || idKaryawan.isEmpty() || tanggal == null) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Data tidak boleh kosong!", 
-            "Error", 
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        try {
+            Connection conn = koneksi.getKoneksi();
+            
+            // Format Tanggal & Jam untuk Database MySQL
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+            String tglAbsen = sdfDate.format(jdate.getDate());
+            
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+            String jamM = sdfTime.format(jammasuk.getValue());
+            String jamP = sdfTime.format(jampulang.getValue());
 
-    try {
-        java.sql.Connection conn = model.koneksi.getKoneksi();
+            // Query Insert ke tabel 'absensi'
+            // Kolom: id_karyawan, tanggal, jam_masuk, jam_pulang, status
+            String sql = "INSERT INTO absensi (id_karyawan, tanggal, jam_masuk, jam_pulang, status) VALUES (?, ?, ?, ?, ?)";
+            
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, idKaryawan);
+            pst.setString(2, tglAbsen);
+            pst.setString(3, jamM);
+            pst.setString(4, jamP);
+            pst.setString(5, status);
+            
+            pst.executeUpdate();
+            
+            JOptionPane.showMessageDialog(this, "Absensi Berhasil Disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose(); // Tutup form
 
-        String sql = "INSERT INTO absensi_karyawan (nama, id_karyawan, jabatan, tanggal, jam_masuk, jam_pulang, status) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-
-        pst.setString(1, nama);
-        pst.setString(2, idKaryawan);
-        pst.setString(3, jabatan);
-
-        // Convert tanggal ke java.sql.Date
-        pst.setDate(4, new java.sql.Date(tanggal.getTime()));
-
-        // Convert jam masuk & pulang ke TIME (HH:mm:ss)
-        pst.setTime(5, new java.sql.Time(jamMasukVal.getTime()));
-        pst.setTime(6, new java.sql.Time(jamPulangVal.getTime()));
-
-        pst.setString(7, status);
-
-        pst.executeUpdate();
-
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Data Berhasil Disimpan!");
-
-        // Kosongkan Form
-        textnama.setText("");
-        textID.setText("");
-        jdate.setDate(null);
-
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Error: " + e.getMessage());
-    }
+        } catch (java.sql.SQLException e) {
+            if (e.getMessage().contains("Duplicate")) {
+                JOptionPane.showMessageDialog(this, "Anda sudah absen di tanggal ini!", "Gagal", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error SQL: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnsimpanActionPerformed
 
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed

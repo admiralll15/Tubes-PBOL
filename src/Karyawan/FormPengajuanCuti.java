@@ -3,20 +3,43 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Karyawan;
+import model.Cutimodel; 
+import java.text.SimpleDateFormat; 
+import javax.swing.JOptionPane; 
+
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class FormPengajuanCuti extends javax.swing.JFrame {
+    
+    private Cutimodel cutiModel = new Cutimodel();
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormPengajuanCuti.class.getName());
 
     /**
      * Creates new form FormPengajuanCuti
      */
-    public FormPengajuanCuti() {
+   public FormPengajuanCuti() {
         initComponents();
+        this.setLocationRelativeTo(null);
+         
+        // 1. Ambil ID dan Nama dari Session 
+        String myId = model.UserSession.getKaryawanId();
+        String myName = model.UserSession.getNamaKaryawan();
+        
+        // 2. Tempel ke Text Field
+        textID.setText(myId);      
+        textNama.setText(myName);   
+        
+        // 3. Kunci Text Field (Biar karyawan tidak bisa ubah/hapus)
+        textID.setEditable(false);
+        textNama.setEditable(false);
+        
+        // 4. Set Status Default
+        textstatus.setText("Pending");
+        textstatus.setEditable(false);
     }
 
     /**
@@ -107,6 +130,11 @@ public class FormPengajuanCuti extends javax.swing.JFrame {
 
         btnbatal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnbatal.setText("Batal");
+        btnbatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbatalActionPerformed(evt);
+            }
+        });
 
         textID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,8 +245,42 @@ public class FormPengajuanCuti extends javax.swing.JFrame {
     }//GEN-LAST:event_textstatusActionPerformed
 
     private void btnajukanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnajukanActionPerformed
-        // TODO add your handling code here:
+        // 1. Ambil Data
+        String idKaryawan = textID.getText();
+        String keterangan = textketerangan.getText();
+        
+        // 2. Validasi Input Kosong
+        if (idKaryawan.isEmpty() || jDatetglmulai.getDate() == null || jDatetglselesai.getDate() == null || keterangan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Harap isi semua data (ID, Tanggal, Keterangan)!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // 3. Format Tanggal (Dari Kalender ke Format Database yyyy-MM-dd)
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String tglMulai = sdf.format(jDatetglmulai.getDate());
+            String tglSelesai = sdf.format(jDatetglselesai.getDate());
+
+            // 4. Panggil Model
+            // (Pastikan Cutimodel.java Anda sudah memiliki method ajukanCuti dengan 4 parameter ini)
+            boolean sukses = cutiModel.ajukanCuti(idKaryawan, tglMulai, tglSelesai, keterangan);
+
+            // 5. Feedback
+            if (sukses) {
+                JOptionPane.showMessageDialog(this, "Pengajuan Cuti Berhasil Dikirim!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose(); // Tutup form setelah berhasil
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal mengajukan cuti. Periksa ID Karyawan.", "Gagal", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnajukanActionPerformed
+
+    private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnbatalActionPerformed
 
     /**
      * @param args the command line arguments

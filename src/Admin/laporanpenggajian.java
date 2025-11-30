@@ -1,4 +1,14 @@
 package Admin;
+import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.koneksi;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import javax.swing.JFileChooser;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -8,17 +18,58 @@ package Admin;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class laporanpenggajian extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(laporanpenggajian.class.getName());
 
+    // Method untuk menampilkan semua data gaji ke tabel
+    private void tampilkanData() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("Nama");
+        model.addColumn("Jabatan");
+        model.addColumn("Bulan");
+        model.addColumn("Tahun");
+        model.addColumn("Gaji Pokok");
+        model.addColumn("Lembur");
+        model.addColumn("Potongan");
+        model.addColumn("Total");
+
+        try {
+            Connection conn = koneksi.getKoneksi();
+            String sql = "SELECT * FROM v_laporan_penggajian"; // Ambil semua data
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()) {
+                model.addRow(new Object[] {
+                    rs.getString("id"),
+                    rs.getString("nama"),
+                    rs.getString("jabatan"),
+                    rs.getString("bulan"),
+                    rs.getString("tahun"),
+                    rs.getString("gaji_pokok"),
+                    rs.getString("lembur"),
+                    rs.getString("potongan"),
+                    rs.getString("total")
+                });
+            }
+            tblabsensi.setModel(model); // Masukkan data ke tabel
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
+        }
+    }
+    
     /**
      * Creates new form laporanpenggajian
      */
     public laporanpenggajian() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        tampilkanData();
     }
 
     /**
@@ -220,13 +271,10 @@ public class laporanpenggajian extends javax.swing.JFrame {
                             .addComponent(jcombotahun, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(33, 33, 33)
                         .addComponent(jLabel2)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(196, 196, 196)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -234,15 +282,88 @@ public class laporanpenggajian extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btntampilkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntampilkanActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblabsensi.getModel();
+        model.setRowCount(0); // Kosongkan tabel dulu
+
+        String bulan = jcombobulan.getSelectedItem().toString();
+        String tahun = jcombotahun.getSelectedItem().toString();
+
+        try {
+            Connection conn = koneksi.getKoneksi();
+            // Query dengan Filter
+            String sql = "SELECT * FROM v_laporan_penggajian WHERE bulan = ? AND tahun = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, bulan);
+            pst.setString(2, tahun);
+            
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()) {
+                model.addRow(new Object[] {
+                    rs.getString("id"),
+                    rs.getString("nama"),
+                    rs.getString("jabatan"),
+                    rs.getString("bulan"),
+                    rs.getString("tahun"),
+                    rs.getString("gaji_pokok"),
+                    rs.getString("lembur"),
+                    rs.getString("potongan"),
+                    rs.getString("total")
+                });
+            }
+            tblabsensi.setModel(model);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error Filter: " + e.getMessage());
+        }
     }//GEN-LAST:event_btntampilkanActionPerformed
 
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
-        // TODO add your handling code here:
+        tampilkanData();
     }//GEN-LAST:event_btnresetActionPerformed
 
     private void btnexportpdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexportpdf1ActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Simpan Laporan Gaji");
+        fileChooser.setSelectedFile(new java.io.File("LaporanGaji.pdf"));
+
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                if (!filePath.toLowerCase().endsWith(".pdf")) filePath += ".pdf";
+
+                Document document = new Document();
+                PdfWriter.getInstance(document, new FileOutputStream(filePath));
+                document.open();
+
+                // Judul PDF
+                document.add(new Paragraph("LAPORAN PENGGAJIAN KARYAWAN"));
+                document.add(new Paragraph("Periode: " + jcombobulan.getSelectedItem() + " " + jcombotahun.getSelectedItem()));
+                document.add(new Paragraph(" "));
+
+                // Buat Tabel PDF
+                PdfPTable pdfTable = new PdfPTable(tblabsensi.getColumnCount());
+                
+                // Header Tabel
+                for (int i = 0; i < tblabsensi.getColumnCount(); i++) {
+                    pdfTable.addCell(tblabsensi.getColumnName(i));
+                }
+                
+                // Isi Data Tabel
+                for (int rows = 0; rows < tblabsensi.getRowCount(); rows++) {
+                    for (int cols = 0; cols < tblabsensi.getColumnCount(); cols++) {
+                        pdfTable.addCell(tblabsensi.getModel().getValueAt(rows, cols).toString());
+                    }
+                }
+
+                document.add(pdfTable);
+                document.close();
+                JOptionPane.showMessageDialog(this, "Export PDF Berhasil!");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Gagal Export PDF: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnexportpdf1ActionPerformed
 
     private void jcombobulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombobulanActionPerformed

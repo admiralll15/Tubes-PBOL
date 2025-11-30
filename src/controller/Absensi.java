@@ -4,22 +4,39 @@
  */
 package controller;
 import model.Absensimodel;
+import java.sql.ResultSet;
+
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class Absensi {
-private Absensimodel model;
+    private Absensimodel model;
 
     public Absensi() {
         model = new Absensimodel();
     }
 
-    public boolean simpan(String idKar, String tanggal, String status) {
-        if (idKar.isEmpty() || tanggal.isEmpty() || status.isEmpty()) {
-            System.out.println("Isi semua data!");
+    // 1. Fungsi Check-In (Absen Masuk)
+    public boolean checkIn(String idKaryawan, String nama, String jabatan, String tanggal, String jamMasuk) {
+        if (idKaryawan.isEmpty() || tanggal.isEmpty() || jamMasuk.isEmpty()) {
+            System.out.println("Data Check-In tidak lengkap!");
             return false;
         }
-        return model.simpanAbsensi(idKar, tanggal, status);
+        return model.checkIn(idKaryawan, nama, jabatan, tanggal, jamMasuk);
+    }
+
+    // 2. Fungsi Check-Out (Absen Pulang)
+    public boolean checkOut(String idKaryawan, String tanggal, String jamPulang) {
+        if (idKaryawan.isEmpty() || tanggal.isEmpty() || jamPulang.isEmpty()) {
+            System.out.println("Data Check-Out tidak lengkap!");
+            return false;
+        }
+        return model.checkOut(idKaryawan, tanggal, jamPulang);
+    }
+    
+    // 3. Ambil Laporan Absensi (Untuk ditampilkan di Tabel Admin/HRD)
+    public ResultSet getLaporan() {
+        return model.getLaporanAbsensi();
     }
 }

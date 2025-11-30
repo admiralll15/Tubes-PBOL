@@ -9,7 +9,7 @@ import Form.FormLogin2;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class FormRegister2 extends javax.swing.JFrame {
     
@@ -20,6 +20,7 @@ public class FormRegister2 extends javax.swing.JFrame {
      */
     public FormRegister2() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

@@ -6,7 +6,7 @@ package Admin;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class FormDataKaryawan extends javax.swing.JFrame {
     
@@ -17,6 +17,7 @@ public class FormDataKaryawan extends javax.swing.JFrame {
      */
     public FormDataKaryawan() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

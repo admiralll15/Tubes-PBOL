@@ -1,4 +1,9 @@
 package Admin;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.koneksi; // Pastikan package model.koneksi benar
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -7,7 +12,7 @@ package Admin;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class laporanabsensi extends javax.swing.JFrame {
     
@@ -16,9 +21,60 @@ public class laporanabsensi extends javax.swing.JFrame {
     /**
      * Creates new form laporan
      */
+    
     public laporanabsensi() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        tampilkanData(); // <-- Tambahkan ini agar tabel langsung terisi saat dibuka
     }
+    
+    // Method untuk menampilkan data ke JTable
+    private void tampilkanData() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID Absen");
+        model.addColumn("Nama Karyawan");
+        model.addColumn("Jabatan");
+        model.addColumn("Tanggal");
+        model.addColumn("Jam Masuk");
+        model.addColumn("Jam Pulang");
+        model.addColumn("Status");
+
+        try {
+            Connection conn = koneksi.getKoneksi();
+            String sql = "SELECT * FROM v_laporan_absensi"; // Default: Tampilkan semua
+            
+            // Jika tanggal dipilih, tambahkan filter WHERE
+            if (jDateChooser1.getDate() != null && jDateChooser2.getDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String tglAwal = sdf.format(jDateChooser1.getDate());
+                String tglAkhir = sdf.format(jDateChooser2.getDate());
+                
+                sql += " WHERE tanggal BETWEEN '" + tglAwal + "' AND '" + tglAkhir + "'";
+            }
+            
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()) {
+                model.addRow(new Object[] {
+                    rs.getString("id"),
+                    rs.getString("nama"),
+                    rs.getString("jabatan"),
+                    rs.getString("tanggal"),
+                    rs.getString("jam_masuk"),
+                    rs.getString("jam_pulang"),
+                    rs.getString("status")
+                });
+            }
+            
+            tblabsensi.setModel(model);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
+        }
+    }
+    
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -213,15 +269,30 @@ public class laporanabsensi extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnexportpdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexportpdf1ActionPerformed
-        // TODO add your handling code here:
+        // Logika cetak PDF (Membutuhkan Library iText / JasperReport)
+        JOptionPane.showMessageDialog(this, "Fitur Export PDF memerlukan library tambahan (iText/Jasper). \nData sudah tampil di tabel.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        
+        // Jika ingin print tabel sederhana bawaan Java:
+        try {
+            tblabsensi.print();
+        } catch (Exception e) {
+            System.out.println("Gagal print: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnexportpdf1ActionPerformed
 
     private void btnreset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreset1ActionPerformed
-        // TODO add your handling code here:
+        jDateChooser1.setDate(null);
+        jDateChooser2.setDate(null);
+        tampilkanData(); // Tampilkan semua data tanpa filter tanggal
     }//GEN-LAST:event_btnreset1ActionPerformed
 
     private void btntampilkan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntampilkan1ActionPerformed
-        // TODO add your handling code here:
+        // Validasi: Pastikan tanggal dipilih
+        if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Silakan pilih rentang tanggal (Dari & Sampai)!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        tampilkanData(); // Panggil fungsi tampilkan
     }//GEN-LAST:event_btntampilkan1ActionPerformed
 
     /**

@@ -3,10 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Karyawan;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class KaryawanDashboard extends javax.swing.JFrame {
     
@@ -17,6 +18,7 @@ public class KaryawanDashboard extends javax.swing.JFrame {
      */
     public KaryawanDashboard() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -43,7 +45,7 @@ public class KaryawanDashboard extends javax.swing.JFrame {
         jLabel9.setText("KARYAWAN");
 
         Btnabsen.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        Btnabsen.setText("Hitung Gaji");
+        Btnabsen.setText("Absensi Harian");
         Btnabsen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnabsenActionPerformed(evt);
@@ -76,7 +78,7 @@ public class KaryawanDashboard extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnIzindancuti)
                 .addGap(18, 18, 18)
-                .addComponent(btnslipgaji, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                .addComponent(btnslipgaji, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                 .addGap(21, 21, 21))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(118, 118, 118)
@@ -111,15 +113,30 @@ public class KaryawanDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnabsenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnabsenActionPerformed
-
+        try {
+            // Membuka form yang ada di package HRD
+            new shared.FormAbsensiKaryawan().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal membuka Hitung Gaji: " + e.getMessage());
+        }
     }//GEN-LAST:event_BtnabsenActionPerformed
 
     private void btnIzindancutiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzindancutiActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Membuka form di package yang sama (Karyawan)
+            new FormPengajuanCuti().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Form Pengajuan Cuti belum dibuat!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnIzindancutiActionPerformed
 
     private void btnslipgajiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnslipgajiActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Membuka form di package yang sama (Karyawan)
+            new FormSlipGaji().setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Form Slip Gaji belum dibuat!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnslipgajiActionPerformed
 
     /**

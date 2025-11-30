@@ -1,0 +1,117 @@
+========================================
+PANDUAN INSTALASI DATABASE CEPAT
+Sistem Manajemen Absensi dan Penggajian
+========================================
+
+LANGKAH 1: Pastikan MySQL/MariaDB sudah terinstall dan berjalan
+---------------------------------------------------------------
+- Buka Command Prompt atau Terminal
+- Ketik: mysql --version
+- Jika muncul versi, berarti MySQL sudah terinstall
+
+LANGKAH 2: Import Database
+---------------------------------------------------------------
+PILIH SALAH SATU CARA:
+
+CARA A: Menggunakan Command Line (Paling Cepat)
+1. Buka Command Prompt/Terminal
+2. Masuk ke folder database:
+   cd database
+3. Import database:
+   mysql -u root -p < db_absensi.sql
+4. Masukkan password MySQL Anda (jika ada)
+5. Selesai!
+
+CARA B: Menggunakan phpMyAdmin
+1. Buka browser, akses: http://localhost/phpmyadmin
+2. Klik tab "Import" di bagian atas
+3. Klik "Choose File" dan pilih file db_absensi.sql
+4. Scroll ke bawah, klik tombol "Go"
+5. Tunggu sampai muncul pesan sukses
+
+CARA C: Menggunakan MySQL Workbench
+1. Buka MySQL Workbench
+2. Connect ke database server
+3. File > Open SQL Script
+4. Pilih file db_absensi.sql
+5. Klik tombol Execute (⚡) atau tekan Ctrl+Shift+Enter
+
+LANGKAH 3: Verifikasi Database
+---------------------------------------------------------------
+1. Buka MySQL Command Line atau phpMyAdmin
+2. Ketik/Execute: USE db_absensi;
+3. Ketik/Execute: SHOW TABLES;
+4. Harus muncul 6 tabel:
+   - user
+   - karyawan
+   - cuti
+   - absensi_karyawan
+   - absensi
+   - penggajian
+
+LANGKAH 4: Cek Data Sample
+---------------------------------------------------------------
+1. Ketik/Execute: SELECT * FROM user;
+2. Harus muncul 3 user (admin, hrd, karyawan1)
+
+LANGKAH 5: Test Koneksi dari Aplikasi
+---------------------------------------------------------------
+1. Pastikan file koneksi.java sudah benar:
+   - Database: db_absensi
+   - User: root
+   - Password: (kosong atau sesuai password MySQL Anda)
+2. Jalankan aplikasi Java
+3. Coba login dengan:
+   Username: admin
+   Password: admin123
+   Role: Admin
+
+========================================
+TROUBLESHOOTING
+========================================
+
+ERROR: "Access denied for user 'root'@'localhost'"
+SOLUSI: 
+- Pastikan password MySQL benar
+- Atau ubah password di file koneksi.java
+
+ERROR: "Unknown database 'db_absensi'"
+SOLUSI:
+- Import ulang file db_absensi.sql
+- Atau buat manual: CREATE DATABASE db_absensi;
+
+ERROR: "Table already exists"
+SOLUSI:
+- Hapus database: DROP DATABASE db_absensi;
+- Import ulang file db_absensi.sql
+
+ERROR: "Connection refused"
+SOLUSI:
+- Pastikan MySQL service sudah running
+- Windows: Services > MySQL > Start
+- Linux: sudo systemctl start mysql
+
+========================================
+DATA LOGIN TESTING
+========================================
+
+Admin:
+  Username: admin
+  Password: admin123
+  Role: Admin
+
+HRD:
+  Username: hrd
+  Password: hrd123
+  Role: HRD
+
+Karyawan:
+  Username: karyawan1
+  Password: karyawan123
+  Role: Karyawan
+
+========================================
+SELESAI!
+Aplikasi siap digunakan setelah database berhasil diimport.
+========================================
+

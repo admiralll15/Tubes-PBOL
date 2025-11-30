@@ -1,38 +1,64 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
 import java.sql.*;
-/**
- *
- * @author PUTRI SAHARA T
- */
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Absensimodel {
-   public boolean simpanAbsensi(String idKaryawan, String tanggal, String status) {
-        try {
-            String sql = "INSERT INTO absensi(id_karyawan, tanggal, status) VALUES (?, ?, ?)";
-            PreparedStatement pst = koneksi.getKoneksi().prepareStatement(sql);
+    
+    private static final Logger LOGGER = Logger.getLogger(Absensimodel.class.getName());
+    
+    // 1. CHECK-IN (Menyimpan jam masuk)
+    public boolean checkIn(String idKaryawan, String nama, String jabatan, String tanggal, String jamMasuk) {
+        // Query disesuaikan dengan tabel absensi_karyawan. 
+        // Menggunakan INSERT dengan kolom yang dibutuhkan: nama, id_karyawan, jabatan, tanggal, jam_masuk, status (default 'Hadir')
+        String sql = "INSERT INTO absensi_karyawan (nama, id_karyawan, jabatan, tanggal, jam_masuk, status) VALUES (?, ?, ?, ?, ?, 'Hadir')";
+        try (Connection conn = koneksi.getKoneksi();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, idKaryawan);
-            pst.setString(2, tanggal);
-            pst.setString(3, status);
+            pst.setString(1, nama);
+            pst.setString(2, idKaryawan);
+            pst.setString(3, jabatan);
+            pst.setString(4, tanggal);
+            pst.setString(5, jamMasuk); 
 
-            pst.executeUpdate();
-            return true;
+            return pst.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error absensi: " + e.getMessage());
+            // Error ini mungkin terjadi jika absensi untuk tanggal dan karyawan yang sama sudah ada (UNIQUE KEY)
+            LOGGER.log(Level.SEVERE, "Error saat Check-In: " + e.getMessage(), e);
             return false;
         }
     }
+    
+    // 2. CHECK-OUT (Mengupdate jam pulang)
+    public boolean checkOut(String idKaryawan, String tanggal, String jamPulang) {
+        // Query menggunakan UPDATE berdasarkan id_karyawan dan tanggal
+        String sql = "UPDATE absensi_karyawan SET jam_pulang = ? WHERE id_karyawan = ? AND tanggal = ?";
+        try (Connection conn = koneksi.getKoneksi();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
 
-    public ResultSet getDataAbsensi() {
-        try {
-            String sql = "SELECT a.*, k.nama FROM absensi a JOIN karyawan k ON a.id_karyawan=k.id";
-            PreparedStatement pst = koneksi.getKoneksi().prepareStatement(sql);
+            pst.setString(1, jamPulang);
+            pst.setString(2, idKaryawan);
+            pst.setString(3, tanggal); 
+
+            return pst.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error saat Check-Out: " + e.getMessage(), e);
+            return false;
+        }
+    }
+    
+    // 3. GET DATA LAPORAN (Menggunakan View yang sudah didefinisikan)
+    public ResultSet getLaporanAbsensi() {
+        // Menggunakan V_LAPORAN_ABSENSI
+        String sql = "SELECT * FROM v_laporan_absensi ORDER BY tanggal DESC, id_karyawan";
+        try (Connection conn = koneksi.getKoneksi();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            
             return pst.executeQuery();
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Gagal mengambil laporan absensi", e);
             return null;
         }
-    } 
+    }
 }

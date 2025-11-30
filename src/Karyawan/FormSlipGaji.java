@@ -3,10 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Karyawan;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import model.koneksi;
+import model.UserSession;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import javax.swing.JFileChooser;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class FormSlipGaji extends javax.swing.JFrame {
     
@@ -17,6 +28,22 @@ public class FormSlipGaji extends javax.swing.JFrame {
      */
     public FormSlipGaji() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        
+        // 1. Ambil Data Login dari Session
+        String idSaya = UserSession.getKaryawanId();
+        String namaSaya = UserSession.getNamaKaryawan();
+        String jabatanSaya = UserSession.getJabatanKaryawan();
+        
+        // 2. Tempel ke Text Field
+        textId.setText(idSaya);
+        textNama.setText(namaSaya);
+        textId1.setText(jabatanSaya); // Asumsi textId1 adalah kolom Jabatan
+        
+        // 3. Kunci agar tidak bisa diedit
+        textId.setEditable(false);
+        textNama.setEditable(false);
+        textId1.setEditable(false);
     }
 
     /**
@@ -28,83 +55,25 @@ public class FormSlipGaji extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        textpotongan1 = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
-        textpotongan2 = new javax.swing.JTextField();
-        jLabel23 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
         jcombobulan = new javax.swing.JComboBox<>();
         jcombotahun = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         textNama = new javax.swing.JTextField();
         textId = new javax.swing.JTextField();
-        textupahlembur = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
         btnbatal = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
-        textpotongan = new javax.swing.JTextField();
         btnhitung = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         textId1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        textpotongan1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textpotongan1ActionPerformed(evt);
-            }
-        });
-
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel22.setText("Upah Lembur / Jam");
-
-        textpotongan2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textpotongan2ActionPerformed(evt);
-            }
-        });
-
-        jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel23.setText("Potongan");
-
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel13.setText("Bulan");
-
-        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
-
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel19.setText("TOTAL GAJI BERSIH :");
-
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel21.setText("Rp");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel19)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(jLabel21))
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
 
         jcombobulan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember", " " }));
         jcombobulan.addActionListener(new java.awt.event.ActionListener() {
@@ -138,25 +107,15 @@ public class FormSlipGaji extends javax.swing.JFrame {
             }
         });
 
-        textupahlembur.addActionListener(new java.awt.event.ActionListener() {
+        btnbatal.setText("Batal");
+        btnbatal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textupahlemburActionPerformed(evt);
+                btnbatalActionPerformed(evt);
             }
         });
-
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel15.setText("Gaji Pokok");
-
-        btnbatal.setText("Batal");
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel14.setText("Tahun");
-
-        textpotongan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textpotonganActionPerformed(evt);
-            }
-        });
 
         btnhitung.setText("Cetak Slip");
         btnhitung.addActionListener(new java.awt.event.ActionListener() {
@@ -167,9 +126,6 @@ public class FormSlipGaji extends javax.swing.JFrame {
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel20.setText("Jabatan");
-
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel16.setText("Jam Lembur");
 
         jPanel9.setBackground(new java.awt.Color(0, 51, 102));
 
@@ -208,11 +164,10 @@ public class FormSlipGaji extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                                 .addGap(209, 209, 209))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,26 +182,11 @@ public class FormSlipGaji extends javax.swing.JFrame {
                             .addComponent(textNama, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                             .addComponent(jcombobulan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textId1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(textupahlembur, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(textpotongan, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textpotongan2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textpotongan1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnhitung, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -273,41 +213,15 @@ public class FormSlipGaji extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jcombotahun, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textupahlembur, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textpotongan, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textpotongan2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textpotongan1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnhitung, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void textpotongan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textpotongan1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textpotongan1ActionPerformed
-
-    private void textpotongan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textpotongan2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textpotongan2ActionPerformed
 
     private void jcombobulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombobulanActionPerformed
         // TODO add your handling code here:
@@ -325,21 +239,99 @@ public class FormSlipGaji extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_textIdActionPerformed
 
-    private void textupahlemburActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textupahlemburActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textupahlemburActionPerformed
-
-    private void textpotonganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textpotonganActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textpotonganActionPerformed
-
     private void btnhitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhitungActionPerformed
-        // TODO add your handling code here:
+        String idKaryawan = textId.getText();
+        String nama = textNama.getText();
+        String jabatan = textId1.getText();
+        String bulan = jcombobulan.getSelectedItem().toString();
+        String tahun = jcombotahun.getSelectedItem().toString();
+        
+        try {
+            Connection conn = koneksi.getKoneksi();
+            // Cek apakah gaji untuk bulan & tahun ini sudah ada?
+            String sql = "SELECT * FROM penggajian WHERE id_karyawan = ? AND bulan = ? AND tahun = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, idKaryawan);
+            pst.setString(2, bulan);
+            pst.setString(3, tahun);
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                // DATA DITEMUKAN! Ambil isinya
+                String gajiPokok = rs.getString("gaji_pokok");
+                String lembur = rs.getString("lembur");
+                String potongan = rs.getString("potongan");
+                String total = rs.getString("total");
+                
+                // Tampilkan Konfirmasi Export PDF
+                int confirm = JOptionPane.showConfirmDialog(this, 
+                        "Slip Gaji Ditemukan!\n" +
+                        "Total Gaji Bersih: Rp " + total + "\n\n" +
+                        "Simpan Slip Gaji ini sebagai PDF?", 
+                        "Konfirmasi Cetak", JOptionPane.YES_NO_OPTION);
+                
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Panggil fungsi export di bawah
+                    exportToPDF(nama, idKaryawan, jabatan, bulan, tahun, gajiPokok, lembur, potongan, total);
+                }
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "Mohon Maaf, Slip Gaji periode ini belum diterbitkan oleh HRD.", "Data Tidak Ditemukan", JOptionPane.WARNING_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnhitungActionPerformed
 
     private void textId1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textId1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textId1ActionPerformed
+    // Method khusus untuk membuat file PDF
+    private void exportToPDF(String nama, String id, String jab, String bln, String thn, String gp, String lmbr, String pot, String tot) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Simpan File PDF");
+        // Nama file default
+        fileChooser.setSelectedFile(new java.io.File("SlipGaji_" + nama + "_" + bln + ".pdf"));
+        
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                String path = fileChooser.getSelectedFile().getAbsolutePath();
+                if (!path.endsWith(".pdf")) path += ".pdf"; // Tambah ekstensi otomatis
+                
+                Document doc = new Document();
+                PdfWriter.getInstance(doc, new FileOutputStream(path));
+                doc.open();
+                
+                // --- DESAIN ISI PDF ---
+                doc.add(new Paragraph("======================================"));
+                doc.add(new Paragraph("          SLIP GAJI KARYAWAN          "));
+                doc.add(new Paragraph("======================================"));
+                doc.add(new Paragraph(" ")); // Spasi
+                doc.add(new Paragraph("Nama      : " + nama));
+                doc.add(new Paragraph("ID        : " + id));
+                doc.add(new Paragraph("Jabatan   : " + jab));
+                doc.add(new Paragraph("Periode   : " + bln + " " + thn));
+                doc.add(new Paragraph("--------------------------------------"));
+                doc.add(new Paragraph("Gaji Pokok: Rp " + gp));
+                doc.add(new Paragraph("Lembur    : Rp " + lmbr));
+                doc.add(new Paragraph("Potongan  : Rp " + pot));
+                doc.add(new Paragraph("--------------------------------------"));
+                doc.add(new Paragraph("TOTAL     : Rp " + tot));
+                doc.add(new Paragraph("======================================"));
+                
+                doc.close();
+                JOptionPane.showMessageDialog(this, "File PDF berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Gagal membuat PDF: " + e.getMessage());
+            }
+        }
+    }
+    private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnbatalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -371,26 +363,15 @@ public class FormSlipGaji extends javax.swing.JFrame {
     private javax.swing.JButton btnhitung;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JComboBox<String> jcombobulan;
     private javax.swing.JComboBox<String> jcombotahun;
     private javax.swing.JTextField textId;
     private javax.swing.JTextField textId1;
     private javax.swing.JTextField textNama;
-    private javax.swing.JTextField textpotongan;
-    private javax.swing.JTextField textpotongan1;
-    private javax.swing.JTextField textpotongan2;
-    private javax.swing.JTextField textupahlembur;
     // End of variables declaration//GEN-END:variables
 }

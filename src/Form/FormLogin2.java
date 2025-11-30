@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class FormLogin2 extends javax.swing.JFrame {
     
@@ -19,6 +19,7 @@ public class FormLogin2 extends javax.swing.JFrame {
      */
     public FormLogin2() {
         initComponents();
+        this.setLocationRelativeTo(null);
         
     }
 

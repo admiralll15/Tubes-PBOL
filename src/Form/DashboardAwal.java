@@ -6,7 +6,7 @@ package Form;
 
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class DashboardAwal extends javax.swing.JFrame {
     
@@ -17,6 +17,7 @@ public class DashboardAwal extends javax.swing.JFrame {
      */
     public DashboardAwal() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
