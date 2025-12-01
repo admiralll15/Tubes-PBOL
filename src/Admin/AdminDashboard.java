@@ -4,7 +4,7 @@
  */
 package Admin;
 import javax.swing.JOptionPane;
-import Karyawan.FormPengajuanCuti
+import Karyawan.FormPengajuanCuti;
 import Karyawan.FormSlipGaji;  
 
 
@@ -100,12 +100,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(Btnhitunggaji, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnIzindancuti, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnlaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))))
+                    .addComponent(btnIzindancuti, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnlaporan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(164, 164, 164)
                 .addComponent(jLabel9)

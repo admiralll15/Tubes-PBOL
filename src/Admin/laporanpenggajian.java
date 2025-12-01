@@ -166,7 +166,7 @@ public class laporanpenggajian extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 102));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("LAPORAN PENGGAJIAN");
 
@@ -208,6 +208,15 @@ public class laporanpenggajian extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblabsensi.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tblabsensiAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         jScrollPane2.setViewportView(tblabsensi);
@@ -374,6 +383,10 @@ public class laporanpenggajian extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcombotahunActionPerformed
 
+    private void tblabsensiAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblabsensiAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblabsensiAncestorAdded
+
     /**
      * @param args the command line arguments
      */
@@ -409,6 +422,8 @@ public class laporanpenggajian extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JComboBox<String> jcombobulan;
