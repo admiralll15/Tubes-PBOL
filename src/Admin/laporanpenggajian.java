@@ -3,6 +3,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.koneksi;
+import model.UIScaler;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -58,6 +59,13 @@ public class laporanpenggajian extends javax.swing.JFrame {
             }
             tblabsensi.setModel(model); // Masukkan data ke tabel
             
+            // Konfigurasi header alignment (left align instead of center)
+            tblabsensi.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {{
+                setHorizontalAlignment(javax.swing.JLabel.LEFT);
+            }});
+            // Auto-resize columns to fit container
+            tblabsensi.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
         }
@@ -68,8 +76,10 @@ public class laporanpenggajian extends javax.swing.JFrame {
      */
     public laporanpenggajian() {
         initComponents();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         tampilkanData();
+        UIScaler.scaleContainer(this.getContentPane());
     }
 
     /**
@@ -166,18 +176,16 @@ public class laporanpenggajian extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 102));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("LAPORAN PENGGAJIAN");
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(161, 161, 161)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,6 +216,15 @@ public class laporanpenggajian extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblabsensi.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tblabsensiAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         jScrollPane2.setViewportView(tblabsensi);
@@ -374,6 +391,10 @@ public class laporanpenggajian extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcombotahunActionPerformed
 
+    private void tblabsensiAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblabsensiAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblabsensiAncestorAdded
+
     /**
      * @param args the command line arguments
      */
@@ -409,6 +430,8 @@ public class laporanpenggajian extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JComboBox<String> jcombobulan;

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import model.koneksi;
 import model.UserSession;
+import model.UIScaler;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -28,7 +29,9 @@ public class FormSlipGaji extends javax.swing.JFrame {
      */
     public FormSlipGaji() {
         initComponents();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        UIScaler.scaleContainer(this.getContentPane());
         
         // 1. Ambil Data Login dari Session
         String idSaya = UserSession.getKaryawanId();
@@ -69,6 +72,7 @@ public class FormSlipGaji extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         textId1 = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -138,7 +142,7 @@ public class FormSlipGaji extends javax.swing.JFrame {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(168, 168, 168)
+                .addGap(220, 220, 220)
                 .addComponent(jLabel27)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -156,68 +160,95 @@ public class FormSlipGaji extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        // Create main scroll pane for responsive layout
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane();
+        javax.swing.JPanel formContentPanel = new javax.swing.JPanel();
+        formContentPanel.setLayout(new java.awt.GridBagLayout());
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gbc.insets = new java.awt.Insets(10, 20, 10, 20);
+        gbc.weightx = 1.0;
+
+        int row = 0;
+
+        // Nama Karyawan
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
+        formContentPanel.add(jLabel17, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        formContentPanel.add(textNama, gbc);
+        row++;
+
+        // ID Karyawan
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
+        formContentPanel.add(jLabel18, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        formContentPanel.add(textId, gbc);
+        row++;
+
+        // Jabatan
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
+        formContentPanel.add(jLabel20, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        formContentPanel.add(textId1, gbc);
+        row++;
+
+        // Bulan
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
+        formContentPanel.add(jLabel13, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        formContentPanel.add(jcombobulan, gbc);
+        row++;
+
+        // Tahun
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
+        formContentPanel.add(jLabel14, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        formContentPanel.add(jcombotahun, gbc);
+        row++;
+
+        // Separator
+        javax.swing.JSeparator separator = new javax.swing.JSeparator();
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2; gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        formContentPanel.add(separator, gbc);
+        row++;
+
+        // Buttons
+        javax.swing.JPanel buttonPanel = new javax.swing.JPanel();
+        buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
+        buttonPanel.add(btnhitung);
+        buttonPanel.add(btnbatal);
+
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2; gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gbc.insets = new java.awt.Insets(20, 20, 20, 20);
+        formContentPanel.add(buttonPanel, gbc);
+
+        scrollPane.setViewportView(formContentPanel);
+
+        // Main layout with header and scroll pane
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                                .addGap(209, 209, 209))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jcombotahun, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(textId, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                            .addComponent(textNama, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                            .addComponent(jcombobulan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(textId1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnhitung, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)))
-                .addContainerGap())
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textNama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textId1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcombobulan, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcombotahun, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnhitung, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -367,6 +398,7 @@ public class FormSlipGaji extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JComboBox<String> jcombobulan;
     private javax.swing.JComboBox<String> jcombotahun;

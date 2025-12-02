@@ -51,7 +51,7 @@ public class Usersmodel {
         String query = "SELECT u.id, u.password, u.role, u.id_karyawan, k.nama, k.jabatan " +
                        "FROM user u " +
                        "LEFT JOIN karyawan k ON u.id_karyawan = k.id " +
-                       "WHERE u.username = ?";
+                       "WHERE u.email = ?";
         try {
             PreparedStatement pst = conn.prepareStatement(query);
             pst.setString(1, username);

@@ -3,13 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package HRD;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import model.Cutimodel;
+import model.UIScaler;
 /**
  *
  * @author 
  */
 public class FormIzinCuti extends javax.swing.JFrame {
-    
+     private Cutimodel cutiModel = new Cutimodel();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormIzinCuti.class.getName());
 
     /**
@@ -17,7 +24,61 @@ public class FormIzinCuti extends javax.swing.JFrame {
      */
     public FormIzinCuti() {
         initComponents();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        loadDataCuti();
+        UIScaler.scaleContainer(this.getContentPane());
+    }
+    
+     private void loadDataCuti() {
+        // 1. Siapkan Kolom Tabel
+        String[] kolom = {"ID", "Nama", "Jabatan", "Tgl Mulai", "Tgl Selesai", "Keterangan", "Status", "Aksi"};
+        
+        // 2. Buat Model Tabel Custom (Agar kolom Aksi bisa diklik)
+        DefaultTableModel model = new DefaultTableModel(null, kolom) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 7; // Hanya kolom ke-7 (Tombol) yang bisa diklik
+            }
+        };
+
+        try {
+            // 3. Ambil Data dari Model (Database)
+            ResultSet rs = cutiModel.getStatusCuti(); // Pastikan method ini ada di Cutimodel.java
+            
+            while (rs.next()) {
+                model.addRow(new Object[] {
+                    rs.getString("id"),            // ID Cuti
+                    rs.getString("nama"),          // Nama Karyawan
+                    rs.getString("jabatan"),       // Jabatan
+                    rs.getString("tanggal_mulai"),
+                    rs.getString("tanggal_selesai"),
+                    rs.getString("keterangan"),
+                    rs.getString("status"),
+                    "" // Kolom Aksi dikosongkan (nanti diisi tombol)
+                });
+            }
+            
+            // 4. Pasang Model ke Tabel
+            jTable1.setModel(model);
+            
+            // 5. Konfigurasi header (align left dan auto-resize)
+            jTable1.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {{
+                setHorizontalAlignment(javax.swing.JLabel.LEFT);
+            }});
+            jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+            
+            // 6. Pasang Tombol (Renderer & Editor)
+            TableColumn aksiColumn = jTable1.getColumnModel().getColumn(7);
+            aksiColumn.setCellRenderer(new ButtonRenderer());
+            aksiColumn.setCellEditor(new ButtonEditor(jTable1));
+            
+            // 7. Atur Tinggi Baris (Agar tombol muat)
+            jTable1.setRowHeight(40);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memload data: " + e.getMessage());
+        }
     }
 
     /**
@@ -29,65 +90,25 @@ public class FormIzinCuti extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel18 = new javax.swing.JLabel();
-        textketerangan = new javax.swing.JTextField();
-        textID = new javax.swing.JTextField();
-        textstatus = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        btntolak = new javax.swing.JButton();
-        btnsetuju = new javax.swing.JButton();
-        btnbatal = new javax.swing.JButton();
-        textNama = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel18.setText("Tanggal Mulai");
-
-        textketerangan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textketeranganActionPerformed(evt);
-            }
-        });
-
-        textID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textIDActionPerformed(evt);
-            }
-        });
-
-        textstatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textstatusActionPerformed(evt);
-            }
-        });
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel14.setText("Keterangan");
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel20.setText("Tanggal Selesai");
 
         jPanel9.setBackground(new java.awt.Color(0, 51, 102));
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setText("IZIN DAN CUTI");
+        jLabel27.setText("LAPORAN IZIN DAN CUTI");
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel27)
-                .addGap(162, 162, 162))
+            .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,112 +118,53 @@ public class FormIzinCuti extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel13.setText("Status");
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel17.setText("Nama Karyawan");
-
-        btntolak.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btntolak.setText("Tolak");
-
-        btnsetuju.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnsetuju.setText("Setujui");
-
-        btnbatal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnbatal.setText("Batal");
-
-        textNama.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textNamaActionPerformed(evt);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nama", "Jabatan", "Tanggal Mulai", "Tanggal Selesai", "Keterangan", "Status", "Aksi"
+            }
+        ));
+        jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jTable1AncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
-
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel19.setText("ID Karyawan");
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 343, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(textketerangan, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                        .addComponent(textstatus, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                        .addComponent(textID, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                        .addComponent(textNama, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnsetuju, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btntolak, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jScrollPane1)
                 .addContainerGap())
-            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(textNama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel19)))
-                    .addComponent(jLabel17))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel18)
-                .addGap(29, 29, 29)
-                .addComponent(jLabel20)
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textketerangan, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btntolak, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnbatal, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnsetuju, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textketeranganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textketeranganActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textketeranganActionPerformed
-
-    private void textIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textIDActionPerformed
-
-    private void textstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textstatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textstatusActionPerformed
-
-    private void textNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNamaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textNamaActionPerformed
+    private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
+     // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1AncestorAdded
 
     /**
      * @param args the command line arguments
@@ -230,20 +192,9 @@ public class FormIzinCuti extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnbatal;
-    private javax.swing.JButton btnsetuju;
-    private javax.swing.JButton btntolak;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField textID;
-    private javax.swing.JTextField textNama;
-    private javax.swing.JTextField textketerangan;
-    private javax.swing.JTextField textstatus;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

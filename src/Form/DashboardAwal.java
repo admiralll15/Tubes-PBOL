@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Form;
+import model.UIScaler;
 
 /**
  *
@@ -17,7 +18,9 @@ public class DashboardAwal extends javax.swing.JFrame {
      */
     public DashboardAwal() {
         initComponents();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        UIScaler.scaleContainer(this.getContentPane());
     }
 
     /**
@@ -37,65 +40,58 @@ public class DashboardAwal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel4.setLayout(new java.awt.BorderLayout(20, 40));
 
-        jLabel8.setFont(new java.awt.Font("Copperplate Gothic Light", 1, 36)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Copperplate Gothic Light", 1, 48)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("STAFFLINK");
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel4.add(jLabel8, java.awt.BorderLayout.NORTH);
 
-        btnDaftar.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        javax.swing.JPanel buttonPanel = new javax.swing.JPanel();
+        buttonPanel.setBackground(new java.awt.Color(0, 51, 102));
+        buttonPanel.setLayout(new java.awt.GridBagLayout());
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.insets = new java.awt.Insets(10, 10, 10, 10);
+
+        btnDaftar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         btnDaftar.setText("DAFTAR");
+        btnDaftar.setPreferredSize(new java.awt.Dimension(150, 50));
         btnDaftar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDaftarActionPerformed(evt);
             }
         });
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        buttonPanel.add(btnDaftar, gbc);
 
-        Masuk.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        Masuk.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         Masuk.setText("MASUK");
+        Masuk.setPreferredSize(new java.awt.Dimension(150, 50));
         Masuk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MasukActionPerformed(evt);
             }
         });
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        buttonPanel.add(Masuk, gbc);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(Masuk, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addComponent(btnDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Masuk, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 134, Short.MAX_VALUE))
-        );
+        jPanel4.add(buttonPanel, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed

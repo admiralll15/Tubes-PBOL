@@ -4,6 +4,7 @@
  */
 package HRD;
 import javax.swing.JOptionPane;
+import model.UIScaler;
 import shared.FormAbsensiKaryawan; // Untuk Absensi Harian
 import Karyawan.FormSlipGaji;      // Untuk Slip Gaji
 import Admin.laporanabsensi;       // Untuk Laporan
@@ -21,7 +22,9 @@ public class HRDDashboard extends javax.swing.JFrame {
      */
     public HRDDashboard() {
         initComponents();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        UIScaler.scaleContainer(this.getContentPane());
     }
 
     /**
@@ -44,96 +47,84 @@ public class HRDDashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        jLabel9.setFont(new java.awt.Font("Copperplate Gothic Light", 1, 36)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Copperplate Gothic Light", 1, 40)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("HRD");
+        jLabel9.setText("HRD DASHBOARD");
 
-        Btnhitunggaji.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new java.awt.Insets(20, 20, 40, 20);
+        jPanel4.add(jLabel9, gbc);
+
+        Btnhitunggaji.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         Btnhitunggaji.setText("Slip Gaji");
+        Btnhitunggaji.setPreferredSize(new java.awt.Dimension(200, 60));
         Btnhitunggaji.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnhitunggajiActionPerformed(evt);
             }
         });
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.insets = new java.awt.Insets(15, 20, 15, 20);
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+        jPanel4.add(Btnhitunggaji, gbc);
 
-        btnIzindancuti.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        btnIzindancuti.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         btnIzindancuti.setText("Hitung Gaji");
+        btnIzindancuti.setPreferredSize(new java.awt.Dimension(200, 60));
         btnIzindancuti.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIzindancutiActionPerformed(evt);
             }
         });
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        jPanel4.add(btnIzindancuti, gbc);
 
-        btnlaporan.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        btnlaporan.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         btnlaporan.setText("Laporan Absensi");
+        btnlaporan.setPreferredSize(new java.awt.Dimension(200, 60));
         btnlaporan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnlaporanActionPerformed(evt);
             }
         });
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        jPanel4.add(btnlaporan, gbc);
 
-        Btnhitunggaji1.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        Btnhitunggaji1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         Btnhitunggaji1.setText("Absensi Harian");
+        Btnhitunggaji1.setPreferredSize(new java.awt.Dimension(200, 60));
         Btnhitunggaji1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btnhitunggaji1ActionPerformed(evt);
             }
         });
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        jPanel4.add(Btnhitunggaji1, gbc);
 
-        Btnhitunggaji2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        Btnhitunggaji2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         Btnhitunggaji2.setText("Penerimaan Izin");
+        Btnhitunggaji2.setPreferredSize(new java.awt.Dimension(200, 60));
         Btnhitunggaji2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btnhitunggaji2ActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(Btnhitunggaji1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnlaporan, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnIzindancuti)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(187, 187, 187)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Btnhitunggaji)
-                    .addComponent(jLabel9))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(47, 47, 47)
-                    .addComponent(Btnhitunggaji2)
-                    .addContainerGap(291, Short.MAX_VALUE)))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Btnhitunggaji1)
-                    .addComponent(btnIzindancuti))
-                .addGap(43, 43, 43)
-                .addComponent(btnlaporan)
-                .addGap(47, 47, 47)
-                .addComponent(Btnhitunggaji)
-                .addGap(0, 59, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                    .addContainerGap(156, Short.MAX_VALUE)
-                    .addComponent(Btnhitunggaji2)
-                    .addGap(128, 128, 128)))
-        );
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.insets = new java.awt.Insets(15, 20, 40, 20);
+        jPanel4.add(Btnhitunggaji2, gbc);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -146,7 +137,7 @@ public class HRDDashboard extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnhitunggajiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnhitunggajiActionPerformed
