@@ -46,10 +46,11 @@ public class Gajimodel {
     public ResultSet getLaporanPenggajian() {
         // Menggunakan V_LAPORAN_PENGGAJIAN
         String sql = "SELECT * FROM v_laporan_penggajian ORDER BY tahun DESC, created_at DESC";
-        try (Connection conn = koneksi.getKoneksi();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-            
-            return pst.executeQuery();
+        try {
+            Connection conn = koneksi.getKoneksi();
+            PreparedStatement pst = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = pst.executeQuery();
+            return rs;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Gagal mengambil laporan penggajian", e);
             return null;

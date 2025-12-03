@@ -52,13 +52,32 @@ public class Absensimodel {
     public ResultSet getLaporanAbsensi() {
         // Menggunakan V_LAPORAN_ABSENSI
         String sql = "SELECT * FROM v_laporan_absensi ORDER BY tanggal DESC, id_karyawan";
-        try (Connection conn = koneksi.getKoneksi();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-            
-            return pst.executeQuery();
+        try {
+            Connection conn = koneksi.getKoneksi();
+            PreparedStatement pst = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = pst.executeQuery();
+            return rs;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Gagal mengambil laporan absensi", e);
             return null;
+        }
+    }
+    
+    // 4. SIMPAN ABSENSI (Untuk form absensi umum)
+    public boolean simpanAbsensi(String idKaryawan, java.sql.Date tanggal, String status, String keterangan) {
+        String sql = "INSERT INTO absensi_karyawan (id_karyawan, tanggal, status, keterangan) VALUES (?, ?, ?, ?)";
+        try (Connection conn = koneksi.getKoneksi();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, idKaryawan);
+            pst.setDate(2, tanggal);
+            pst.setString(3, status);
+            pst.setString(4, keterangan);
+
+            return pst.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error simpan absensi: " + e.getMessage(), e);
+            return false;
         }
     }
 }

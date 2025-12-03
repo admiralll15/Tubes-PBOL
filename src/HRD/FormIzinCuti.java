@@ -1,180 +1,262 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package HRD;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.ResultSet;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import model.Cutimodel;
-import model.UIScaler;
-/**
- *
- * @author 
- */
-public class FormIzinCuti extends javax.swing.JFrame {
-     private Cutimodel cutiModel = new Cutimodel();
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormIzinCuti.class.getName());
 
-    /**
-     * Creates new form FormIzinCuti
-     */
+import java.sql.ResultSet;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import model.Cutimodel;
+import model.GUITemplate;
+import model.UIScaler;
+
+/**
+ * FormIzinCuti - Rewritten dengan hardcode, tema putih-biru
+ * Laporan izin dan cuti dengan tabel data
+ */
+public class FormIzinCuti extends JFrame {
+    
+    private Cutimodel cutiModel = new Cutimodel();
+    private JTable dataTable;
+    
+    private static final java.util.logging.Logger logger = 
+        java.util.logging.Logger.getLogger(FormIzinCuti.class.getName());
+
     public FormIzinCuti() {
         initComponents();
-        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         loadDataCuti();
         UIScaler.scaleContainer(this.getContentPane());
     }
     
-     private void loadDataCuti() {
-        // 1. Siapkan Kolom Tabel
+    private void loadDataCuti() {
         String[] kolom = {"ID", "Nama", "Jabatan", "Tgl Mulai", "Tgl Selesai", "Keterangan", "Status", "Aksi"};
         
-        // 2. Buat Model Tabel Custom (Agar kolom Aksi bisa diklik)
         DefaultTableModel model = new DefaultTableModel(null, kolom) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 7; // Hanya kolom ke-7 (Tombol) yang bisa diklik
+                return column == 7; // Only Aksi column is editable
             }
         };
 
         try {
-            // 3. Ambil Data dari Model (Database)
-            ResultSet rs = cutiModel.getStatusCuti(); // Pastikan method ini ada di Cutimodel.java
+            ResultSet rs = cutiModel.getStatusCuti();
             
+            if (rs == null) {
+                JOptionPane.showMessageDialog(this, "Data tidak ditemukan", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                dataTable.setModel(model);
+                return;
+            }
+            
+            List<Object[]> dataList = new ArrayList<>();
             while (rs.next()) {
-                model.addRow(new Object[] {
-                    rs.getString("id"),            // ID Cuti
-                    rs.getString("nama"),          // Nama Karyawan
-                    rs.getString("jabatan"),       // Jabatan
+                dataList.add(new Object[] {
+                    rs.getString("id"),
+                    rs.getString("nama"),
+                    rs.getString("jabatan"),
                     rs.getString("tanggal_mulai"),
                     rs.getString("tanggal_selesai"),
                     rs.getString("keterangan"),
                     rs.getString("status"),
-                    "" // Kolom Aksi dikosongkan (nanti diisi tombol)
+                    "Aksi"
                 });
             }
             
-            // 4. Pasang Model ke Tabel
-            jTable1.setModel(model);
+            for (Object[] row : dataList) {
+                model.addRow(row);
+            }
             
-            // 5. Konfigurasi header (align left dan auto-resize)
-            jTable1.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {{
-                setHorizontalAlignment(javax.swing.JLabel.LEFT);
-            }});
-            jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+            dataTable.setModel(model);
+            // Styling handled by createModernTable
+            dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            dataTable.setGridColor(new Color(230, 230, 230));
+            dataTable.setShowGrid(true);
             
-            // 6. Pasang Tombol (Renderer & Editor)
-            TableColumn aksiColumn = jTable1.getColumnModel().getColumn(7);
-            aksiColumn.setCellRenderer(new ButtonRenderer());
-            aksiColumn.setCellEditor(new ButtonEditor(jTable1));
+            // Render buttons in Aksi column
+            dataTable.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
+            dataTable.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JCheckBox(), this));
             
-            // 7. Atur Tinggi Baris (Agar tombol muat)
-            jTable1.setRowHeight(40);
+            // Set column widths
+            dataTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            dataTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+            dataTable.getColumnModel().getColumn(7).setPreferredWidth(150);
 
         } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "Error loading data", e);
             JOptionPane.showMessageDialog(this, "Gagal memload data: " + e.getMessage());
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        jPanel9 = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel9.setBackground(new java.awt.Color(0, 51, 102));
-
-        jLabel27.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setText("LAPORAN IZIN DAN CUTI");
-        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Nama", "Jabatan", "Tanggal Mulai", "Tanggal Selesai", "Keterangan", "Status", "Aksi"
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Laporan Izin dan Cuti");
+        setResizable(true);
+        
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, GUITemplate.PRIMARY,
+                    getWidth(), getHeight(), GUITemplate.ACCENT_CYAN
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                
+                g2d.setColor(new Color(255, 255, 255, 60));
+                g2d.fillOval(-250, -150, 700, 700);
+                g2d.fillOval(getWidth() - 150, getHeight() - 250, 700, 700);
             }
-        ));
-        jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                jTable1AncestorAdded(evt);
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
+        };
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setOpaque(false);
+        
+        // Header
+        JPanel headerPanel = GUITemplate.createHeaderPanel("LAPORAN IZIN DAN CUTI");
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
+        
+        // Table
+        dataTable = GUITemplate.createModernTable(new DefaultTableModel());
+        dataTable.setSelectionBackground(new Color(200, 220, 255));
+        
+        JScrollPane scrollPane = GUITemplate.createModernScrollPane(dataTable);
+        
+        JPanel tablePanel = GUITemplate.createRoundedPanel();
+        tablePanel.setLayout(new BorderLayout());
+        tablePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        
+        // Container for table
+        JPanel tableContainer = new JPanel(new BorderLayout());
+        tableContainer.setOpaque(false);
+        tableContainer.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
+        tableContainer.add(tablePanel, BorderLayout.CENTER);
+        
+        mainPanel.add(tableContainer, BorderLayout.CENTER);
+        
+        setContentPane(mainPanel);
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
+    
+    // Button Renderer untuk kolom Aksi
+    private static class ButtonRenderer extends JPanel implements TableCellRenderer {
+        private JButton btnSetuju, btnTolak;
+        
+        public ButtonRenderer() {
+            setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
+            setBackground(GUITemplate.BG_WHITE);
+            
+            btnSetuju = new JButton("Setuju");
+            btnSetuju.setBackground(new Color(76, 175, 80));
+            btnSetuju.setForeground(Color.WHITE);
+            btnSetuju.setFocusPainted(false);
+            btnSetuju.setFont(new Font("Arial", Font.PLAIN, 11));
+            
+            btnTolak = new JButton("Tolak");
+            btnTolak.setBackground(new Color(244, 67, 54));
+            btnTolak.setForeground(Color.WHITE);
+            btnTolak.setFocusPainted(false);
+            btnTolak.setFont(new Font("Arial", Font.PLAIN, 11));
+            
+            add(btnSetuju);
+            add(btnTolak);
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, 
+                                                       boolean hasFocus, int row, int column) {
+            if (isSelected) {
+                setBackground(new Color(200, 220, 255));
+            } else {
+                setBackground(GUITemplate.BG_WHITE);
+            }
+            return this;
+        }
+    }
+    
+    // Button Editor untuk kolom Aksi
+    private static class ButtonEditor extends DefaultCellEditor {
+        private JButton btnSetuju, btnTolak;
+        private JPanel panel;
+        private FormIzinCuti parent;
+        private int idCuti;
+        private Cutimodel cutiModel = new Cutimodel();
+        
+        public ButtonEditor(JCheckBox checkBox, FormIzinCuti parent) {
+            super(checkBox);
+            this.parent = parent;
+            
+            panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 2));
+            panel.setBackground(GUITemplate.BG_WHITE);
+            
+            btnSetuju = new JButton("Setuju");
+            btnSetuju.setBackground(new Color(76, 175, 80));
+            btnSetuju.setForeground(Color.WHITE);
+            btnSetuju.setFocusPainted(false);
+            btnSetuju.setFont(new Font("Arial", Font.PLAIN, 11));
+            
+            btnTolak = new JButton("Tolak");
+            btnTolak.setBackground(new Color(244, 67, 54));
+            btnTolak.setForeground(Color.WHITE);
+            btnTolak.setFocusPainted(false);
+            btnTolak.setFont(new Font("Arial", Font.PLAIN, 11));
+            
+            btnSetuju.addActionListener(e -> handleSetuju());
+            btnTolak.addActionListener(e -> handleTolak());
+            
+            panel.add(btnSetuju);
+            panel.add(btnTolak);
+        }
+        
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, 
+                                                     int row, int column) {
+            try {
+                idCuti = Integer.parseInt((String) table.getValueAt(row, 0));
+            } catch (Exception e) {
+                idCuti = 0;
+            }
+            if (isSelected) {
+                panel.setBackground(new Color(200, 220, 255));
+            } else {
+                panel.setBackground(GUITemplate.BG_WHITE);
+            }
+            return panel;
+        }
+        
+        private void handleSetuju() {
+            int result = JOptionPane.showConfirmDialog(parent, "Setujui permohonan cuti #" + idCuti + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                if (cutiModel.updateStatusCuti(idCuti, "Disetujui")) {
+                    JOptionPane.showMessageDialog(parent, "✓ Permohonan cuti #" + idCuti + " DISETUJUI\n\nKaryawan akan menerima notifikasi", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                    parent.loadDataCuti(); // Refresh table
+                } else {
+                    JOptionPane.showMessageDialog(parent, "✗ Gagal mengupdate status cuti", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            fireEditingStopped();
+        }
+        
+        private void handleTolak() {
+            int result = JOptionPane.showConfirmDialog(parent, "Tolak permohonan cuti #" + idCuti + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                if (cutiModel.updateStatusCuti(idCuti, "Ditolak")) {
+                    JOptionPane.showMessageDialog(parent, "✗ Permohonan cuti #" + idCuti + " DITOLAK\n\nKaryawan akan menerima notifikasi", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                    parent.loadDataCuti(); // Refresh table
+                } else {
+                    JOptionPane.showMessageDialog(parent, "✗ Gagal mengupdate status cuti", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            fireEditingStopped();
+        }
+    }
 
-    private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
-     // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1AncestorAdded
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -185,16 +267,7 @@ public class FormIzinCuti extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(() -> new FormIzinCuti().setVisible(true));
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    // End of variables declaration//GEN-END:variables
 }

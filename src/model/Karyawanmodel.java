@@ -94,4 +94,20 @@ public class Karyawanmodel {
             return false;
         }
     }
+    
+    // 5. UPDATE STATUS: Mengaktifkan/Menonaktifkan Akun Karyawan
+    public boolean updateStatusAkun(String id, String status) {
+        String sql = "UPDATE karyawan SET status = ?, updated_at = CURRENT_TIMESTAMP() WHERE id = ?";
+        try {
+            Connection newConn = koneksi.getKoneksi();
+            PreparedStatement ps = newConn.prepareStatement(sql);
+            ps.setString(1, status); // 'Aktif' atau 'Nonaktif'
+            ps.setString(2, id);
+            LOGGER.log(Level.INFO, "Status akun " + id + " diubah menjadi " + status);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Gagal mengubah status akun karyawan", e);
+            return false;
+        }
+    }
 }

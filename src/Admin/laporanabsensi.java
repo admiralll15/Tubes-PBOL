@@ -1,328 +1,233 @@
 package Admin;
-import java.sql.*;
-import java.text.SimpleDateFormat;
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import model.koneksi;
+import java.awt.*;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Absensimodel;
+import model.GUITemplate;
 import model.UIScaler;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 /**
- *
- * @author 
+ * laporanabsensi - Rewritten dengan hardcode, tema putih-biru
+ * Laporan absensi dalam bentuk tabel dengan filter
  */
-public class laporanabsensi extends javax.swing.JFrame {
+public class laporanabsensi extends JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(laporanabsensi.class.getName());
+    private Absensimodel absenModel = new Absensimodel();
+    private JTable dataTable;
+    private JComboBox<String> bulanCombo;
+    private JComboBox<String> tahunCombo;
+    private JButton filterButton;
+    private JButton exportButton;
+    
+    private static final java.util.logging.Logger logger = 
+        java.util.logging.Logger.getLogger(laporanabsensi.class.getName());
 
-    /**
-     * Creates new form laporan
-     */
-    
     public laporanabsensi() {
         initComponents();
-        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
-        tampilkanData(); // <-- Tambahkan ini agar tabel langsung terisi saat dibuka
+        loadDataAbsensi();
         UIScaler.scaleContainer(this.getContentPane());
     }
     
-    // Method untuk menampilkan data ke JTable
-    private void tampilkanData() {
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("ID Absen");
-        model.addColumn("Nama Karyawan");
-        model.addColumn("Jabatan");
-        model.addColumn("Tanggal");
-        model.addColumn("Jam Masuk");
-        model.addColumn("Jam Pulang");
-        model.addColumn("Status");
-
+    private void loadDataAbsensi() {
+        String[] kolom = {"ID", "Nama", "Jabatan", "Tanggal", "Jam Masuk", "Jam Pulang", "Status"};
+        DefaultTableModel model = new DefaultTableModel(null, kolom);
+        
         try {
-            Connection conn = koneksi.getKoneksi();
-            String sql = "SELECT * FROM v_laporan_absensi"; // Default: Tampilkan semua
+            java.sql.ResultSet rs = absenModel.getLaporanAbsensi();
             
-            // Jika tanggal dipilih, tambahkan filter WHERE
-            if (jDateChooser1.getDate() != null && jDateChooser2.getDate() != null) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                String tglAwal = sdf.format(jDateChooser1.getDate());
-                String tglAkhir = sdf.format(jDateChooser2.getDate());
-                
-                sql += " WHERE tanggal BETWEEN '" + tglAwal + "' AND '" + tglAkhir + "'";
+            if (rs == null) {
+                JOptionPane.showMessageDialog(this, "Data tidak ditemukan atau koneksi database gagal", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                dataTable.setModel(model);
+                return;
             }
             
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            
-            while(rs.next()) {
-                model.addRow(new Object[] {
-                    rs.getString("id"),
-                    rs.getString("nama"),
-                    rs.getString("jabatan"),
-                    rs.getString("tanggal"),
-                    rs.getString("jam_masuk"),
-                    rs.getString("jam_pulang"),
-                    rs.getString("status")
-                });
+            List<Object[]> dataList = new ArrayList<>();
+            int rowCount = 0;
+            while (rs.next()) {
+                try {
+                    dataList.add(new Object[] {
+                        rs.getString("id_karyawan"),
+                        rs.getString("nama"),
+                        rs.getString("jabatan"),
+                        rs.getString("tanggal"),
+                        rs.getString("jam_masuk"),
+                        rs.getString("jam_pulang"),
+                        rs.getString("status")
+                    });
+                    rowCount++;
+                } catch (SQLException columnError) {
+                    logger.log(java.util.logging.Level.WARNING, "Skipped row due to column error", columnError);
+                    continue;
+                }
             }
             
-            tblabsensi.setModel(model);
+            for (Object[] row : dataList) {
+                model.addRow(row);
+            }
             
-            // Konfigurasi header alignment (left align instead of center)
-            tblabsensi.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {{
-                setHorizontalAlignment(javax.swing.JLabel.LEFT);
-            }});
-            // Auto-resize columns to fit container
-            tblabsensi.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+            dataTable.setModel(model);
+            // Styling handled by createModernTable
+            dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "Tidak ada data absensi", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            }
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal memuat data: " + e.getMessage());
+            logger.log(java.util.logging.Level.SEVERE, "Error loading data", e);
+            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-   
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        jButton4 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
-        jLabel12 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        btnexportpdf = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        tampilkanData = new javax.swing.JButton();
-        btnreset = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblabsensi = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-
-        jButton4.setText("jButton1");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("TABEL PENGGAJIAN");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel4.setBackground(new java.awt.Color(0, 51, 102));
-        jPanel4.setForeground(new java.awt.Color(255, 255, 255));
-
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("LAPORAN ABSENSI KARYAWAN");
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel9.setText("Sampai");
-
-        btnexportpdf.setBackground(new java.awt.Color(255, 0, 0));
-        btnexportpdf.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnexportpdf.setForeground(new java.awt.Color(255, 255, 255));
-        btnexportpdf.setText("Export PDF");
-
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel10.setText("Periode");
-
-        tampilkanData.setBackground(new java.awt.Color(51, 153, 0));
-        tampilkanData.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tampilkanData.setForeground(new java.awt.Color(255, 255, 255));
-        tampilkanData.setText("Tampilkan");
-        tampilkanData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tampilkanDataActionPerformed(evt);
-            }
-        });
-
-        btnreset.setBackground(new java.awt.Color(204, 204, 204));
-        btnreset.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnreset.setText("Reset");
-        btnreset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnresetActionPerformed(evt);
-            }
-        });
-
-        tblabsensi.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Nama", "Jabatan", "Tanggal", "Jam Masuk", "Jam Pulang", "Status"
-            }
-        ));
-        tblabsensi.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                tblabsensiAncestorAdded(evt);
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
-        jScrollPane3.setViewportView(tblabsensi);
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("TABEL ABSENSI");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tampilkanData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnreset, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnexportpdf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(267, 267, 267))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)
-                            .addComponent(tampilkanData))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(btnreset)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnexportpdf)
-                                .addGap(0, 56, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void btnexportpdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexportpdf1ActionPerformed
-        // Logika cetak PDF (Membutuhkan Library iText / JasperReport)
-        JOptionPane.showMessageDialog(this, "Fitur Export PDF memerlukan library tambahan (iText/Jasper). \nData sudah tampil di tabel.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Laporan Absensi");
+        setResizable(true);
         
-        // Jika ingin print tabel sederhana bawaan Java:
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, GUITemplate.PRIMARY,
+                    getWidth(), getHeight(), GUITemplate.ACCENT_CYAN
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                
+                g2d.setColor(new Color(255, 255, 255, 60));
+                g2d.fillOval(-250, -150, 700, 700);
+                g2d.fillOval(getWidth() - 150, getHeight() - 250, 700, 700);
+            }
+        };
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setOpaque(false);
+        
+        // Header
+        JPanel headerPanel = GUITemplate.createHeaderPanel("LAPORAN ABSENSI");
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
+        
+        // Filter panel
+        JPanel filterPanel = GUITemplate.createRoundedPanel();
+        filterPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        filterPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        
+        JLabel lblBulan = GUITemplate.createLabel("Bulan:");
+        lblBulan.setFont(GUITemplate.FONT_LABEL_BOLD);
+        filterPanel.add(lblBulan);
+        
+        bulanCombo = GUITemplate.createComboBox(new String[]{"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"});
+        filterPanel.add(bulanCombo);
+        
+        JLabel lblTahun = GUITemplate.createLabel("Tahun:");
+        lblTahun.setFont(GUITemplate.FONT_LABEL_BOLD);
+        filterPanel.add(lblTahun);
+        
+        tahunCombo = GUITemplate.createComboBox(new String[]{"2025", "2024", "2023", "2022", "2021", "2020"});
+        filterPanel.add(tahunCombo);
+        
+        filterButton = GUITemplate.createEnhancedButton("FILTER", GUITemplate.PRIMARY);
+        filterButton.setPreferredSize(new Dimension(100, 40));
+        filterButton.addActionListener(evt -> JOptionPane.showMessageDialog(this, "Filter functionality - load data for selected month/year"));
+        filterPanel.add(filterButton);
+        
+        exportButton = GUITemplate.createEnhancedButton("EXPORT", GUITemplate.SUCCESS_GREEN);
+        exportButton.setPreferredSize(new Dimension(100, 40));
+        exportButton.addActionListener(evt -> exportAbsensi());
+        filterPanel.add(exportButton);
+        
+        // Container for filter to add padding
+        JPanel filterContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        filterContainer.setOpaque(false);
+        filterContainer.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        filterContainer.add(filterPanel);
+        
+        mainPanel.add(filterContainer, BorderLayout.NORTH);
+        
+        // Table
+        dataTable = GUITemplate.createModernTable(new DefaultTableModel());
+        JScrollPane scrollPane = GUITemplate.createModernScrollPane(dataTable);
+        
+        JPanel tablePanel = GUITemplate.createRoundedPanel();
+        tablePanel.setLayout(new BorderLayout());
+        tablePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        
+        // Container for table
+        JPanel tableContainer = new JPanel(new BorderLayout());
+        tableContainer.setOpaque(false);
+        tableContainer.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40));
+        tableContainer.add(tablePanel, BorderLayout.CENTER);
+        
+        // Combine header and filter
+        JPanel topContainer = new JPanel(new BorderLayout());
+        topContainer.setOpaque(false);
+        topContainer.add(headerPanel, BorderLayout.NORTH);
+        topContainer.add(filterContainer, BorderLayout.CENTER);
+        
+        mainPanel.add(topContainer, BorderLayout.NORTH);
+        mainPanel.add(tableContainer, BorderLayout.CENTER);
+        
+        setContentPane(mainPanel);
+        pack();
+    }
+    
+    private void exportAbsensi() {
         try {
-            tblabsensi.print();
-        } catch (Exception e) {
-            System.out.println("Gagal print: " + e.getMessage());
+            JFileChooser fc = new JFileChooser();
+            int result = fc.showSaveDialog(this);
+            
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String filePath = fc.getSelectedFile().getAbsolutePath() + ".txt";
+                
+                try (PrintWriter writer = new PrintWriter(new FileOutputStream(filePath))) {
+                    writer.println("=".repeat(80));
+                    writer.println("LAPORAN ABSENSI KARYAWAN");
+                    writer.println("=".repeat(80));
+                    writer.println();
+                    
+                    // Write table header
+                    writer.printf("%-10s %-20s %-15s %-12s %-10s %-10s %-10s%n",
+                        "ID", "Nama", "Jabatan", "Tanggal", "Masuk", "Pulang", "Status");
+                    writer.println("-".repeat(80));
+                    
+                    // Write table data
+                    for (int i = 0; i < dataTable.getRowCount(); i++) {
+                        writer.printf("%-10s %-20s %-15s %-12s %-10s %-10s %-10s%n",
+                            dataTable.getValueAt(i, 0),
+                            dataTable.getValueAt(i, 1),
+                            dataTable.getValueAt(i, 2),
+                            dataTable.getValueAt(i, 3),
+                            dataTable.getValueAt(i, 4),
+                            dataTable.getValueAt(i, 5),
+                            dataTable.getValueAt(i, 6));
+                    }
+                    
+                    writer.println();
+                    writer.println("=".repeat(80));
+                    JOptionPane.showMessageDialog(this, "File berhasil disimpan: " + filePath, "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    logger.log(java.util.logging.Level.SEVERE, "Error export file", e);
+                    JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, "Error export", ex);
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnexportpdf1ActionPerformed
+    }
 
-    private void btnreset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreset1ActionPerformed
-        jDateChooser1.setDate(null);
-        jDateChooser2.setDate(null);
-        tampilkanData(); // Tampilkan semua data tanpa filter tanggal
-    }//GEN-LAST:event_btnreset1ActionPerformed
-
-    private void btntampilkan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntampilkan1ActionPerformed
-        // Validasi: Pastikan tanggal dipilih
-        if (jDateChooser1.getDate() == null || jDateChooser2.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Silakan pilih rentang tanggal (Dari & Sampai)!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        tampilkanData(); // Panggil fungsi tampilkan
-    }//GEN-LAST:event_btntampilkan1ActionPerformed
-
-    private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnresetActionPerformed
-
-    private void tblabsensiAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblabsensiAncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tblabsensiAncestorAdded
-
-    private void tampilkanDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tampilkanDataActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tampilkanDataActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -333,35 +238,7 @@ public class laporanabsensi extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(() -> new laporanabsensi().setVisible(true));
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnexportpdf;
-    private javax.swing.JButton btnreset;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
-    private javax.swing.Box.Filler filler3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JButton tampilkanData;
-    private javax.swing.JTable tblabsensi;
-    // End of variables declaration//GEN-END:variables
 }
