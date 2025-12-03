@@ -2,14 +2,12 @@ package HRD;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.geom.Rectangle2D;
 import model.GUITemplate;
 import model.UIScaler;
+import model.UserSession;
 
 /**
- * HRDDashboard - Rewritten dengan hardcode, tema putih-biru
- * Main dashboard untuk HRD user navigation
+ * HRDDashboard - Modern enterprise design dengan 6 fitur premium
  */
 public class HRDDashboard extends JFrame {
     
@@ -25,194 +23,338 @@ public class HRDDashboard extends JFrame {
     
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("HRD Dashboard - Sistem Manajemen Absensi dan Penggajian");
+        setTitle("HRD Dashboard - STAFFLINK");
         setResizable(true);
         
-        // Main panel dengan gradient background menarik
-        JPanel mainPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
-                // Gradient utama dari PRIMARY ke ACCENT_CYAN
-                GradientPaint gradient = new GradientPaint(
-                    0, 0, GUITemplate.PRIMARY,
-                    getWidth(), getHeight(), GUITemplate.ACCENT_CYAN
-                );
-                g2d.setPaint(gradient);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
-                
-                // Decorative circles untuk visual interest
-                g2d.setColor(new Color(255, 255, 255, 60));
-                g2d.fillOval(-250, -150, 700, 700);
-                g2d.fillOval(getWidth() - 150, getHeight() - 250, 700, 700);
-            }
-        };
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setOpaque(false);
+        // Main container
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(GUITemplate.BG_WHITE);
         
         // Header
-        JPanel headerPanel = GUITemplate.createHeaderPanel("HRD DASHBOARD");
+        JPanel headerPanel = GUITemplate.createHeaderPanel("STAFFLINK - HRD DASHBOARD");
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         
-        // Dashboard buttons
-        JPanel dashboardPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
-                // Glassmorphism background
-                g2d.setColor(new Color(255, 255, 255, 200));
-                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
-                
-                // Border
-                g2d.setColor(new Color(255, 255, 255, 100));
-                g2d.setStroke(new BasicStroke(1.5f));
-                g2d.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 30, 30);
-            }
-        };
-        dashboardPanel.setLayout(new GridBagLayout());
-        dashboardPanel.setOpaque(false);
-        dashboardPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        // Content area
+        JPanel contentArea = new JPanel(new BorderLayout());
+        contentArea.setBackground(GUITemplate.BG_WHITE);
         
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(20, 20, 20, 20);
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
+        // Sidebar
+        JPanel sidebar = createSidebar();
+        contentArea.add(sidebar, BorderLayout.WEST);
         
-        // Button Hitung Gaji
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        JButton btnHitungGaji = createDashboardButton("💰 Hitung Gaji", GUITemplate.ACCENT_BLUE);
-        btnHitungGaji.addActionListener(evt -> openHitungGaji());
-        dashboardPanel.add(btnHitungGaji, gbc);
+        // Main content
+        JPanel mainContent = new JPanel();
+        mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
+        mainContent.setBackground(GUITemplate.BG_WHITE);
+        mainContent.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        // Button Izin Cuti
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        JButton btnIzinCuti = createDashboardButton("📋 Izin Cuti", new Color(156, 39, 176));
-        btnIzinCuti.addActionListener(evt -> openFormIzinCuti());
-        dashboardPanel.add(btnIzinCuti, gbc);
+        // Welcome Banner
+        String userName = UserSession.getUserName() != null ? UserSession.getUserName() : "HR Manager";
+        JPanel welcomeBanner = GUITemplate.createWelcomeBanner(userName, "HRD", "Dashboard Aktif");
+        welcomeBanner.setAlignmentX(Component.LEFT_ALIGNMENT);
+        welcomeBanner.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+        mainContent.add(welcomeBanner);
+        mainContent.add(Box.createVerticalStrut(20));
         
-        // Button Laporan Absensi
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        JButton btnLaporanAbsensi = createDashboardButton("📊 Laporan Absensi", new Color(33, 150, 243));
-        btnLaporanAbsensi.addActionListener(evt -> openLaporanAbsensi());
-        dashboardPanel.add(btnLaporanAbsensi, gbc);
+        // Info Cards
+        JPanel infoCardsPanel = createInfoCards();
+        infoCardsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mainContent.add(infoCardsPanel);
+        mainContent.add(Box.createVerticalStrut(25));
         
-        // Button Absensi Harian
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        JButton btnAbsensiHarian = createDashboardButton("✓ Absensi Harian", new Color(76, 175, 80));
-        btnAbsensiHarian.addActionListener(evt -> openAbsensiHarian());
-        dashboardPanel.add(btnAbsensiHarian, gbc);
+        // Feature Cards Section
+        JPanel featureSectionLabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        featureSectionLabel.setOpaque(false);
+        JLabel sectionLabel = new JLabel("Menu Utama");
+        sectionLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        sectionLabel.setForeground(GUITemplate.TEXT_DARK);
+        featureSectionLabel.add(sectionLabel);
+        featureSectionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        featureSectionLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        mainContent.add(featureSectionLabel);
+        mainContent.add(Box.createVerticalStrut(10));
         
-        // Button Logout
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        JButton btnLogout = GUITemplate.createErrorButton("🚪 LOGOUT");
-        btnLogout.setPreferredSize(new Dimension(150, 50));
-        btnLogout.addActionListener(evt -> logout());
-        dashboardPanel.add(btnLogout, gbc);
+        JPanel featureCardsPanel = createFeatureCards();
+        featureCardsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mainContent.add(featureCardsPanel);
+        mainContent.add(Box.createVerticalStrut(25));
         
-        mainPanel.add(dashboardPanel, BorderLayout.CENTER);
+        // Activity Feed
+        JPanel activitySection = createActivityFeed();
+        activitySection.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mainContent.add(activitySection);
+        
+        mainContent.add(Box.createVerticalGlue());
+        
+        JScrollPane scrollPane = GUITemplate.createModernScrollPane(mainContent);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        contentArea.add(scrollPane, BorderLayout.CENTER);
+        
+        mainPanel.add(contentArea, BorderLayout.CENTER);
         
         setContentPane(mainPanel);
         pack();
     }
     
-    private JButton createDashboardButton(String text, Color color) {
-        JButton btn = new JButton(text) {
-            private boolean isHovered = false;
-            private boolean isPressed = false;
-
-            {
-                addMouseListener(new java.awt.event.MouseAdapter() {
-                    public void mouseEntered(java.awt.event.MouseEvent evt) {
-                        isHovered = true;
-                        repaint();
-                    }
-                    public void mouseExited(java.awt.event.MouseEvent evt) {
-                        isHovered = false;
-                        repaint();
-                    }
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        isPressed = true;
-                        repaint();
-                    }
-                    public void mouseReleased(java.awt.event.MouseEvent evt) {
-                        isPressed = false;
-                        repaint();
-                    }
-                });
+    private JPanel createSidebar() {
+        JPanel sidebar = GUITemplate.createSidebar(220);
+        
+        // Logo
+        JPanel logoPanel = new JPanel();
+        logoPanel.setOpaque(false);
+        logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
+        logoPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 30, 15));
+        
+        JLabel logoLabel = new JLabel("STAFFLINK");
+        logoLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        logoLabel.setForeground(GUITemplate.TEXT_LIGHT);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel subLabel = new JLabel("HRD Panel");
+        subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        subLabel.setForeground(new Color(255, 255, 255, 180));
+        subLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        logoPanel.add(logoLabel);
+        logoPanel.add(Box.createVerticalStrut(5));
+        logoPanel.add(subLabel);
+        
+        sidebar.add(logoPanel);
+        sidebar.add(Box.createVerticalStrut(10));
+        
+        JSeparator sep1 = new JSeparator();
+        sep1.setForeground(new Color(255, 255, 255, 50));
+        sep1.setMaximumSize(new Dimension(200, 1));
+        sidebar.add(sep1);
+        sidebar.add(Box.createVerticalStrut(20));
+        
+        // Menu items
+        JButton btnHitungGaji = GUITemplate.createSidebarMenuItem("💰", "Hitung Gaji", false);
+        btnHitungGaji.addActionListener(e -> openHitungGaji());
+        sidebar.add(btnHitungGaji);
+        sidebar.add(Box.createVerticalStrut(5));
+        
+        JButton btnIzinCuti = GUITemplate.createSidebarMenuItem("📋", "Izin Cuti", false);
+        btnIzinCuti.addActionListener(e -> openFormIzinCuti());
+        sidebar.add(btnIzinCuti);
+        sidebar.add(Box.createVerticalStrut(5));
+        
+        JButton btnLaporanAbsensi = GUITemplate.createSidebarMenuItem("📊", "Laporan Absensi", false);
+        btnLaporanAbsensi.addActionListener(e -> openLaporanAbsensi());
+        sidebar.add(btnLaporanAbsensi);
+        sidebar.add(Box.createVerticalStrut(5));
+        
+        JButton btnAbsensiHarian = GUITemplate.createSidebarMenuItem("✓", "Absensi Harian", false);
+        btnAbsensiHarian.addActionListener(e -> openAbsensiHarian());
+        sidebar.add(btnAbsensiHarian);
+        
+        sidebar.add(Box.createVerticalGlue());
+        
+        JSeparator sep2 = new JSeparator();
+        sep2.setForeground(new Color(255, 255, 255, 50));
+        sep2.setMaximumSize(new Dimension(200, 1));
+        sidebar.add(sep2);
+        sidebar.add(Box.createVerticalStrut(15));
+        
+        JButton btnLogout = GUITemplate.createSidebarMenuItem("🚪", "Logout", false);
+        btnLogout.addActionListener(e -> logout());
+        sidebar.add(btnLogout);
+        sidebar.add(Box.createVerticalStrut(10));
+        
+        return sidebar;
+    }
+    
+    private JPanel createInfoCards() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+        panel.setOpaque(false);
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 130));
+        
+        JPanel card1 = GUITemplate.createInfoCard(
+            "💰",
+            "Rp 450M",
+            "Total Gaji Bulan Ini",
+            "150 karyawan",
+            new Color(76, 175, 80),
+            new Color(56, 142, 60)
+        );
+        
+        JPanel card2 = GUITemplate.createInfoCard(
+            "📝",
+            "12",
+            "Pending Cuti",
+            "Perlu Review",
+            new Color(3, 155, 229),
+            new Color(2, 136, 209)
+        );
+        
+        JPanel card3 = GUITemplate.createInfoCard(
+            "✓",
+            "95%",
+            "Kehadiran Hari Ini",
+            "142/150 hadir ↑",
+            new Color(0, 172, 193),
+            new Color(0, 151, 167)
+        );
+        
+        JPanel card4 = GUITemplate.createInfoCard(
+            "📄",
+            "150",
+            "Slip Gaji Terproses",
+            "Semua selesai ✓",
+            GUITemplate.PRIMARY,
+            GUITemplate.PRIMARY_DARK
+        );
+        
+        panel.add(card1);
+        panel.add(card2);
+        panel.add(card3);
+        panel.add(card4);
+        
+        return panel;
+    }
+    
+    private JPanel createFeatureCards() {
+        JPanel panel = new JPanel(new GridLayout(2, 2, 20, 20));
+        panel.setOpaque(false);
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 320));
+        
+        JPanel card1 = GUITemplate.createGradientCard(
+            "💰",
+            "Hitung Gaji",
+            "Proses dan hitung gaji karyawan",
+            new Color(76, 175, 80),
+            new Color(56, 142, 60)
+        );
+        card1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openHitungGaji();
             }
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
-                int width = getWidth();
-                int height = getHeight();
-                
-                // Scale effect calculation
-                int shadowGap = 5;
-                int shadowOffset = isPressed ? 2 : (isHovered ? 6 : 3);
-                int roundness = 20;
-
-                // Draw Shadow
-                g2d.setColor(new Color(0, 0, 0, 40));
-                g2d.fillRoundRect(4, shadowOffset, width - 8, height - shadowGap, roundness, roundness);
-
-                // Draw Button Background
-                int yOffset = isPressed ? 3 : 0;
-                
-                Color baseColor = color;
-                Color color1 = baseColor;
-                Color color2 = new Color(Math.max(baseColor.getRed() - 30, 0), 
-                                       Math.max(baseColor.getGreen() - 30, 0), 
-                                       Math.max(baseColor.getBlue() - 30, 0));
-                
-                if (isHovered && !isPressed) {
-                    color1 = new Color(Math.min(baseColor.getRed() + 20, 255), 
-                                     Math.min(baseColor.getGreen() + 20, 255), 
-                                     Math.min(baseColor.getBlue() + 20, 255));
-                }
-
-                GradientPaint gp = new GradientPaint(0, 0, color1, 0, height, color2);
-                g2d.setPaint(gp);
-                g2d.fillRoundRect(2, yOffset, width - 4, height - shadowGap, roundness, roundness);
-                
-                // Shine effect
-                GradientPaint shine = new GradientPaint(0, 0, new Color(255, 255, 255, 50), 0, height/2, new Color(255, 255, 255, 0));
-                g2d.setPaint(shine);
-                g2d.fillRoundRect(2, yOffset, width - 4, height/2, roundness, roundness);
-
-                // Text
-                FontMetrics fm = g2d.getFontMetrics(getFont());
-                Rectangle2D r = fm.getStringBounds(getText(), g2d);
-                int x = (width - (int) r.getWidth()) / 2;
-                int y = (height - shadowGap - (int) r.getHeight()) / 2 + fm.getAscent() + yOffset;
-                
-                g2d.setColor(Color.WHITE);
-                g2d.setFont(getFont());
-                g2d.drawString(getText(), x, y);
+        });
+        
+        JPanel card2 = GUITemplate.createGradientCard(
+            "📋",
+            "Izin Cuti",
+            "Kelola permohonan izin dan cuti",
+            new Color(156, 39, 176),
+            new Color(123, 31, 162)
+        );
+        card2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openFormIzinCuti();
             }
-        };
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btn.setPreferredSize(new Dimension(220, 90)); // Slightly larger
-        btn.setForeground(Color.WHITE);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(false);
-        btn.setFocusPainted(false);
-        btn.setOpaque(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return btn;
+        });
+        
+        JPanel card3 = GUITemplate.createGradientCard(
+            "📊",
+            "Laporan Absensi",
+            "Monitor dan analisis kehadiran",
+            new Color(33, 150, 243),
+            new Color(25, 118, 210)
+        );
+        card3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openLaporanAbsensi();
+            }
+        });
+        
+        JPanel card4 = GUITemplate.createGradientCard(
+            "✓",
+            "Absensi Harian",
+            "Kelola absensi harian karyawan",
+            GUITemplate.PRIMARY,
+            GUITemplate.PRIMARY_DARK
+        );
+        card4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                openAbsensiHarian();
+            }
+        });
+        
+        panel.add(card1);
+        panel.add(card2);
+        panel.add(card3);
+        panel.add(card4);
+        
+        return panel;
+    }
+    
+    private JPanel createActivityFeed() {
+        JPanel section = new JPanel();
+        section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
+        section.setOpaque(false);
+        section.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
+        
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        headerPanel.setOpaque(false);
+        JLabel header = new JLabel("Aktivitas Terkini");
+        header.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        header.setForeground(GUITemplate.TEXT_DARK);
+        headerPanel.add(header);
+        headerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        section.add(headerPanel);
+        
+        JPanel activityContainer = new JPanel();
+        activityContainer.setLayout(new BoxLayout(activityContainer, BoxLayout.Y_AXIS));
+        activityContainer.setBackground(GUITemplate.BG_WHITE);
+        activityContainer.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(GUITemplate.BORDER_LIGHT, 1),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        activityContainer.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
+        
+        JPanel item1 = GUITemplate.createActivityItem(
+            "💰",
+            "Gaji karyawan bulan Desember dihitung - 150 karyawan",
+            "1 jam lalu",
+            GUITemplate.SUCCESS_GREEN
+        );
+        
+        JPanel item2 = GUITemplate.createActivityItem(
+            "📝",
+            "Permohonan cuti dari 'Ani Wijaya' disetujui",
+            "Hari ini, 11:30",
+            GUITemplate.PRIMARY
+        );
+        
+        JPanel item3 = GUITemplate.createActivityItem(
+            "📄",
+            "Slip gaji dikirim ke 150 karyawan via email",
+            "Hari ini, 10:00",
+            GUITemplate.SUCCESS_GREEN
+        );
+        
+        JPanel item4 = GUITemplate.createActivityItem(
+            "📋",
+            "12 permohonan cuti baru menunggu review",
+            "Hari ini, 09:00",
+            GUITemplate.WARNING_YELLOW
+        );
+        
+        JPanel item5 = GUITemplate.createActivityItem(
+            "✓",
+            "142 dari 150 karyawan sudah absen hari ini",
+            "Hari ini, 08:30",
+            GUITemplate.SUCCESS_GREEN
+        );
+        
+        activityContainer.add(item1);
+        activityContainer.add(Box.createVerticalStrut(2));
+        activityContainer.add(new JSeparator());
+        activityContainer.add(item2);
+        activityContainer.add(Box.createVerticalStrut(2));
+        activityContainer.add(new JSeparator());
+        activityContainer.add(item3);
+        activityContainer.add(Box.createVerticalStrut(2));
+        activityContainer.add(new JSeparator());
+        activityContainer.add(item4);
+        activityContainer.add(Box.createVerticalStrut(2));
+        activityContainer.add(new JSeparator());
+        activityContainer.add(item5);
+        
+        section.add(activityContainer);
+        
+        return section;
     }
     
     private void openHitungGaji() {

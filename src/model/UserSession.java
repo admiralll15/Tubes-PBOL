@@ -5,7 +5,7 @@ public class UserSession {
     private static String u_role;        
     private static String k_id;          
     private static String k_nama;        
-    private static String k_jabatan; // <-- TAMBAHAN BARU
+    private static String k_jabatan;
 
     // Setter: Update untuk menerima Jabatan
     public static void setUserLogin(String id, String role, String idKaryawan, String namaKaryawan, String jabatanKaryawan) {
@@ -13,17 +13,22 @@ public class UserSession {
         u_role = role;
         k_id = idKaryawan;      
         k_nama = namaKaryawan;  
-        k_jabatan = jabatanKaryawan; // Simpan jabatan
+        k_jabatan = jabatanKaryawan;
     }
 
     // Getter
     public static String getKaryawanId() { return k_id; }
     public static String getNamaKaryawan() { return k_nama; }
-    public static String getJabatanKaryawan() { return k_jabatan; } // <-- GETTER BARU
+    public static String getUserName() { return k_nama; } // Alias untuk dashboard
+    public static String getJabatanKaryawan() { return k_jabatan; }
     public static String getRole() { return u_role; }
     public static String getUserId() { return u_id; }
     
     public static void logout() {
-        u_id = null; u_role = null; k_id = null; k_nama = null; k_jabatan = null;
+        u_id = null; 
+        u_role = null; 
+        k_id = null; 
+        k_nama = null; 
+        k_jabatan = null;
     }
 }

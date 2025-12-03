@@ -5,52 +5,54 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.geom.Rectangle2D;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Template utility class untuk membuat GUI hardcoded dengan tema modern dan menarik
  */
 public class GUITemplate {
     
-    // ==================== DARK CORPORATE THEME ====================
-    // Professional color palette for large corporate environments
+    // ==================== PREMIUM BLUE & WHITE CORPORATE THEME ====================
+    // Professional color palette optimized for large corporate environments
     
-    // Primary Colors - Muted Professional Tones
-    public static final Color PRIMARY = new Color(71, 85, 105);            // #475569 - Muted Slate (Primary actions)
-    public static final Color PRIMARY_DARK = new Color(30, 41, 59);        // #1E293B - Dark Slate (Main background)
-    public static final Color ACCENT_CYAN = new Color(71, 85, 105);        // #475569 - Steel Gray (Info)
-    public static final Color ACCENT_PINK = new Color(220, 38, 38);        // #DC2626 - Muted Red (Errors)
-    public static final Color ACCENT_ORANGE = new Color(217, 119, 6);      // #D97706 - Muted Orange (Warnings)
+    // Primary Colors - Vibrant Professional Blue Tones
+    public static final Color PRIMARY = new Color(30, 136, 229);           // #1E88E5 - Bright Blue (Primary actions)
+    public static final Color PRIMARY_DARK = new Color(13, 71, 161);       // #0D47A1 - Deep Blue (Accents)
+    public static final Color ACCENT_CYAN = new Color(66, 165, 245);       // #42A5F5 - Sky Blue (Highlights)
+    public static final Color ACCENT_PINK = new Color(25, 118, 210);       // #1976D2 - Blue-toned (Errors)
+    public static final Color ACCENT_ORANGE = new Color(3, 155, 229);      // #039BE5 - Ocean Blue (Warnings)
     
-    // Background Colors - Very Dark, Subtle Gradients
-    public static final Color BG_GRADIENT_START = new Color(30, 41, 59);   // #1E293B - Dark Slate
-    public static final Color BG_GRADIENT_END = new Color(51, 65, 85);     // #334155 - Medium Slate
-    public static final Color BG_SECONDARY = new Color(51, 65, 85);        // #334155 - Secondary panels
+    // Background Colors - Clean White with Subtle Blue Tints
+    public static final Color BG_GRADIENT_START = new Color(227, 242, 253); // #E3F2FD - Ultra Light Blue
+    public static final Color BG_GRADIENT_END = new Color(255, 255, 255);   // #FFFFFF - Pure White
+    public static final Color BG_SECONDARY = new Color(250, 250, 250);      // #FAFAFA - Off-White (Secondary panels)
     
     // Backward compatibility aliases
-    public static final Color BG_WHITE = new Color(226, 232, 240);         // #E2E8F0 - Subtle Gray (not white)
-    public static final Color HEADER_BLUE = new Color(51, 65, 85);         // Darker header
+    public static final Color BG_WHITE = new Color(255, 255, 255);          // #FFFFFF - Pure White
+    public static final Color HEADER_BLUE = PRIMARY;                        // Bright Blue header
     public static final Color ACCENT_BLUE = PRIMARY;
     
-    // Text Colors - High Contrast for Dark Theme
-    public static final Color TEXT_DARK = new Color(15, 23, 42);           // #0F172A - Dark text (for light backgrounds)
-    public static final Color TEXT_LIGHT = new Color(255, 255, 255);       // #FFFFFF - Pure White (primary text on dark)
-    public static final Color TEXT_SECONDARY = new Color(148, 163, 184);   // #94A3B8 - Muted Gray (labels, secondary)
-    public static final Color TEXT_MUTED = new Color(100, 116, 139);       // #64748B - Darker muted (tertiary)
+    // Text Colors - Dark Blue for Professional Look
+    public static final Color TEXT_DARK = new Color(26, 35, 126);           // #1A237E - Dark Navy Blue (primary text)
+    public static final Color TEXT_LIGHT = new Color(255, 255, 255);        // #FFFFFF - Pure White (text on blue)
+    public static final Color TEXT_SECONDARY = new Color(84, 110, 122);     // #546E7A - Blue Gray (labels, secondary)
+    public static final Color TEXT_MUTED = new Color(144, 164, 174);        // #90A4AE - Light Blue Gray (tertiary)
     
-    // Border Colors - Very Subtle
-    public static final Color BORDER_LIGHT = new Color(71, 85, 105);       // #475569 - Steel (borders)
-    public static final Color BORDER_FOCUS = new Color(100, 116, 139);     // #64748B - Muted focus
-    public static final Color BORDER_DARK = new Color(51, 65, 85);         // #334155 - Darker border
+    // Border Colors - Subtle Blue Tones
+    public static final Color BORDER_LIGHT = new Color(187, 222, 251);      // #BBDEFB - Light Blue (borders)
+    public static final Color BORDER_FOCUS = new Color(30, 136, 229);       // #1E88E5 - Bright Blue (focus)
+    public static final Color BORDER_DARK = new Color(144, 202, 249);       // #90CAF9 - Medium Light Blue
     
-    // Action Colors - Muted, Professional
-    public static final Color SUCCESS_GREEN = new Color(34, 197, 94);      // #22C55E - Muted Green
-    public static final Color WARNING_YELLOW = new Color(234, 179, 8);     // #EAB308 - Muted Yellow
-    public static final Color ERROR_RED = new Color(220, 38, 38);          // #DC2626 - Muted Red
-    public static final Color INFO_BLUE = new Color(71, 85, 105);          // #475569 - Muted Blue
+    // Action Colors - Blue-Themed Professional Palette
+    public static final Color SUCCESS_GREEN = new Color(0, 172, 193);       // #00ACC1 - Cyan (Success)
+    public static final Color WARNING_YELLOW = new Color(3, 155, 229);      // #039BE5 - Ocean Blue (Warnings)
+    public static final Color ERROR_RED = new Color(25, 118, 210);          // #1976D2 - Blue-toned (Errors)
+    public static final Color INFO_BLUE = new Color(30, 136, 229);          // #1E88E5 - Bright Blue (Info)
     
-    // Glass Effect - Subtle Transparency
-    public static final Color GLASS_OVERLAY = new Color(255, 255, 255, 13); // rgba(255,255,255,0.05)
-    public static final Color GLASS_BORDER = new Color(71, 85, 105, 77);    // rgba(71,85,105,0.3)
+    // Glass Effect - Blue-Tinted Transparency
+    public static final Color GLASS_OVERLAY = new Color(30, 136, 229, 20);  // rgba(30,136,229,0.08)
+    public static final Color GLASS_BORDER = new Color(30, 136, 229, 77);   // rgba(30,136,229,0.3)
     
     // Font sizes
     public static final int FONT_TITLE = 28;
@@ -125,11 +127,11 @@ public class GUITemplate {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Background dengan rounded corner - Light for contrast on dark theme
+                // Background - Pure white for clean look
                 g2d.setColor(BG_WHITE);
                 g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 8, 8);
                 
-                // Border - Subtle steel tone
+                // Border - Blue theme
                 g2d.setColor(hasFocus() ? BORDER_FOCUS : BORDER_LIGHT);
                 g2d.setStroke(new BasicStroke(hasFocus() ? 2.0f : 1.5f));
                 g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 8, 8);
@@ -156,11 +158,11 @@ public class GUITemplate {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Background - Light for contrast on dark theme
+                // Background - Pure white for clean look
                 g2d.setColor(BG_WHITE);
                 g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 8, 8);
                 
-                // Border with focus state
+                // Border with focus state - Blue theme
                 g2d.setColor(hasFocus() ? BORDER_FOCUS : BORDER_LIGHT);
                 g2d.setStroke(new BasicStroke(hasFocus() ? 2.0f : 1.5f));
                 g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 8, 8);
@@ -189,9 +191,9 @@ public class GUITemplate {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Gradient button - Muted Slate theme (conservative)
-                Color startColor = isHovered ? new Color(100, 116, 139) : PRIMARY; // Subtle lighten on hover
-                Color endColor = isHovered ? PRIMARY : new Color(51, 65, 85); // Darker on hover
+                // Gradient button - Vibrant Blue theme
+                Color startColor = isHovered ? ACCENT_CYAN : PRIMARY; // Sky blue on hover
+                Color endColor = isHovered ? PRIMARY : PRIMARY_DARK; // Deep blue gradient
                 GradientPaint gradient = new GradientPaint(
                     0, 0, startColor,
                     0, getHeight(), endColor
@@ -230,9 +232,9 @@ public class GUITemplate {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Gradient button - Muted Green
-                Color startColor = isHovered ? new Color(74, 222, 128) : SUCCESS_GREEN;
-                Color endColor = isHovered ? SUCCESS_GREEN : new Color(22, 163, 74);
+                // Gradient button - Cyan Success
+                Color startColor = isHovered ? new Color(38, 198, 218) : SUCCESS_GREEN;
+                Color endColor = isHovered ? SUCCESS_GREEN : new Color(0, 151, 167);
                 GradientPaint gradient = new GradientPaint(
                     0, 0, startColor,
                     0, getHeight(), endColor
@@ -271,9 +273,9 @@ public class GUITemplate {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Gradient button - Muted Red
-                Color startColor = isHovered ? new Color(248, 113, 113) : ERROR_RED;
-                Color endColor = isHovered ? ERROR_RED : new Color(185, 28, 28);
+                // Gradient button - Blue-toned Error
+                Color startColor = isHovered ? new Color(66, 165, 245) : ERROR_RED;
+                Color endColor = isHovered ? ERROR_RED : new Color(21, 101, 192);
                 GradientPaint gradient = new GradientPaint(
                     0, 0, startColor,
                     0, getHeight(), endColor
@@ -380,23 +382,23 @@ public class GUITemplate {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Shadow effect - Deeper for dark theme
-                g2d.setColor(new Color(0, 0, 0, 60));
+                // Shadow effect - Subtle blue-tinted
+                g2d.setColor(new Color(30, 136, 229, 40));
                 g2d.fillRoundRect(2, 2, getWidth() - 4, getHeight() - 4, 15, 15);
                 
-                // Glassmorphism background - Very subtle white overlay on dark
-                g2d.setColor(new Color(255, 255, 255, 13)); // GLASS_OVERLAY
+                // Glassmorphism background - Blue-tinted white
+                g2d.setColor(new Color(227, 242, 253, 180)); // Light blue tint
                 g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
                 
-                // Gradient overlay for depth - Muted Slate tint
+                // Gradient overlay for depth - Blue gradient
                 GradientPaint gradient = new GradientPaint(
-                    0, 0, new Color(71, 85, 105, 15),
-                    0, getHeight(), new Color(51, 65, 85, 8)
+                    0, 0, new Color(30, 136, 229, 25),
+                    0, getHeight(), new Color(255, 255, 255, 15)
                 );
                 g2d.setPaint(gradient);
                 g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
                 
-                // Border - Steel tone
+                // Border - Blue theme
                 g2d.setColor(GLASS_BORDER);
                 g2d.setStroke(new BasicStroke(1.0f));
                 g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
@@ -470,15 +472,15 @@ public class GUITemplate {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Shadow - Deeper for dark theme
-                g2d.setColor(new Color(0, 0, 0, 50));
+                // Shadow - Blue-tinted shadow
+                g2d.setColor(new Color(30, 136, 229, 30));
                 g2d.fillRoundRect(2, 2, getWidth() - 3, getHeight() - 3, 15, 15);
                 
-                // Background - Very subtle white tint on dark
-                g2d.setColor(new Color(255, 255, 255, 15));
+                // Background - Pure white with subtle blue tint
+                g2d.setColor(new Color(250, 252, 255));
                 g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
                 
-                // Border - Steel tone
+                // Border - Light blue
                 g2d.setColor(BORDER_LIGHT);
                 g2d.setStroke(new BasicStroke(1.0f));
                 g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
@@ -494,15 +496,15 @@ public class GUITemplate {
     public static JTable createModernTable(javax.swing.table.TableModel model) {
         JTable table = new JTable(model);
         table.setFont(FONT_BODY_REGULAR);
-        table.setForeground(TEXT_SECONDARY); // Light text for dark theme
-        table.setBackground(BG_SECONDARY); // Dark slate background
+        table.setForeground(TEXT_DARK); // Dark text for white background
+        table.setBackground(BG_WHITE); // Pure white background
         table.setRowHeight(40);
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(true);
-        table.setGridColor(BORDER_DARK); // Subtle grid lines
+        table.setGridColor(BORDER_LIGHT); // Light blue grid lines
         table.setIntercellSpacing(new Dimension(0, 1));
-        table.setSelectionBackground(new Color(59, 130, 246, 40)); // Ocean Blue selection
-        table.setSelectionForeground(TEXT_LIGHT);
+        table.setSelectionBackground(new Color(227, 242, 253)); // Light blue selection
+        table.setSelectionForeground(TEXT_DARK);
         
         // Header styling - Dark theme
         javax.swing.table.JTableHeader header = table.getTableHeader();
@@ -510,9 +512,9 @@ public class GUITemplate {
             JLabel label = new JLabel(value.toString());
             label.setFont(FONT_LABEL_BOLD);
             label.setForeground(TEXT_LIGHT); // White text
-            label.setBackground(PRIMARY_DARK); // Deep navy header
+            label.setBackground(PRIMARY); // Bright blue header
             label.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 2, 0, PRIMARY), // Ocean Blue bottom border
+                BorderFactory.createMatteBorder(0, 0, 2, 0, PRIMARY_DARK), // Deep blue bottom border
                 BorderFactory.createEmptyBorder(12, 12, 12, 12)
             ));
             label.setOpaque(true);
@@ -528,8 +530,8 @@ public class GUITemplate {
      */
     public static JScrollPane createModernScrollPane(Component view) {
         JScrollPane scrollPane = new JScrollPane(view);
-        scrollPane.setBorder(BorderFactory.createLineBorder(BORDER_DARK));
-        scrollPane.getViewport().setBackground(BG_SECONDARY); // Dark slate
+        scrollPane.setBorder(BorderFactory.createLineBorder(BORDER_LIGHT));
+        scrollPane.getViewport().setBackground(BG_WHITE); // Pure white
         return scrollPane;
     }
 
@@ -618,5 +620,401 @@ public class GUITemplate {
         button.setPreferredSize(new Dimension(160, 45));
         
         return button;
+    }
+    
+    // ==================== NEW DASHBOARD COMPONENTS ====================
+    
+    /**
+     * Create info card dengan statistik untuk dashboard
+     * @param icon Emoji atau simbol icon
+     * @param value Nilai utama (angka besar)
+     * @param label Label/deskripsi
+     * @param trend Indikator trend (misalnya "+5 ↑" atau "95% ↑")
+     * @param gradientStart Warna gradient awal
+     * @param gradientEnd Warna gradient akhir
+     */
+    public static JPanel createInfoCard(String icon, String value, String label, String trend, Color gradientStart, Color gradientEnd) {
+        JPanel card = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Shadow
+                g2d.setColor(new Color(0, 0, 0, 20));
+                g2d.fillRoundRect(3, 3, getWidth() - 6, getHeight() - 6, 15, 15);
+                
+                // Gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, gradientStart,
+                    getWidth(), getHeight(), gradientEnd
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+                
+                // Border
+                g2d.setColor(new Color(255, 255, 255, 100));
+                g2d.setStroke(new BasicStroke(1.5f));
+                g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+            }
+        };
+        
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setOpaque(false);
+        card.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        card.setPreferredSize(new Dimension(200, 120));
+        
+        // Icon
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 32));
+        iconLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        // Value
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        valueLabel.setForeground(TEXT_LIGHT);
+        valueLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        // Label
+        JLabel textLabel = new JLabel(label);
+        textLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        textLabel.setForeground(new Color(255, 255, 255, 220));
+        textLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        // Trend
+        JLabel trendLabel = new JLabel(trend);
+        trendLabel.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        trendLabel.setForeground(new Color(255, 255, 255, 180));
+        trendLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        card.add(iconLabel);
+        card.add(Box.createVerticalStrut(5));
+        card.add(valueLabel);
+        card.add(Box.createVerticalStrut(2));
+        card.add(textLabel);
+        card.add(Box.createVerticalStrut(2));
+        card.add(trendLabel);
+        
+        return card;
+    }
+    
+    /**
+     * Create modern gradient card untuk navigation dengan animasi
+     * @param icon Large icon (emoji)
+     * @param title Card title
+     * @param description Short description
+     * @param gradient1 Gradient start color
+     * @param gradient2 Gradient end color
+     */
+    public static JPanel createGradientCard(String icon, String title, String description, Color gradient1, Color gradient2) {
+        JPanel card = new JPanel() {
+            private boolean isHovered = false;
+            private float scale = 1.0f;
+            
+            {
+                addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        isHovered = true;
+                        scale = 1.03f;
+                        repaint();
+                    }
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        isHovered = false;
+                        scale = 1.0f;
+                        repaint();
+                    }
+                });
+            }
+            
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                int shadowDepth = isHovered ? 8 : 4;
+                
+                // Shadow
+                g2d.setColor(new Color(0, 0, 0, isHovered ? 30 : 20));
+                g2d.fillRoundRect(shadowDepth, shadowDepth, getWidth() - shadowDepth * 2, 
+                                 getHeight() - shadowDepth * 2, 20, 20);
+                
+                // Gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, gradient1,
+                    getWidth(), getHeight(), gradient2
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+                
+                // Shine effect
+                GradientPaint shine = new GradientPaint(
+                    0, 0, new Color(255, 255, 255, 40),
+                    0, getHeight() / 2, new Color(255, 255, 255, 0)
+                );
+                g2d.setPaint(shine);
+                g2d.fillRoundRect(0, 0, getWidth() - 1, getHeight() / 2, 20, 20);
+            }
+        };
+        
+        card.setLayout(null);  // Absolute positioning for custom layout
+        card.setOpaque(false);
+        card.setPreferredSize(new Dimension(220, 140));
+        card.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        // Icon
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 40));
+        iconLabel.setBounds(15, 15, 50, 50);
+        
+        // Title
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        titleLabel.setForeground(TEXT_LIGHT);
+        titleLabel.setBounds(15, 70, 190, 25);
+        
+        // Description
+        JLabel descLabel = new JLabel("<html>" + description + "</html>");
+        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        descLabel.setForeground(new Color(255, 255, 255, 200));
+        descLabel.setBounds(15, 95, 190, 30);
+        
+        // Arrow indicator
+        JLabel arrowLabel = new JLabel("→");
+        arrowLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        arrowLabel.setForeground(new Color(255, 255, 255, 180));
+        arrowLabel.setBounds(185, 110, 20, 20);
+        
+        card.add(iconLabel);
+        card.add(titleLabel);
+        card.add(descLabel);
+        card.add(arrowLabel);
+        
+        return card;
+    }
+    
+    /**
+     * Create sidebar menu item
+     * @param icon Icon emoji
+     * @param text Menu text
+     * @param isActive Whether this menu item is currently active
+     */
+    public static JButton createSidebarMenuItem(String icon, String text, boolean isActive) {
+        JButton button = new JButton() {
+            private boolean isHovered = false;
+            
+            {
+                addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        if (!isActive) {
+                            isHovered = true;
+                            repaint();
+                        }
+                    }
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        isHovered = false;
+                        repaint();
+                    }
+                });
+            }
+            
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Background
+                if (isActive) {
+                    g2d.setColor(new Color(255, 255, 255, 25));
+                    g2d.fillRoundRect(5, 0, getWidth() - 10, getHeight(), 8, 8);
+                    
+                    // Active indicator bar
+                    g2d.setColor(TEXT_LIGHT);
+                    g2d.fillRoundRect(0, getHeight() / 4, 4, getHeight() / 2, 2, 2);
+                } else if (isHovered) {
+                    g2d.setColor(new Color(255, 255, 255, 15));
+                    g2d.fillRoundRect(5, 0, getWidth() - 10, getHeight(), 8, 8);
+                }
+                
+                // Render icon and text manually
+                g2d.setColor(TEXT_LIGHT);
+                g2d.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 18));
+                g2d.drawString(icon, 15, getHeight() / 2 + 6);
+                
+                g2d.setFont(new Font("Segoe UI", isActive ? Font.BOLD : Font.PLAIN, 13));
+                g2d.drawString(text, 50, getHeight() / 2 + 5);
+            }
+        };
+        
+        button.setPreferredSize(new Dimension(200, 50));
+        button.setMaximumSize(new Dimension(200, 50));
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        return button;
+    }
+    
+    /**
+     * Create welcome banner dengan user info
+     * @param userName Nama user
+     * @param role Role user (Admin/HRD/Karyawan)
+     * @param status Status singkat
+     */
+    public static JPanel createWelcomeBanner(String userName, String role, String status) {
+        JPanel banner = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, new Color(227, 242, 253),
+                    getWidth(), 0, new Color(255, 255, 255)
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+                
+                // Border
+                g2d.setColor(BORDER_LIGHT);
+                g2d.setStroke(new BasicStroke(1.0f));
+                g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
+            }
+        };
+        
+        banner.setLayout(new BorderLayout());
+        banner.setOpaque(false);
+        banner.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
+         banner.setPreferredSize(new Dimension(0, 120));
+        
+        // Left panel - Greeting
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setOpaque(false);
+        
+        JLabel greetingLabel = new JLabel("👤 Selamat Datang, " + userName + "!");
+        greetingLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        greetingLabel.setForeground(PRIMARY_DARK);
+        greetingLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel roleLabel = new JLabel("Role: " + role);
+        roleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        roleLabel.setForeground(TEXT_SECONDARY);
+        roleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        leftPanel.add(greetingLabel);
+        leftPanel.add(Box.createVerticalStrut(5));
+        leftPanel.add(roleLabel);
+        
+        // Right panel - Date and status
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setOpaque(false);
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String currentDate = dateFormat.format(new Date());
+        String currentTime = timeFormat.format(new Date()) + " WIB";
+        
+        JLabel dateLabel = new JLabel("📅 " + currentDate);
+        dateLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        dateLabel.setForeground(TEXT_SECONDARY);
+        dateLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        
+        JLabel timeLabel = new JLabel("⏰ " + currentTime);
+        timeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        timeLabel.setForeground(TEXT_SECONDARY);
+        timeLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        
+        JLabel statusLabel = new JLabel("✓ " + status);
+        statusLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        statusLabel.setForeground(SUCCESS_GREEN);
+        statusLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        
+        rightPanel.add(dateLabel);
+        rightPanel.add(Box.createVerticalStrut(3));
+        rightPanel.add(timeLabel);
+        rightPanel.add(Box.createVerticalStrut(3));
+        rightPanel.add(statusLabel);
+        
+        banner.add(leftPanel, BorderLayout.WEST);
+        banner.add(rightPanel, BorderLayout.EAST);
+        
+        return banner;
+    }
+    
+    /**
+     * Create activity feed item
+     * @param icon Icon emoji
+     * @param text Activity description
+    * @param timestamp Timestamp text (e.g., "2 jam lalu")
+     * @param accentColor Color for icon/accent
+     */
+    public static JPanel createActivityItem(String icon, String text, String timestamp, Color accentColor) {
+        JPanel item = new JPanel();
+        item.setLayout(new BorderLayout(10, 5));
+        item.setOpaque(false);
+        item.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
+        
+        // Icon label
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 16));
+        iconLabel.setPreferredSize(new Dimension(25, 25));
+        
+        // Text panel
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        textPanel.setOpaque(false);
+        
+        JLabel textLabel = new JLabel("<html>" + text + "</html>");
+        textLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        textLabel.setForeground(TEXT_DARK);
+        textLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel timeLabel = new JLabel(timestamp);
+        timeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        timeLabel.setForeground(TEXT_MUTED);
+        timeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        textPanel.add(textLabel);
+        textPanel.add(Box.createVerticalStrut(2));
+        textPanel.add(timeLabel);
+        
+        item.add(iconLabel, BorderLayout.WEST);
+        item.add(textPanel, BorderLayout.CENTER);
+        
+        return item;
+    }
+    
+    /**
+     * Create sidebar panel dengan gradient background
+     * @param width Lebar sidebar
+     */
+    public static JPanel createSidebar(int width) {
+        JPanel sidebar = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, PRIMARY,
+                    0, getHeight(), PRIMARY_DARK
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        sidebar.setPreferredSize(new Dimension(width, 0));
+        sidebar.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); 
+        
+        
+        
+        return sidebar;
     }
 }

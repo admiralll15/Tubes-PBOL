@@ -5,6 +5,8 @@
 package controller;
 import model.Cutimodel;
 import java.sql.ResultSet;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -18,7 +20,19 @@ public class Cuti {
         if(id.isEmpty() || tglMulai.isEmpty() || tglSelesai.isEmpty() || ket.isEmpty()){
             return false;
         }
-        return model.ajukanCuti(id, tglMulai, tglSelesai, ket);
+        
+        try {
+            // Convert String to java.sql.Date
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date sqlTglMulai = new Date(sdf.parse(tglMulai).getTime());
+            Date sqlTglSelesai = new Date(sdf.parse(tglSelesai).getTime());
+            
+            // Call model with correct parameters (id, tujuan, tglMulai, tglSelesai, keterangan)
+            return model.ajukanCuti(id, "Cuti", sqlTglMulai, sqlTglSelesai, ket);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     // Method untuk Admin/HRD melihat data cuti

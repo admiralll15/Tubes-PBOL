@@ -2,23 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Admin/laporanabsensi.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/HRD/FormIzinCuti.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Admin/laporanpenggajian.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Admin/FormDataKaryawan.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Karyawan/FormPengajuanCuti.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/model/Absensimodel.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/shared/FormAbsensiKaryawan.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Karyawan/KaryawanDashboard.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Admin/AdminDashboard.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/HRD/HRDDashboard.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Form/DashboardAwal.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/HRD/FormHitungGaji.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Form/FormLogin2.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Form/FormRegister2.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Karyawan/FormSlipGaji.java</file>
-            <file>file:/C:/Users/USER/OneDrive/Dokumen/NetBeansProjects/TubesPBOL/src/Karyawan/FormStatusCuti.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
