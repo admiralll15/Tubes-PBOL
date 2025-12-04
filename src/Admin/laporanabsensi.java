@@ -328,5 +328,8 @@ public class laporanabsensi extends JFrame {
         }
         
         java.awt.EventQueue.invokeLater(() -> new laporanabsensi().setVisible(true));
+ 
+//    testfhsfhklflksf
+    
     }
 }
