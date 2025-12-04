@@ -32,11 +32,11 @@ public class FormDataKaryawan extends JFrame {
     }
     
     private void loadDataKaryawan() {
-        String[] kolom = {"ID", "Nama", "Jabatan", "Aksi"};
+        String[] kolom = {"ID", "Nama", "Jabatan", "Status", "Aksi"};
         DefaultTableModel model = new DefaultTableModel(null, kolom) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 3; // Only Aksi column is editable
+                return column == 4; // Only Aksi column is editable
             }
         };
         
@@ -55,6 +55,7 @@ public class FormDataKaryawan extends JFrame {
                     rs.getString("id"),
                     rs.getString("nama"),
                     rs.getString("jabatan"),
+                    rs.getString("status"), // Menampilkan status: Aktif/Nonaktif
                     "Aksi"
                 });
             }
@@ -70,14 +71,15 @@ public class FormDataKaryawan extends JFrame {
             dataTable.setShowGrid(true);
             
             // Render buttons in Aksi column
-            dataTable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
-            dataTable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JCheckBox(), this));
+            dataTable.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
+            dataTable.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox(), this));
             
             // Set column widths
-            dataTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-            dataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-            dataTable.getColumnModel().getColumn(2).setPreferredWidth(120);
-            dataTable.getColumnModel().getColumn(3).setPreferredWidth(150);
+            dataTable.getColumnModel().getColumn(0).setPreferredWidth(80);   // ID
+            dataTable.getColumnModel().getColumn(1).setPreferredWidth(200);  // Nama
+            dataTable.getColumnModel().getColumn(2).setPreferredWidth(120);  // Jabatan
+            dataTable.getColumnModel().getColumn(3).setPreferredWidth(100);  // Status
+            dataTable.getColumnModel().getColumn(4).setPreferredWidth(200);  // Aksi
             
         } catch (Exception e) {
             logger.log(java.util.logging.Level.SEVERE, "Error loading data", e);
@@ -131,6 +133,18 @@ public class FormDataKaryawan extends JFrame {
         contentContainer.setOpaque(false);
         contentContainer.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         contentContainer.add(tablePanel, BorderLayout.CENTER);
+        
+        // Add back button
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        buttonPanel.setOpaque(false);
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(150, 40));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new Admin.AdminDashboard().setVisible(true);
+        });
+        buttonPanel.add(backButton);
+        contentContainer.add(buttonPanel, BorderLayout.SOUTH);
         
         mainPanel.add(contentContainer, BorderLayout.CENTER);
         

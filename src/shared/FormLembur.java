@@ -1,35 +1,34 @@
-package Karyawan;
+package shared;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.Date;
+import model.Lemburmodel;
 import model.GUITemplate;
 import model.UIScaler;
-import model.Cutimodel;
 import model.UserSession;
 
 /**
- * FormPengajuanCuti - Rewritten dengan hardcode, tema putih-biru
- * Pengajuan cuti dari karyawan
+ * FormLembur - Form input lembur karyawan
+ * Mirip dengan FormAbsensiKaryawan
  */
-public class FormPengajuanCuti extends JFrame {
+public class FormLembur extends JFrame {
+    
+    private Lemburmodel lemburModel = new Lemburmodel();
     
     private JTextField idField;
     private JTextField namaField;
-    private JTextField tujuanField;
-    private JSpinner tanggalMulaiSpinner;
-    private JSpinner tanggalSelesaiSpinner;
-    private JTextArea keteranganArea;
-    private JButton ajukanButton;
+    private JTextField jabatanField;
+    private JTextField tanggalField;
+    private JTextField jamLemburField;
+    private JButton simpanButton;
     private JButton batalButton;
     
-    private Cutimodel cutiModel = new Cutimodel();
-    
     private static final java.util.logging.Logger logger = 
-        java.util.logging.Logger.getLogger(FormPengajuanCuti.class.getName());
-    
-    public FormPengajuanCuti() {
+        java.util.logging.Logger.getLogger(FormLembur.class.getName());
+
+    public FormLembur() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
@@ -39,17 +38,22 @@ public class FormPengajuanCuti extends JFrame {
         // Load user session
         String idKaryawan = UserSession.getKaryawanId();
         String namaKaryawan = UserSession.getNamaKaryawan();
+        String jabatanKaryawan = UserSession.getJabatanKaryawan();
         
         idField.setText(idKaryawan);
         namaField.setText(namaKaryawan);
+        jabatanField.setText(jabatanKaryawan);
+        tanggalField.setText(new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date()));
         
         idField.setEditable(false);
         namaField.setEditable(false);
+        jabatanField.setEditable(false);
+        tanggalField.setEditable(false);
     }
     
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Pengajuan Cuti - Sistem Manajemen Cuti");
+        setTitle("Form Lembur Karyawan");
         setResizable(true);
         
         JPanel mainPanel = new JPanel() {
@@ -74,7 +78,7 @@ public class FormPengajuanCuti extends JFrame {
         mainPanel.setOpaque(false);
         
         // Header
-        JPanel headerPanel = GUITemplate.createHeaderPanel("PENGAJUAN CUTI");
+        JPanel headerPanel = GUITemplate.createHeaderPanel("FORM LEMBUR");
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         
         // Content
@@ -126,78 +130,54 @@ public class FormPengajuanCuti extends JFrame {
         contentPanel.add(namaField, gbc);
         row++;
         
-        // Tujuan Cuti
+        // Jabatan
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.weightx = 0.25;
-        JLabel lblTujuan = GUITemplate.createLabel("Tujuan Cuti:");
-        lblTujuan.setFont(GUITemplate.FONT_LABEL_BOLD);
-        contentPanel.add(lblTujuan, gbc);
+        JLabel lblJabatan = GUITemplate.createLabel("Jabatan:");
+        lblJabatan.setFont(GUITemplate.FONT_LABEL_BOLD);
+        contentPanel.add(lblJabatan, gbc);
         gbc.gridx = 1;
         gbc.weightx = 0.75;
-        tujuanField = GUITemplate.createTextField();
-        contentPanel.add(tujuanField, gbc);
+        jabatanField = GUITemplate.createTextField();
+        jabatanField.setEditable(false);
+        contentPanel.add(jabatanField, gbc);
         row++;
         
-        // Tanggal Mulai
+        // Tanggal
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.weightx = 0.25;
-        JLabel lblMulai = GUITemplate.createLabel("Tanggal Mulai:");
-        lblMulai.setFont(GUITemplate.FONT_LABEL_BOLD);
-        contentPanel.add(lblMulai, gbc);
+        JLabel lblTanggal = GUITemplate.createLabel("Tanggal:");
+        lblTanggal.setFont(GUITemplate.FONT_LABEL_BOLD);
+        contentPanel.add(lblTanggal, gbc);
         gbc.gridx = 1;
         gbc.weightx = 0.75;
-        tanggalMulaiSpinner = new JSpinner(new javax.swing.SpinnerDateModel());
-        JSpinner.DateEditor de1 = new JSpinner.DateEditor(tanggalMulaiSpinner, "dd-MM-yyyy");
-        tanggalMulaiSpinner.setEditor(de1);
-        contentPanel.add(tanggalMulaiSpinner, gbc);
+        tanggalField = GUITemplate.createTextField();
+        tanggalField.setEditable(false);
+        contentPanel.add(tanggalField, gbc);
         row++;
         
-        // Tanggal Selesai
+        // Jam Lembur
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.weightx = 0.25;
-        JLabel lblSelesai = GUITemplate.createLabel("Tanggal Selesai:");
-        lblSelesai.setFont(GUITemplate.FONT_LABEL_BOLD);
-        contentPanel.add(lblSelesai, gbc);
+        JLabel lblJamLembur = GUITemplate.createLabel("Jam Lembur:");
+        lblJamLembur.setFont(GUITemplate.FONT_LABEL_BOLD);
+        contentPanel.add(lblJamLembur, gbc);
         gbc.gridx = 1;
         gbc.weightx = 0.75;
-        tanggalSelesaiSpinner = new JSpinner(new javax.swing.SpinnerDateModel());
-        JSpinner.DateEditor de2 = new JSpinner.DateEditor(tanggalSelesaiSpinner, "dd-MM-yyyy");
-        tanggalSelesaiSpinner.setEditor(de2);
-        contentPanel.add(tanggalSelesaiSpinner, gbc);
+        jamLemburField = GUITemplate.createTextField();
+        jamLemburField.setToolTipText("Masukkan jumlah jam lembur (contoh: 2, 3, 4)");
+        contentPanel.add(jamLemburField, gbc);
         row++;
-        
-        // Keterangan
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        gbc.gridwidth = 2;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(20, 10, 20, 10);
-        JLabel lblKet = GUITemplate.createLabel("Keterangan:");
-        lblKet.setFont(GUITemplate.FONT_LABEL_BOLD);
-        contentPanel.add(lblKet, gbc);
-        
-        gbc.gridx = 0;
-        gbc.gridy = row + 1;
-        gbc.gridwidth = 2;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        keteranganArea = new JTextArea(5, 50);
-        keteranganArea.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        JScrollPane scrollArea = new JScrollPane(keteranganArea);
-        contentPanel.add(scrollArea, gbc);
-        row += 2;
         
         // Buttons
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(20, 10, 20, 10);
+        gbc.insets = new Insets(30, 10, 20, 10);
         gbc.weightx = 1.0;
         gbc.weighty = 0;
         
@@ -205,10 +185,10 @@ public class FormPengajuanCuti extends JFrame {
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         
-        ajukanButton = GUITemplate.createEnhancedButton("AJUKAN", GUITemplate.SUCCESS_GREEN);
-        ajukanButton.setPreferredSize(new Dimension(120, 45));
-        ajukanButton.addActionListener(evt -> btnAjukanActionPerformed(evt));
-        buttonPanel.add(ajukanButton);
+        simpanButton = GUITemplate.createEnhancedButton("SIMPAN", GUITemplate.SUCCESS_GREEN);
+        simpanButton.setPreferredSize(new Dimension(120, 45));
+        simpanButton.addActionListener(evt -> btnSimpanActionPerformed(evt));
+        buttonPanel.add(simpanButton);
         
         batalButton = GUITemplate.createEnhancedButton("BATAL", GUITemplate.ERROR_RED);
         batalButton.setPreferredSize(new Dimension(120, 45));
@@ -219,7 +199,18 @@ public class FormPengajuanCuti extends JFrame {
         backButton.setPreferredSize(new Dimension(120, 45));
         backButton.addActionListener(e -> {
             this.dispose();
-            new Karyawan.KaryawanDashboard().setVisible(true);
+            String role = UserSession.getJabatanKaryawan();
+            try {
+                if ("Admin".equals(role)) {
+                    new Admin.AdminDashboard().setVisible(true);
+                } else if ("HRD".equals(role)) {
+                    new HRD.HRDDashboard().setVisible(true);
+                } else {
+                    new Karyawan.KaryawanDashboard().setVisible(true);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
         buttonPanel.add(backButton);
         
@@ -232,49 +223,45 @@ public class FormPengajuanCuti extends JFrame {
         pack();
     }
     
-    private void btnAjukanActionPerformed(ActionEvent evt) {
+    private void btnSimpanActionPerformed(ActionEvent evt) {
         String idKaryawan = idField.getText();
-        String tujuanCuti = tujuanField.getText();
-        Date tglMulai = new Date(((java.util.Date) tanggalMulaiSpinner.getValue()).getTime());
-        Date tglSelesai = new Date(((java.util.Date) tanggalSelesaiSpinner.getValue()).getTime());
-        String keterangan = keteranganArea.getText();
+        String nama = namaField.getText();
+        String jabatan = jabatanField.getText();
+        String jamLemburStr = jamLemburField.getText();
         
         // Validasi input
-        if (idKaryawan == null || idKaryawan.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "ID Karyawan tidak ditemukan! Pastikan Anda sudah login.", "Validasi", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (tujuanCuti == null || tujuanCuti.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Tujuan cuti tidak boleh kosong!", "Validasi", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (tglMulai == null || tglSelesai == null) {
-            JOptionPane.showMessageDialog(this, "Tanggal mulai dan selesai harus diisi!", "Validasi", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (tglMulai.after(tglSelesai)) {
-            JOptionPane.showMessageDialog(this, "Tanggal mulai tidak boleh lebih besar dari tanggal selesai!", "Validasi", JOptionPane.WARNING_MESSAGE);
+        if (jamLemburStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Jam lembur tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         try {
-            logger.log(java.util.logging.Level.INFO, "Mengajukan cuti untuk: " + idKaryawan + ", Tujuan: " + tujuanCuti);
+            int jamLembur = Integer.parseInt(jamLemburStr);
             
-            boolean sukses = cutiModel.ajukanCuti(idKaryawan, tujuanCuti, tglMulai, tglSelesai, keterangan);
+            if (jamLembur <= 0) {
+                JOptionPane.showMessageDialog(this, "Jam lembur harus lebih dari 0!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            boolean sukses = lemburModel.simpanLembur(
+                idKaryawan, 
+                nama, 
+                jabatan,
+                new Date(System.currentTimeMillis()), 
+                jamLembur
+            );
             
             if (sukses) {
-                JOptionPane.showMessageDialog(this, "✓ Pengajuan cuti berhasil diajukan!\n\nKaryawan dapat melihat status di menu 'Status Cuti'", "Sukses", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
+                JOptionPane.showMessageDialog(this, "Data lembur berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                jamLemburField.setText(""); // Reset field
             } else {
-                JOptionPane.showMessageDialog(this, "✗ Pengajuan cuti gagal diajukan!\n\nMungkin terjadi error di database.\nCoba lagi atau hubungi admin.", "Gagal", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Data lembur gagal disimpan!", "Gagal", JOptionPane.ERROR_MESSAGE);
             }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Jam lembur harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
-            logger.log(java.util.logging.Level.SEVERE, "Error ajukan cuti", ex);
-            JOptionPane.showMessageDialog(this, "✗ Error: " + ex.getMessage() + "\n\nLihat log untuk detail lebih lanjut.", "Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
+            logger.log(java.util.logging.Level.SEVERE, "Error simpan lembur", ex);
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -294,6 +281,6 @@ public class FormPengajuanCuti extends JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        java.awt.EventQueue.invokeLater(() -> new FormPengajuanCuti().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new FormLembur().setVisible(true));
     }
 }

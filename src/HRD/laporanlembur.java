@@ -1,4 +1,4 @@
-package Admin;
+package HRD;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,17 +8,17 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Absensimodel;
+import model.Lemburmodel;
 import model.GUITemplate;
 import model.UIScaler;
 
 /**
- * laporanabsensi - Rewritten dengan hardcode, tema putih-biru
- * Laporan absensi dalam bentuk tabel dengan filter
+ * laporanlembur - Laporan lembur dalam bentuk tabel dengan filter
+ * Menggunakan view v_laporan_lembur dari database
  */
-public class laporanabsensi extends JFrame {
+public class laporanlembur extends JFrame {
     
-    private Absensimodel absenModel = new Absensimodel();
+    private Lemburmodel lemburModel = new Lemburmodel();
     private JTable dataTable;
     private JComboBox<String> bulanCombo;
     private JComboBox<String> tahunCombo;
@@ -27,23 +27,24 @@ public class laporanabsensi extends JFrame {
     private JButton exportButton;
     
     private static final java.util.logging.Logger logger = 
-        java.util.logging.Logger.getLogger(laporanabsensi.class.getName());
+        java.util.logging.Logger.getLogger(laporanlembur.class.getName());
 
-    public laporanabsensi() {
+    public laporanlembur() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         model.AppIcon.setFrameIcon(this);
-        loadDataAbsensi();
+        loadDataLembur();
         UIScaler.scaleContainer(this.getContentPane());
     }
     
-    private void loadDataAbsensi() {
-        String[] kolom = {"ID", "Nama", "Jabatan", "Tanggal", "Jam Masuk", "Jam Pulang", "Status"};
+    private void loadDataLembur() {
+        // Kolom sesuai v_laporan_lembur: id, id_karyawan, nama, jabatan, tanggal, jam_lembur, created_at
+        String[] kolom = {"ID", "ID Karyawan", "Nama", "Jabatan", "Tanggal", "Jam Lembur"};
         DefaultTableModel model = new DefaultTableModel(null, kolom);
         
         try {
-            java.sql.ResultSet rs = absenModel.getLaporanAbsensi();
+            java.sql.ResultSet rs = lemburModel.getLaporanLembur();
             
             if (rs == null) {
                 JOptionPane.showMessageDialog(this, "Data tidak ditemukan atau koneksi database gagal", "Informasi", JOptionPane.INFORMATION_MESSAGE);
@@ -56,13 +57,12 @@ public class laporanabsensi extends JFrame {
             while (rs.next()) {
                 try {
                     dataList.add(new Object[] {
+                        rs.getInt("id"),
                         rs.getString("id_karyawan"),
                         rs.getString("nama"),
                         rs.getString("jabatan"),
                         rs.getString("tanggal"),
-                        rs.getString("jam_masuk"),
-                        rs.getString("jam_pulang"),
-                        rs.getString("status")
+                        rs.getInt("jam_lembur") + " jam"
                     });
                     rowCount++;
                 } catch (SQLException columnError) {
@@ -87,7 +87,7 @@ public class laporanabsensi extends JFrame {
             dataTable.setGridColor(GUITemplate.BORDER_LIGHT);
             
             if (rowCount == 0) {
-                JOptionPane.showMessageDialog(this, "Tidak ada data absensi", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Tidak ada data lembur", "Informasi", JOptionPane.INFORMATION_MESSAGE);
             }
             
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public class laporanabsensi extends JFrame {
         }
     }
     
-    private void filterDataAbsensi() {
+    private void filterDataLembur() {
         String bulanText = (String) bulanCombo.getSelectedItem();
         String tahun = (String) tahunCombo.getSelectedItem();
         
@@ -110,11 +110,11 @@ public class laporanabsensi extends JFrame {
             }
         }
         
-        String[] kolom = {"ID", "Nama", "Jabatan", "Tanggal", "Jam Masuk", "Jam Pulang", "Status"};
+        String[] kolom = {"ID", "ID Karyawan", "Nama", "Jabatan", "Tanggal", "Jam Lembur"};
         DefaultTableModel model = new DefaultTableModel(null, kolom);
         
         try {
-            java.sql.ResultSet rs = absenModel.getLaporanAbsensiByPeriod(bulan, tahun);
+            java.sql.ResultSet rs = lemburModel.getLaporanLemburByPeriod(bulan, tahun);
             
             if (rs == null) {
                 JOptionPane.showMessageDialog(this, "Data tidak ditemukan atau koneksi database gagal", "Informasi", JOptionPane.INFORMATION_MESSAGE);
@@ -127,13 +127,12 @@ public class laporanabsensi extends JFrame {
             while (rs.next()) {
                 try {
                     dataList.add(new Object[] {
+                        rs.getInt("id"),
                         rs.getString("id_karyawan"),
                         rs.getString("nama"),
                         rs.getString("jabatan"),
                         rs.getString("tanggal"),
-                        rs.getString("jam_masuk"),
-                        rs.getString("jam_pulang"),
-                        rs.getString("status")
+                        rs.getInt("jam_lembur") + " jam"
                     });
                     rowCount++;
                 } catch (SQLException columnError) {
@@ -157,7 +156,7 @@ public class laporanabsensi extends JFrame {
             dataTable.setGridColor(GUITemplate.BORDER_LIGHT);
             
             if (rowCount == 0) {
-                JOptionPane.showMessageDialog(this, "Tidak ada data absensi untuk " + bulanText + " " + tahun, "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Tidak ada data lembur untuk " + bulanText + " " + tahun, "Informasi", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Berhasil memuat " + rowCount + " data untuk " + bulanText + " " + tahun, "Sukses", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -170,7 +169,7 @@ public class laporanabsensi extends JFrame {
 
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Laporan Absensi");
+        setTitle("Laporan Lembur");
         setResizable(true);
         
         JPanel mainPanel = new JPanel() {
@@ -195,7 +194,7 @@ public class laporanabsensi extends JFrame {
         mainPanel.setOpaque(false);
         
         // Header
-        JPanel headerPanel = GUITemplate.createHeaderPanel("LAPORAN ABSENSI");
+        JPanel headerPanel = GUITemplate.createHeaderPanel("LAPORAN LEMBUR");
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         
         // Filter panel
@@ -221,24 +220,24 @@ public class laporanabsensi extends JFrame {
         
         filterButton = GUITemplate.createEnhancedButton("FILTER", GUITemplate.PRIMARY);
         filterButton.setPreferredSize(new Dimension(100, 40));
-        filterButton.addActionListener(evt -> filterDataAbsensi());
+        filterButton.addActionListener(evt -> filterDataLembur());
         filterPanel.add(filterButton);
         
         resetButton = GUITemplate.createEnhancedButton("RESET", GUITemplate.WARNING_YELLOW);
         resetButton.setPreferredSize(new Dimension(100, 40));
-        resetButton.addActionListener(evt -> loadDataAbsensi());
+        resetButton.addActionListener(evt -> loadDataLembur());
         filterPanel.add(resetButton);
         
         exportButton = GUITemplate.createEnhancedButton("EXPORT", GUITemplate.SUCCESS_GREEN);
         exportButton.setPreferredSize(new Dimension(100, 40));
-        exportButton.addActionListener(evt -> exportAbsensi());
+        exportButton.addActionListener(evt -> exportLembur());
         filterPanel.add(exportButton);
         
         JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
         backButton.setPreferredSize(new Dimension(120, 40));
         backButton.addActionListener(e -> {
             this.dispose();
-            new Admin.AdminDashboard().setVisible(true);
+            new HRD.HRDDashboard().setVisible(true);
         });
         filterPanel.add(backButton);
         
@@ -278,7 +277,7 @@ public class laporanabsensi extends JFrame {
         pack();
     }
     
-    private void exportAbsensi() {
+    private void exportLembur() {
         try {
             JFileChooser fc = new JFileChooser();
             int result = fc.showSaveDialog(this);
@@ -288,25 +287,24 @@ public class laporanabsensi extends JFrame {
                 
                 try (PrintWriter writer = new PrintWriter(new FileOutputStream(filePath))) {
                     writer.println("=".repeat(80));
-                    writer.println("LAPORAN ABSENSI KARYAWAN");
+                    writer.println("LAPORAN LEMBUR KARYAWAN");
                     writer.println("=".repeat(80));
                     writer.println();
                     
                     // Write table header
-                    writer.printf("%-10s %-20s %-15s %-12s %-10s %-10s %-10s%n",
-                        "ID", "Nama", "Jabatan", "Tanggal", "Masuk", "Pulang", "Status");
+                    writer.printf("%-5s %-12s %-20s %-15s %-12s %-10s%n",
+                        "ID", "ID Kary", "Nama", "Jabatan", "Tanggal", "Jam Lembur");
                     writer.println("-".repeat(80));
                     
                     // Write table data
                     for (int i = 0; i < dataTable.getRowCount(); i++) {
-                        writer.printf("%-10s %-20s %-15s %-12s %-10s %-10s %-10s%n",
+                        writer.printf("%-5s %-12s %-20s %-15s %-12s %-10s%n",
                             dataTable.getValueAt(i, 0),
                             dataTable.getValueAt(i, 1),
                             dataTable.getValueAt(i, 2),
                             dataTable.getValueAt(i, 3),
                             dataTable.getValueAt(i, 4),
-                            dataTable.getValueAt(i, 5),
-                            dataTable.getValueAt(i, 6));
+                            dataTable.getValueAt(i, 5));
                     }
                     
                     writer.println();
@@ -335,9 +333,6 @@ public class laporanabsensi extends JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        java.awt.EventQueue.invokeLater(() -> new laporanabsensi().setVisible(true));
- 
-//    testfhsfhklflksf
-    
+        java.awt.EventQueue.invokeLater(() -> new laporanlembur().setVisible(true));
     }
 }

@@ -14,11 +14,11 @@ public class Karyawan {
     private Karyawanmodel model = new Karyawanmodel();
 
     // 1. Tambah Karyawan (CREATE)
-    public boolean tambah(String nama, String jabatan, String noHp, String noRekening) {
+    public boolean tambah(String nama, String jabatan) {
         if (nama.isEmpty() || jabatan.isEmpty()) {
             return false;
         }
-        return model.insertKaryawan(nama, jabatan, noHp, noRekening);
+        return model.insertKaryawan(nama, jabatan);
     }
     
     // 2. Ambil Data Karyawan (READ)
@@ -27,9 +27,9 @@ public class Karyawan {
     }
     
     // 3. Ubah Data Karyawan (UPDATE)
-    public boolean ubah(String id, String nama, String jabatan, String noHp, String noRekening) {
+    public boolean ubah(String id, String nama, String jabatan) {
         if (id.isEmpty()) return false;
-        return model.updateKaryawan(id, nama, jabatan, noHp, noRekening);
+        return model.updateKaryawan(id, nama, jabatan);
     }
     
     // 4. Hapus Karyawan (DELETE)

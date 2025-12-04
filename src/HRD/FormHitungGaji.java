@@ -252,6 +252,14 @@ public class FormHitungGaji extends JFrame {
         batalButton.addActionListener(evt -> btnBatalActionPerformed(evt));
         buttonPanel.add(batalButton);
         
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(120, 45));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new HRD.HRDDashboard().setVisible(true);
+        });
+        buttonPanel.add(backButton);
+        
         contentPanel.add(buttonPanel, gbc);
         
         scrollPane.setViewportView(contentContainer);

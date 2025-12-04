@@ -20,6 +20,8 @@ public class FormAbsensiKaryawan extends JFrame {
     private JTextField idField;
     private JTextField namaField;
     private JTextField tanggalField;
+    private JTextField jamMasukField;
+    private JTextField jamPulangField;
     private JComboBox<String> statusCombo;
     private JTextArea keteranganArea;
     private JButton simpanButton;
@@ -141,6 +143,34 @@ public class FormAbsensiKaryawan extends JFrame {
         contentPanel.add(tanggalField, gbc);
         row++;
         
+        // Jam Masuk
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.weightx = 0.25;
+        JLabel lblJamMasuk = GUITemplate.createLabel("Jam Masuk:");
+        lblJamMasuk.setFont(GUITemplate.FONT_LABEL_BOLD);
+        contentPanel.add(lblJamMasuk, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 0.75;
+        jamMasukField = GUITemplate.createTextField();
+        jamMasukField.setText(new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date()));
+        contentPanel.add(jamMasukField, gbc);
+        row++;
+        
+        // Jam Pulang
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.weightx = 0.25;
+        JLabel lblJamPulang = GUITemplate.createLabel("Jam Pulang:");
+        lblJamPulang.setFont(GUITemplate.FONT_LABEL_BOLD);
+        contentPanel.add(lblJamPulang, gbc);
+        gbc.gridx = 1;
+        gbc.weightx = 0.75;
+        jamPulangField = GUITemplate.createTextField();
+        jamPulangField.setText("--:--:--");
+        contentPanel.add(jamPulangField, gbc);
+        row++;
+        
         // Status
         gbc.gridx = 0;
         gbc.gridy = row;
@@ -150,7 +180,7 @@ public class FormAbsensiKaryawan extends JFrame {
         contentPanel.add(lblStatus, gbc);
         gbc.gridx = 1;
         gbc.weightx = 0.75;
-        statusCombo = GUITemplate.createComboBox(new String[]{"Hadir", "Izin", "Sakit", "Cuti", "Tanpa Keterangan"});
+        statusCombo = GUITemplate.createComboBox(new String[]{"Hadir", "Izin", "Sakit", "Alpha"});
         contentPanel.add(statusCombo, gbc);
         row++;
         
@@ -200,6 +230,25 @@ public class FormAbsensiKaryawan extends JFrame {
         batalButton.addActionListener(evt -> btnBatalActionPerformed(evt));
         buttonPanel.add(batalButton);
         
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(120, 45));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            String role = UserSession.getJabatanKaryawan();
+            try {
+                if ("Admin".equals(role)) {
+                    new Admin.AdminDashboard().setVisible(true);
+                } else if ("HRD".equals(role)) {
+                    new HRD.HRDDashboard().setVisible(true);
+                } else {
+                    new Karyawan.KaryawanDashboard().setVisible(true);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        buttonPanel.add(backButton);
+        
         contentPanel.add(buttonPanel, gbc);
         
         scrollPane.setViewportView(contentContainer);
@@ -213,9 +262,30 @@ public class FormAbsensiKaryawan extends JFrame {
         String idKaryawan = idField.getText();
         String status = statusCombo.getSelectedItem().toString();
         String keterangan = keteranganArea.getText();
+        String jamMasuk = jamMasukField.getText();
+        String jamPulang = jamPulangField.getText();
         
         try {
-            boolean sukses = absenModel.simpanAbsensi(idKaryawan, new Date(System.currentTimeMillis()), status, keterangan);
+            // Parse jam pulang, jika masih placeholder, set null
+            java.sql.Time sqlJamMasuk = null;
+            java.sql.Time sqlJamPulang = null;
+            
+            if (jamMasuk != null && !jamMasuk.isEmpty()) {
+                sqlJamMasuk = java.sql.Time.valueOf(jamMasuk);
+            }
+            
+            if (jamPulang != null && !jamPulang.equals("--:--:--") && !jamPulang.isEmpty()) {
+                sqlJamPulang = java.sql.Time.valueOf(jamPulang);
+            }
+            
+            boolean sukses = absenModel.simpanAbsensiLengkap(
+                idKaryawan, 
+                new Date(System.currentTimeMillis()), 
+                sqlJamMasuk,
+                sqlJamPulang,
+                status, 
+                keterangan
+            );
             
             if (sukses) {
                 JOptionPane.showMessageDialog(this, "Absensi berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);

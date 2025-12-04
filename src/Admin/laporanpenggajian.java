@@ -229,6 +229,14 @@ public class laporanpenggajian extends JFrame {
         exportButton.setPreferredSize(new Dimension(120, 40));
         exportButton.addActionListener(evt -> JOptionPane.showMessageDialog(this, "Export PDF functionality"));
         filterPanel.add(exportButton);
+        
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(120, 40));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new Admin.AdminDashboard().setVisible(true);
+        });
+        filterPanel.add(backButton);
 
         // Container for filter
         JPanel filterContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));

@@ -97,4 +97,25 @@ public class Absensimodel {
             return false;
         }
     }
+    
+    // 5. SIMPAN ABSENSI LENGKAP (Dengan jam masuk dan jam pulang)
+    public boolean simpanAbsensiLengkap(String idKaryawan, java.sql.Date tanggal, 
+                                         java.sql.Time jamMasuk, java.sql.Time jamPulang,
+                                         String status, String keterangan) {
+        String sql = "INSERT INTO absensi (id_karyawan, tanggal, jam_masuk, jam_pulang, status) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = koneksi.getKoneksi();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, idKaryawan);
+            pst.setDate(2, tanggal);
+            pst.setTime(3, jamMasuk);
+            pst.setTime(4, jamPulang);
+            pst.setString(5, status);
+
+            return pst.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error simpan absensi lengkap: " + e.getMessage(), e);
+            return false;
+        }
+    }
 }
