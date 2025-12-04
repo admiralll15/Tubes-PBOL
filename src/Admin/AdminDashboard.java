@@ -90,6 +90,33 @@ public class AdminDashboard extends JFrame {
         contentPanel.add(btnAbsensiHarian);
         contentPanel.add(Box.createVerticalStrut(20));
 
+        // Tombol Form Lembur (NEW)
+        JButton btnFormLembur = new JButton("⏰ FORM LEMBUR");
+        btnFormLembur.setPreferredSize(btnSize);
+        btnFormLembur.setMaximumSize(btnSize);
+        btnFormLembur.setAlignmentX(Component.CENTER_ALIGNMENT);
+        styleButtonGradient(btnFormLembur, new Color(0, 198, 167), new Color(0, 114, 255));
+        contentPanel.add(btnFormLembur);
+        contentPanel.add(Box.createVerticalStrut(20));
+
+        // Tombol Slip Gaji
+        JButton btnSlipGaji = new JButton("💰 SLIP GAJI");
+        btnSlipGaji.setPreferredSize(btnSize);
+        btnSlipGaji.setMaximumSize(btnSize);
+        btnSlipGaji.setAlignmentX(Component.CENTER_ALIGNMENT);
+        styleButtonGradient(btnSlipGaji, new Color(0, 198, 167), new Color(0, 114, 255));
+        contentPanel.add(btnSlipGaji);
+        contentPanel.add(Box.createVerticalStrut(20));
+
+        // Tombol Pengajuan Cuti
+        JButton btnPengajuanCuti = new JButton("📋 PENGAJUAN CUTI");
+        btnPengajuanCuti.setPreferredSize(btnSize);
+        btnPengajuanCuti.setMaximumSize(btnSize);
+        btnPengajuanCuti.setAlignmentX(Component.CENTER_ALIGNMENT);
+        styleButtonGradient(btnPengajuanCuti, new Color(0, 198, 167), new Color(0, 114, 255));
+        contentPanel.add(btnPengajuanCuti);
+        contentPanel.add(Box.createVerticalStrut(20));
+
         // Tombol Logout
         JButton btnLogout = new JButton("🚪 LOGOUT");
         btnLogout.setPreferredSize(btnSize);
@@ -111,6 +138,12 @@ public class AdminDashboard extends JFrame {
         btnLaporanGaji.addActionListener(e -> new laporanpenggajian().setVisible(true));
 
         btnAbsensiHarian.addActionListener(e -> openAbsensiHarian());
+
+        btnFormLembur.addActionListener(e -> openFormLembur());
+
+        btnSlipGaji.addActionListener(e -> openSlipGaji());
+
+        btnPengajuanCuti.addActionListener(e -> openPengajuanCuti());
 
         btnLogout.addActionListener(e -> {
             int c = JOptionPane.showConfirmDialog(
@@ -155,6 +188,39 @@ public class AdminDashboard extends JFrame {
             frame.setVisible(true);
         } catch (Exception ex) {
             logger.log(java.util.logging.Level.SEVERE, "Error opening absensi harian", ex);
+        }
+    }
+
+    private void openFormLembur() {
+        try {
+            Class<?> clazz = Class.forName("shared.FormLembur");
+            Object obj = clazz.getDeclaredConstructor().newInstance();
+            JFrame frame = (JFrame) obj;
+            frame.setVisible(true);
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, "Error opening form lembur", ex);
+        }
+    }
+
+    private void openSlipGaji() {
+        try {
+            Class<?> clazz = Class.forName("Karyawan.FormSlipGaji");
+            Object obj = clazz.getDeclaredConstructor().newInstance();
+            JFrame frame = (JFrame) obj;
+            frame.setVisible(true);
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, "Error opening slip gaji", ex);
+        }
+    }
+
+    private void openPengajuanCuti() {
+        try {
+            Class<?> clazz = Class.forName("Karyawan.FormPengajuanCuti");
+            Object obj = clazz.getDeclaredConstructor().newInstance();
+            JFrame frame = (JFrame) obj;
+            frame.setVisible(true);
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, "Error opening pengajuan cuti", ex);
         }
     }
 

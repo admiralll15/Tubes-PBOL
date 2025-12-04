@@ -198,6 +198,16 @@ public class FormLogin2 extends JFrame {
             return;
         }
         
+        // Cek apakah akun dinonaktifkan
+        if (role.equals("NONAKTIF")) {
+            JOptionPane.showMessageDialog(this, 
+                "⚠️ AKUN ANDA TELAH DINONAKTIFKAN!\n\n" +
+                "Akun Anda tidak dapat digunakan untuk login.\n" +
+                "Silakan hubungi Admin atau HRD untuk informasi lebih lanjut.", 
+                "Akun Nonaktif", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         if (!role.equals(selectedRole)) {
             JOptionPane.showMessageDialog(this, "Jabatan tidak sesuai dengan akun Anda!", 
                 "Gagal Login", JOptionPane.ERROR_MESSAGE);

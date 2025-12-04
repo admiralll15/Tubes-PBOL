@@ -31,8 +31,8 @@ public class Karyawanmodel {
     }
 
     // 1. CREATE: Menambahkan Karyawan Baru
-    public boolean insertKaryawan(String nama, String jabatan, String noHp, String noRekening) {
-        String sql = "INSERT INTO karyawan (id, nama, jabatan, no_hp, no_rekening) VALUES (?, ?, ?, ?, ?)";
+    public boolean insertKaryawan(String nama, String jabatan) {
+        String sql = "INSERT INTO karyawan (id, nama, jabatan, status) VALUES (?, ?, ?, 'Aktif')";
         try {
             String idKaryawan = generateNewKaryawanId();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -40,8 +40,6 @@ public class Karyawanmodel {
             ps.setString(1, idKaryawan);
             ps.setString(2, nama);
             ps.setString(3, jabatan);
-            ps.setString(4, noHp);
-            ps.setString(5, noRekening);
             
             return ps.executeUpdate() > 0;
             
@@ -53,7 +51,7 @@ public class Karyawanmodel {
 
     // 2. READ: Mengambil Semua Data Karyawan
     public ResultSet getAllKaryawan() {
-        String sql = "SELECT id, nama, jabatan, no_hp FROM karyawan ORDER BY id";
+        String sql = "SELECT id, nama, jabatan, status FROM karyawan ORDER BY id";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             return ps.executeQuery();
@@ -64,15 +62,13 @@ public class Karyawanmodel {
     }
     
     // 3. UPDATE: Mengubah Data Karyawan
-    public boolean updateKaryawan(String id, String nama, String jabatan, String noHp, String noRekening) {
-        String sql = "UPDATE karyawan SET nama=?, jabatan=?, no_hp=?, no_rekening=?, updated_at=CURRENT_TIMESTAMP() WHERE id=?";
+    public boolean updateKaryawan(String id, String nama, String jabatan) {
+        String sql = "UPDATE karyawan SET nama=?, jabatan=?, updated_at=CURRENT_TIMESTAMP() WHERE id=?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, nama);
             ps.setString(2, jabatan);
-            ps.setString(3, noHp);
-            ps.setString(4, noRekening);
-            ps.setString(5, id);
+            ps.setString(3, id);
             
             return ps.executeUpdate() > 0;
             

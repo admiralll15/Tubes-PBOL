@@ -90,6 +90,15 @@ public class KaryawanDashboard extends JFrame {
         contentPanel.add(btnAbsensiHarian);
         contentPanel.add(Box.createVerticalStrut(20));
 
+        // Tombol Form Lembur
+        JButton btnFormLembur = new JButton("⏰ FORM LEMBUR");
+        btnFormLembur.setPreferredSize(btnSize);
+        btnFormLembur.setMaximumSize(btnSize);
+        btnFormLembur.setAlignmentX(Component.CENTER_ALIGNMENT);
+        styleButtonGradient(btnFormLembur, new Color(0, 198, 167), new Color(0, 114, 255));
+        contentPanel.add(btnFormLembur);
+        contentPanel.add(Box.createVerticalStrut(20));
+
         // Tombol Logout
         JButton btnLogout = new JButton("🚪 LOGOUT");
         btnLogout.setPreferredSize(btnSize);
@@ -108,6 +117,7 @@ public class KaryawanDashboard extends JFrame {
         btnSlipGaji.addActionListener(e -> openSlipGaji());
         btnStatusCuti.addActionListener(e -> openStatusCuti());
         btnAbsensiHarian.addActionListener(e -> openAbsensiHarian());
+        btnFormLembur.addActionListener(e -> openFormLembur());
 
         btnLogout.addActionListener(e -> logout());
     }
@@ -162,6 +172,17 @@ public class KaryawanDashboard extends JFrame {
             frame.setVisible(true);
         } catch (Exception ex) {
             logger.log(java.util.logging.Level.SEVERE, "Error opening absensi harian", ex);
+        }
+    }
+
+    private void openFormLembur() {
+        try {
+            Class<?> clazz = Class.forName("shared.FormLembur");
+            Object obj = clazz.getDeclaredConstructor().newInstance();
+            JFrame frame = (JFrame) obj;
+            frame.setVisible(true);
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, "Error opening form lembur", ex);
         }
     }
 
