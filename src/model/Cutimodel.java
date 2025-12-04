@@ -11,16 +11,19 @@ public class Cutimodel {
     
     private static final Logger LOGGER = Logger.getLogger(Cutimodel.class.getName());
     
-    // 1. Ambil Data untuk Tabel (Pakai View v_status_cuti)
+    // 1. Ambil Data untuk Tabel (Menggunakan View v_status_cuti)
     public ResultSet getStatusCuti() {
-        // Kita hanya ambil yang statusnya 'Pending' agar HRD fokus memproses yang belum beres
-        String sql = "SELECT * FROM v_status_cuti WHERE status = 'Pending' ORDER BY created_at DESC";
+        // View sudah benar, tidak ada kolom 'bulan' atau 'tujuan'
+        String sql = "SELECT id, id_karyawan, nama, jabatan, tanggal_mulai, tanggal_selesai, " +
+                     "jumlah_hari, keterangan, status, created_at " +
+                     "FROM v_status_cuti WHERE status = 'Pending' ORDER BY created_at DESC";
         try {
             Connection conn = koneksi.getKoneksi();
             PreparedStatement pst = conn.prepareStatement(sql);
             return pst.executeQuery();
         } catch (SQLException e) {
-            System.out.println("Error Get Cuti: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error Get Cuti: " + e.getMessage(), e);
+            e.printStackTrace();
             return null;
         }
     }

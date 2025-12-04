@@ -23,6 +23,7 @@ public class laporanabsensi extends JFrame {
     private JComboBox<String> bulanCombo;
     private JComboBox<String> tahunCombo;
     private JButton filterButton;
+    private JButton resetButton;
     private JButton exportButton;
     
     private static final java.util.logging.Logger logger = 
@@ -32,6 +33,7 @@ public class laporanabsensi extends JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this);
         loadDataAbsensi();
         UIScaler.scaleContainer(this.getContentPane());
     }
@@ -77,12 +79,91 @@ public class laporanabsensi extends JFrame {
             // Styling handled by createModernTable
             dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
             
+            // Explicitly ensure grid lines are visible
+            dataTable.setShowGrid(true);
+            dataTable.setShowVerticalLines(true);
+            dataTable.setShowHorizontalLines(true);
+            dataTable.setIntercellSpacing(new Dimension(1, 1));
+            dataTable.setGridColor(GUITemplate.BORDER_LIGHT);
+            
             if (rowCount == 0) {
                 JOptionPane.showMessageDialog(this, "Tidak ada data absensi", "Informasi", JOptionPane.INFORMATION_MESSAGE);
             }
             
         } catch (Exception e) {
             logger.log(java.util.logging.Level.SEVERE, "Error loading data", e);
+            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void filterDataAbsensi() {
+        String bulanText = (String) bulanCombo.getSelectedItem();
+        String tahun = (String) tahunCombo.getSelectedItem();
+        
+        // Convert nama bulan ke angka (1-12)
+        String[] namaBulan = {"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
+        int bulan = 1;
+        for (int i = 0; i < namaBulan.length; i++) {
+            if (namaBulan[i].equals(bulanText)) {
+                bulan = i + 1;
+                break;
+            }
+        }
+        
+        String[] kolom = {"ID", "Nama", "Jabatan", "Tanggal", "Jam Masuk", "Jam Pulang", "Status"};
+        DefaultTableModel model = new DefaultTableModel(null, kolom);
+        
+        try {
+            java.sql.ResultSet rs = absenModel.getLaporanAbsensiByPeriod(bulan, tahun);
+            
+            if (rs == null) {
+                JOptionPane.showMessageDialog(this, "Data tidak ditemukan atau koneksi database gagal", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                dataTable.setModel(model);
+                return;
+            }
+            
+            List<Object[]> dataList = new ArrayList<>();
+            int rowCount = 0;
+            while (rs.next()) {
+                try {
+                    dataList.add(new Object[] {
+                        rs.getString("id_karyawan"),
+                        rs.getString("nama"),
+                        rs.getString("jabatan"),
+                        rs.getString("tanggal"),
+                        rs.getString("jam_masuk"),
+                        rs.getString("jam_pulang"),
+                        rs.getString("status")
+                    });
+                    rowCount++;
+                } catch (SQLException columnError) {
+                    logger.log(java.util.logging.Level.WARNING, "Skipped row due to column error", columnError);
+                    continue;
+                }
+            }
+            
+            for (Object[] row : dataList) {
+                model.addRow(row);
+            }
+            
+            dataTable.setModel(model);
+            dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            
+            // Explicitly ensure grid lines are visible
+            dataTable.setShowGrid(true);
+            dataTable.setShowVerticalLines(true);
+            dataTable.setShowHorizontalLines(true);
+            dataTable.setIntercellSpacing(new Dimension(1, 1));
+            dataTable.setGridColor(GUITemplate.BORDER_LIGHT);
+            
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "Tidak ada data absensi untuk " + bulanText + " " + tahun, "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Berhasil memuat " + rowCount + " data untuk " + bulanText + " " + tahun, "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "Error loading filtered data", e);
             JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -127,6 +208,7 @@ public class laporanabsensi extends JFrame {
         filterPanel.add(lblBulan);
         
         bulanCombo = GUITemplate.createComboBox(new String[]{"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"});
+        bulanCombo.setPreferredSize(new Dimension(150, 40));
         filterPanel.add(bulanCombo);
         
         JLabel lblTahun = GUITemplate.createLabel("Tahun:");
@@ -134,12 +216,18 @@ public class laporanabsensi extends JFrame {
         filterPanel.add(lblTahun);
         
         tahunCombo = GUITemplate.createComboBox(new String[]{"2025", "2024", "2023", "2022", "2021", "2020"});
+        tahunCombo.setPreferredSize(new Dimension(100, 40));
         filterPanel.add(tahunCombo);
         
         filterButton = GUITemplate.createEnhancedButton("FILTER", GUITemplate.PRIMARY);
         filterButton.setPreferredSize(new Dimension(100, 40));
-        filterButton.addActionListener(evt -> JOptionPane.showMessageDialog(this, "Filter functionality - load data for selected month/year"));
+        filterButton.addActionListener(evt -> filterDataAbsensi());
         filterPanel.add(filterButton);
+        
+        resetButton = GUITemplate.createEnhancedButton("RESET", GUITemplate.WARNING_YELLOW);
+        resetButton.setPreferredSize(new Dimension(100, 40));
+        resetButton.addActionListener(evt -> loadDataAbsensi());
+        filterPanel.add(resetButton);
         
         exportButton = GUITemplate.createEnhancedButton("EXPORT", GUITemplate.SUCCESS_GREEN);
         exportButton.setPreferredSize(new Dimension(100, 40));

@@ -38,6 +38,7 @@ public class FormHitungGaji extends JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this);
         totalGajiField.setEditable(false);
         UIScaler.scaleContainer(this.getContentPane());
     }

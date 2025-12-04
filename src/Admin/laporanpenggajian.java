@@ -21,6 +21,7 @@ public class laporanpenggajian extends JFrame {
     private JComboBox<String> bulanCombo;
     private JComboBox<String> tahunCombo;
     private JButton filterButton;
+    private JButton resetButton;
     private JButton exportButton;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger
@@ -30,6 +31,7 @@ public class laporanpenggajian extends JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this);
         loadDataGaji();
         UIScaler.scaleContainer(this.getContentPane());
     }
@@ -76,6 +78,13 @@ public class laporanpenggajian extends JFrame {
             dataTable.setModel(model);
             // Styling handled by createModernTable
             dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            
+            // Explicitly ensure grid lines are visible
+            dataTable.setShowGrid(true);
+            dataTable.setShowVerticalLines(true);
+            dataTable.setShowHorizontalLines(true);
+            dataTable.setIntercellSpacing(new Dimension(1, 1));
+            dataTable.setGridColor(GUITemplate.BORDER_LIGHT);
 
             if (rowCount == 0) {
                 JOptionPane.showMessageDialog(this, "Tidak ada data penggajian", "Informasi",
@@ -84,6 +93,72 @@ public class laporanpenggajian extends JFrame {
 
         } catch (Exception e) {
             logger.log(java.util.logging.Level.SEVERE, "Error loading data", e);
+            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void filterDataGaji() {
+        String bulan = (String) bulanCombo.getSelectedItem();
+        String tahun = (String) tahunCombo.getSelectedItem();
+        
+        String[] kolom = { "ID", "Nama", "Gaji Pokok", "Lembur", "Potongan", "Total", "Bulan", "Tahun" };
+        DefaultTableModel model = new DefaultTableModel(null, kolom);
+
+        try {
+            java.sql.ResultSet rs = gajiModel.getLaporanPenggajianByPeriod(bulan, tahun);
+
+            if (rs == null) {
+                JOptionPane.showMessageDialog(this, "Data tidak ditemukan atau koneksi database gagal", "Informasi",
+                        JOptionPane.INFORMATION_MESSAGE);
+                dataTable.setModel(model);
+                return;
+            }
+
+            List<Object[]> dataList = new ArrayList<>();
+            int rowCount = 0;
+            while (rs.next()) {
+                try {
+                    dataList.add(new Object[] {
+                            rs.getString("id_karyawan"),
+                            rs.getString("nama"),
+                            "Rp " + rs.getInt("gaji_pokok"),
+                            rs.getInt("jam_lembur") + " jam",
+                            "Rp " + rs.getInt("potongan"),
+                            "Rp " + rs.getInt("total"),
+                            rs.getString("bulan"),
+                            rs.getString("tahun")
+                    });
+                    rowCount++;
+                } catch (SQLException columnError) {
+                    logger.log(java.util.logging.Level.WARNING, "Skipped row due to column error", columnError);
+                    continue;
+                }
+            }
+
+            for (Object[] row : dataList) {
+                model.addRow(row);
+            }
+
+            dataTable.setModel(model);
+            dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            
+            // Explicitly ensure grid lines are visible
+            dataTable.setShowGrid(true);
+            dataTable.setShowVerticalLines(true);
+            dataTable.setShowHorizontalLines(true);
+            dataTable.setIntercellSpacing(new Dimension(1, 1));
+            dataTable.setGridColor(GUITemplate.BORDER_LIGHT);
+
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "Tidak ada data penggajian untuk " + bulan + " " + tahun, "Informasi",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Berhasil memuat " + rowCount + " data untuk " + bulan + " " + tahun, "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            logger.log(java.util.logging.Level.SEVERE, "Error loading filtered data", e);
             JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -129,6 +204,7 @@ public class laporanpenggajian extends JFrame {
 
         bulanCombo = GUITemplate.createComboBox(new String[] { "Januari", "Februari", "Maret", "April", "Mei", "Juni",
                 "Juli", "Agustus", "September", "Oktober", "November", "Desember" });
+        bulanCombo.setPreferredSize(new Dimension(150, 40));
         filterPanel.add(bulanCombo);
 
         JLabel lblTahun = GUITemplate.createLabel("Tahun:");
@@ -136,12 +212,18 @@ public class laporanpenggajian extends JFrame {
         filterPanel.add(lblTahun);
 
         tahunCombo = GUITemplate.createComboBox(new String[] { "2020", "2021", "2022", "2023", "2024", "2025" });
+        tahunCombo.setPreferredSize(new Dimension(100, 40));
         filterPanel.add(tahunCombo);
 
         filterButton = GUITemplate.createEnhancedButton("FILTER", GUITemplate.PRIMARY);
         filterButton.setPreferredSize(new Dimension(100, 40));
-        filterButton.addActionListener(evt -> JOptionPane.showMessageDialog(this, "Filter functionality"));
+        filterButton.addActionListener(evt -> filterDataGaji());
         filterPanel.add(filterButton);
+
+        resetButton = GUITemplate.createEnhancedButton("RESET", GUITemplate.WARNING_YELLOW);
+        resetButton.setPreferredSize(new Dimension(100, 40));
+        resetButton.addActionListener(evt -> loadDataGaji());
+        filterPanel.add(resetButton);
 
         exportButton = GUITemplate.createEnhancedButton("EXPORT PDF", GUITemplate.SUCCESS_GREEN);
         exportButton.setPreferredSize(new Dimension(120, 40));
@@ -158,12 +240,12 @@ public class laporanpenggajian extends JFrame {
 
         // Table
         dataTable = GUITemplate.createModernTable(new DefaultTableModel());
-        // Set preferred size to keep view within a single screen
-        dataTable.setPreferredSize(new Dimension(800, 300));
+        JScrollPane scrollPane = GUITemplate.createModernScrollPane(dataTable);
+        
         JPanel tablePanel = GUITemplate.createRoundedPanel();
         tablePanel.setLayout(new BorderLayout());
         tablePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        tablePanel.add(dataTable, BorderLayout.CENTER);
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
 
         // Container for table
         JPanel tableContainer = new JPanel(new BorderLayout());

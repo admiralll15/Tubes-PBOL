@@ -13,6 +13,7 @@ public class HRDDashboard extends JFrame {
         setSize(850, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this); // Set application icon
 
         initComponents();
     }

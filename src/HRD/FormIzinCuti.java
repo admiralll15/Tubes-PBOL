@@ -12,10 +12,6 @@ import model.Cutimodel;
 import model.GUITemplate;
 import model.UIScaler;
 
-/**
- * FormIzinCuti - Rewritten dengan hardcode, tema putih-biru
- * Laporan izin dan cuti dengan tabel data
- */
 public class FormIzinCuti extends JFrame {
     
     private Cutimodel cutiModel = new Cutimodel();
@@ -28,6 +24,7 @@ public class FormIzinCuti extends JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this);
         loadDataCuti();
         UIScaler.scaleContainer(this.getContentPane());
     }
@@ -72,8 +69,13 @@ public class FormIzinCuti extends JFrame {
             dataTable.setModel(model);
             // Styling handled by createModernTable
             dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-            dataTable.setGridColor(new Color(230, 230, 230));
+            
+            // Explicitly ensure grid lines are visible
             dataTable.setShowGrid(true);
+            dataTable.setShowVerticalLines(true);
+            dataTable.setShowHorizontalLines(true);
+            dataTable.setIntercellSpacing(new Dimension(1, 1));
+            dataTable.setGridColor(GUITemplate.BORDER_LIGHT);
             
             // Render buttons in Aksi column
             dataTable.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());

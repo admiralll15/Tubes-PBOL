@@ -28,12 +28,13 @@ public class FormStatusCuti extends JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this);
         loadDataStatusCuti();
         UIScaler.scaleContainer(this.getContentPane());
     }
     
     private void loadDataStatusCuti() {
-        String[] kolom = {"ID", "Tujuan", "Tgl Mulai", "Tgl Selesai", "Keterangan", "Status"};
+        String[] kolom = {"ID", "Tgl Mulai", "Tgl Selesai", "Jumlah Hari", "Keterangan", "Status"};
         DefaultTableModel model = new DefaultTableModel(null, kolom);
         
         try {
@@ -44,8 +45,10 @@ public class FormStatusCuti extends JFrame {
                 return;
             }
             
-            // Query untuk ambil semua cuti karyawan ini
-            String sql = "SELECT id, tujuan, tanggal_mulai, tanggal_selesai, keterangan, status FROM cuti WHERE id_karyawan = ? ORDER BY created_at DESC";
+            // Query untuk ambil semua cuti karyawan ini - kolom 'tujuan' TIDAK ADA
+            String sql = "SELECT id, tanggal_mulai, tanggal_selesai, " +
+                        "DATEDIFF(tanggal_selesai, tanggal_mulai) + 1 AS jumlah_hari, " +
+                        "keterangan, status FROM cuti WHERE id_karyawan = ? ORDER BY created_at DESC";
             java.sql.Connection conn = koneksi.getKoneksi();
             java.sql.PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, idKaryawan);
@@ -67,9 +70,9 @@ public class FormStatusCuti extends JFrame {
                 String status = rs.getString("status");
                 dataList.add(new Object[] {
                     rs.getString("id"),
-                    rs.getString("tujuan"),
                     rs.getString("tanggal_mulai"),
                     rs.getString("tanggal_selesai"),
+                    rs.getInt("jumlah_hari") + " hari",
                     rs.getString("keterangan"),
                     status
                 });
@@ -95,7 +98,11 @@ public class FormStatusCuti extends JFrame {
             
         } catch (Exception e) {
             logger.log(java.util.logging.Level.SEVERE, "Error loading status cuti", e);
-            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            statusLabel.setText("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Error loading data: " + e.getMessage() + "\n\nDetail: " + e.getClass().getSimpleName(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Print to console for debugging
         }
     }
 

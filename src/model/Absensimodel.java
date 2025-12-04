@@ -63,6 +63,23 @@ public class Absensimodel {
         }
     }
     
+    // 3b. GET DATA LAPORAN ABSENSI DENGAN FILTER BULAN DAN TAHUN
+    public ResultSet getLaporanAbsensiByPeriod(int bulan, String tahun) {
+        // Filter berdasarkan MONTH() dan YEAR() dari kolom tanggal
+        String sql = "SELECT * FROM v_laporan_absensi WHERE MONTH(tanggal) = ? AND YEAR(tanggal) = ? ORDER BY tanggal DESC, id_karyawan";
+        try {
+            Connection conn = koneksi.getKoneksi();
+            PreparedStatement pst = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            pst.setInt(1, bulan);
+            pst.setString(2, tahun);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Gagal mengambil laporan absensi dengan filter", e);
+            return null;
+        }
+    }
+    
     // 4. SIMPAN ABSENSI (Untuk form absensi umum)
     public boolean simpanAbsensi(String idKaryawan, java.sql.Date tanggal, String status, String keterangan) {
         String sql = "INSERT INTO absensi_karyawan (id_karyawan, tanggal, status, keterangan) VALUES (?, ?, ?, ?)";

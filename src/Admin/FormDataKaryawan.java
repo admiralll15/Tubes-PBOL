@@ -26,6 +26,7 @@ public class FormDataKaryawan extends JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this);
         loadDataKaryawan();
         UIScaler.scaleContainer(this.getContentPane());
     }

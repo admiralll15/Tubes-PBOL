@@ -56,4 +56,20 @@ public class Gajimodel {
             return null;
         }
     }
+    
+    // 3. GET DATA LAPORAN GAJI DENGAN FILTER BULAN DAN TAHUN
+    public ResultSet getLaporanPenggajianByPeriod(String bulan, String tahun) {
+        String sql = "SELECT * FROM v_laporan_penggajian WHERE bulan = ? AND tahun = ? ORDER BY created_at DESC";
+        try {
+            Connection conn = koneksi.getKoneksi();
+            PreparedStatement pst = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            pst.setString(1, bulan);
+            pst.setString(2, tahun);
+            ResultSet rs = pst.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Gagal mengambil laporan penggajian dengan filter", e);
+            return null;
+        }
+    }
 }

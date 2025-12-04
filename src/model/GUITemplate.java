@@ -310,7 +310,7 @@ public class GUITemplate {
         comboBox.setForeground(TEXT_DARK);
         comboBox.setBackground(BG_WHITE); // Light background for contrast
         comboBox.setBorder(BorderFactory.createLineBorder(BORDER_LIGHT, 1));
-        comboBox.setPreferredSize(new Dimension(0, 42));
+        comboBox.setPreferredSize(new Dimension(150, 42)); // FIXED: was 0, now 150
         return comboBox;
     }
 
@@ -505,10 +505,10 @@ public class GUITemplate {
         table.setForeground(TEXT_DARK); // Dark text for white background
         table.setBackground(BG_WHITE); // Pure white background
         table.setRowHeight(40);
-        table.setShowVerticalLines(false);
+        table.setShowVerticalLines(true); // Show vertical lines between columns
         table.setShowHorizontalLines(true);
         table.setGridColor(BORDER_LIGHT); // Light blue grid lines
-        table.setIntercellSpacing(new Dimension(0, 1));
+        table.setIntercellSpacing(new Dimension(1, 1)); // Add spacing for both vertical and horizontal lines
         table.setSelectionBackground(new Color(227, 242, 253)); // Light blue selection
         table.setSelectionForeground(TEXT_DARK);
 

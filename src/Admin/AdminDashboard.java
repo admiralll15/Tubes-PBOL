@@ -13,6 +13,7 @@ public class AdminDashboard extends JFrame {
         setSize(850, 650); // Adjusted height slightly to accommodate new button
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this); // Set application icon
 
         initComponents();
     }
@@ -105,8 +106,7 @@ public class AdminDashboard extends JFrame {
         // Aksi tombol
         btnKaryawan.addActionListener(e -> new FormDataKaryawan().setVisible(true));
 
-        btnLaporanAbsensi.addActionListener(e -> JOptionPane.showMessageDialog(this,
-                "Menampilkan Data Absensi di Tabel"));
+        btnLaporanAbsensi.addActionListener(e -> new laporanabsensi().setVisible(true));
 
         btnLaporanGaji.addActionListener(e -> new laporanpenggajian().setVisible(true));
 

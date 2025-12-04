@@ -28,6 +28,7 @@ public class FormRegister2 extends JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
+        model.AppIcon.setFrameIcon(this);
         UIScaler.scaleContainer(this.getContentPane());
     }
     
