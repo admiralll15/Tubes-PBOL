@@ -171,6 +171,18 @@ public class FormStatusCuti extends JFrame {
         tableContainer.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         tableContainer.add(tablePanel, BorderLayout.CENTER);
         
+        // Add back button
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        buttonPanel.setOpaque(false);
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(150, 40));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new Karyawan.KaryawanDashboard().setVisible(true);
+        });
+        buttonPanel.add(backButton);
+        tableContainer.add(buttonPanel, BorderLayout.SOUTH);
+        
         mainPanel.add(tableContainer, BorderLayout.CENTER);
         
         // Footer dengan keterangan

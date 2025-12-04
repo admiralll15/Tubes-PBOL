@@ -132,6 +132,18 @@ public class FormDataKaryawan extends JFrame {
         contentContainer.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         contentContainer.add(tablePanel, BorderLayout.CENTER);
         
+        // Add back button
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        buttonPanel.setOpaque(false);
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(150, 40));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new Admin.AdminDashboard().setVisible(true);
+        });
+        buttonPanel.add(backButton);
+        contentContainer.add(buttonPanel, BorderLayout.SOUTH);
+        
         mainPanel.add(contentContainer, BorderLayout.CENTER);
         
         setContentPane(mainPanel);

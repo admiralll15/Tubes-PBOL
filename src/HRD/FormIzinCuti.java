@@ -139,6 +139,18 @@ public class FormIzinCuti extends JFrame {
         tableContainer.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         tableContainer.add(tablePanel, BorderLayout.CENTER);
         
+        // Add back button
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        buttonPanel.setOpaque(false);
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(150, 40));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new HRD.HRDDashboard().setVisible(true);
+        });
+        buttonPanel.add(backButton);
+        tableContainer.add(buttonPanel, BorderLayout.SOUTH);
+        
         mainPanel.add(tableContainer, BorderLayout.CENTER);
         
         setContentPane(mainPanel);

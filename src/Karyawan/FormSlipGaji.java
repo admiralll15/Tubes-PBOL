@@ -216,6 +216,14 @@ public class FormSlipGaji extends JFrame {
         batalButton.addActionListener(evt -> btnBatalActionPerformed(evt));
         buttonPanel.add(batalButton);
         
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(120, 45));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new Karyawan.KaryawanDashboard().setVisible(true);
+        });
+        buttonPanel.add(backButton);
+        
         contentPanel.add(buttonPanel, gbc);
         
         scrollPane.setViewportView(contentContainer);
@@ -232,7 +240,7 @@ public class FormSlipGaji extends JFrame {
         
         try {
             Connection conn = koneksi.getKoneksi();
-            String query = "SELECT gaji_pokok, jam_lembur, upah_lembur_perjam, potongan FROM gaji WHERE id_karyawan = ? AND bulan = ? AND tahun = ?";
+            String query = "SELECT gaji_pokok, jam_lembur, upah_lembur_per_jam, lembur, potongan FROM penggajian WHERE id_karyawan = ? AND bulan = ? AND tahun = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, idKaryawan);
             ps.setString(2, bulan);
@@ -242,10 +250,9 @@ public class FormSlipGaji extends JFrame {
             if (rs.next()) {
                 int gajiPokok = rs.getInt("gaji_pokok");
                 int jamLembur = rs.getInt("jam_lembur");
-                int upahLemburPerJam = rs.getInt("upah_lembur_perjam");
+                int upahLemburPerJam = rs.getInt("upah_lembur_per_jam");
+                int totalLembur = rs.getInt("lembur");
                 int potongan = rs.getInt("potongan");
-                
-                int totalLembur = jamLembur * upahLemburPerJam;
                 int totalGaji = gajiPokok + totalLembur - potongan;
                 
                 StringBuilder detail = new StringBuilder();

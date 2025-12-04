@@ -234,6 +234,14 @@ public class laporanabsensi extends JFrame {
         exportButton.addActionListener(evt -> exportAbsensi());
         filterPanel.add(exportButton);
         
+        JButton backButton = GUITemplate.createEnhancedButton("← KEMBALI", GUITemplate.PRIMARY);
+        backButton.setPreferredSize(new Dimension(120, 40));
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new Admin.AdminDashboard().setVisible(true);
+        });
+        filterPanel.add(backButton);
+        
         // Container for filter to add padding
         JPanel filterContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         filterContainer.setOpaque(false);
