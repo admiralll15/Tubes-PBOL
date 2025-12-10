@@ -150,8 +150,7 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabel21" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jdate" min="-2" pref="196" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabel22" min="-2" pref="85" max="-2" attributes="0"/>
@@ -206,11 +205,8 @@
                   <Component id="jLabel25" alignment="0" min="-2" pref="14" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jdate" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
-                  <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jammasuk" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="jLabel22" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -427,8 +423,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnbatalActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="jdate">
     </Component>
     <Component class="javax.swing.JSpinner" name="jampulang">
       <Properties>

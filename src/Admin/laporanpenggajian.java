@@ -4,7 +4,13 @@ package Admin;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.MessageFormat;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.koneksi;
 
 /**
  *
@@ -225,7 +231,7 @@ public class laporanpenggajian extends javax.swing.JFrame {
                         .addGap(196, 196, 196)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(6, 6, 6)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -234,19 +240,77 @@ public class laporanpenggajian extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btntampilkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntampilkanActionPerformed
-        // TODO add your handling code here:
+        String bulan = jcombobulan.getSelectedItem().toString();
+    String tahun = jcombotahun.getSelectedItem().toString();
+
+    try {
+        Connection conn = koneksi.getKoneksi(); // SESUAIKAN DENGAN KELAS KONEKSI KAMU
+        String sql = "SELECT id, nama, jabatan, kehadiran, lembur, potongan, total_gaji "
+                   + "FROM penggajian WHERE bulan='" + bulan + "' AND tahun='" + tahun + "'";
+
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+
+        DefaultTableModel model = (DefaultTableModel) tblabsensi.getModel();
+        model.setRowCount(0); // bersihkan tabel
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getString("id"),
+                rs.getString("nama"),
+                rs.getString("jabatan"),
+                rs.getString("kehadiran"),
+                rs.getString("lembur"),
+                rs.getString("potongan"),
+                rs.getString("total_gaji")
+            });
+        }
+
+        JOptionPane.showMessageDialog(this, "Data berhasil ditampilkan!");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Gagal menampilkan data: " + e.getMessage());
+    }
     }//GEN-LAST:event_btntampilkanActionPerformed
 
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
-        // TODO add your handling code here:
+    jcombobulan.setSelectedIndex(0);
+    jcombotahun.setSelectedIndex(0);
+
+    DefaultTableModel model = (DefaultTableModel) tblabsensi.getModel();
+    model.setRowCount(0);
+
+    JOptionPane.showMessageDialog(this, "Form berhasil direset!");
     }//GEN-LAST:event_btnresetActionPerformed
 
     private void btnexportpdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexportpdf1ActionPerformed
-        // TODO add your handling code here:
+         try {
+        MessageFormat header = new MessageFormat("Laporan Penggajian");
+        MessageFormat footer = new MessageFormat("Halaman {0}");
+
+        boolean printComplete = tblabsensi.print(
+                javax.swing.JTable.PrintMode.FIT_WIDTH,
+                header,
+                footer
+        );
+
+        if (printComplete) {
+            JOptionPane.showMessageDialog(this,
+                "Silakan pilih printer 'Microsoft Print to PDF' untuk menyimpan laporan.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Export dibatalkan.");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Gagal export PDF: " + e.getMessage());
+    }
+    
     }//GEN-LAST:event_btnexportpdf1ActionPerformed
 
     private void jcombobulanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombobulanActionPerformed
-        // TODO add your handling code here:
+        // TODO add youar handling code here:
     }//GEN-LAST:event_jcombobulanActionPerformed
 
     private void jcombotahunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombotahunActionPerformed

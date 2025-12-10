@@ -57,7 +57,6 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
         textID = new javax.swing.JTextField();
         btnsimpan = new javax.swing.JButton();
         btnbatal = new javax.swing.JButton();
-        jdate = new com.toedter.calendar.JDateChooser();
         jampulang = new javax.swing.JSpinner();
         jammasuk = new javax.swing.JSpinner();
         jLabel25 = new javax.swing.JLabel();
@@ -298,8 +297,7 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
                         .addComponent(jcomboRole2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jdate, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -341,10 +339,8 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
                     .addComponent(jcomboRole2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jdate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel21))
-                .addGap(18, 18, 18)
+                .addComponent(jLabel21)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jammasuk, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
@@ -519,7 +515,6 @@ public class FormAbsensiKaryawan extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcomboRole1;
     private javax.swing.JComboBox<String> jcomboRole2;
     private javax.swing.JComboBox<String> jcombojbtn;
-    private com.toedter.calendar.JDateChooser jdate;
     private javax.swing.JTextField textID;
     private javax.swing.JTextField textnama;
     // End of variables declaration//GEN-END:variables

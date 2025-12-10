@@ -40,9 +40,7 @@ public class FormPengajuanCuti extends javax.swing.JFrame {
         textketerangan = new javax.swing.JTextField();
         btnbatal = new javax.swing.JButton();
         textID = new javax.swing.JTextField();
-        jDatetglmulai = new com.toedter.calendar.JDateChooser();
         textstatus = new javax.swing.JTextField();
-        jDatetglselesai = new com.toedter.calendar.JDateChooser();
         jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -150,8 +148,6 @@ public class FormPengajuanCuti extends javax.swing.JFrame {
                             .addComponent(textketerangan, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                             .addComponent(textstatus, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                             .addComponent(textID, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                            .addComponent(jDatetglmulai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDatetglselesai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textNama, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -175,14 +171,10 @@ public class FormPengajuanCuti extends javax.swing.JFrame {
                             .addComponent(jLabel19)))
                     .addComponent(jLabel17))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDatetglmulai, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDatetglselesai, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20))
-                .addGap(18, 18, 18)
+                .addComponent(jLabel18)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel20)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -248,8 +240,6 @@ public class FormPengajuanCuti extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnajukan;
     private javax.swing.JButton btnbatal;
-    private com.toedter.calendar.JDateChooser jDatetglmulai;
-    private com.toedter.calendar.JDateChooser jDatetglselesai;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel17;

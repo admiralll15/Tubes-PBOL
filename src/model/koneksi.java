@@ -12,18 +12,25 @@ import java.sql.SQLException;
  */
 public class koneksi {
     private static Connection koneksi;
+        
 
     public static Connection getKoneksi() {
+        
         if (koneksi == null) {
             try {
-                String url = "jdbc:mysql://localhost:3306/db_absensi";
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                String url = "jdbc:mysql://localhost:3306/pbol";
                 String user = "root";
                 String pass = "";
 
                 koneksi = DriverManager.getConnection(url, user, pass);
+                System.out.println("Koneksi berhasil!");
+                koneksi = DriverManager.getConnection(url, user, pass);
             } catch (SQLException e) {
                 System.err.println("Koneksi gagal: " + e.getMessage());
-            }
+            }catch (ClassNotFoundException e) {
+                System.err.println("Driver tidak ditemukan: " + e.getMessage());
+        }
         }
         return koneksi;
     }

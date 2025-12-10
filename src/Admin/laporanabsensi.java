@@ -4,6 +4,13 @@ package Admin;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import model.koneksi;
+
 
 /**
  *
@@ -13,9 +20,7 @@ public class laporanabsensi extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(laporanabsensi.class.getName());
 
-    /**
-     * Creates new form laporan
-     */
+    
     public laporanabsensi() {
         initComponents();
     }
@@ -41,8 +46,6 @@ public class laporanabsensi extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         btnexportpdf1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
@@ -121,15 +124,9 @@ public class laporanabsensi extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 423, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btntampilkan1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnreset1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -147,16 +144,13 @@ public class laporanabsensi extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btntampilkan1)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)))
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addGap(16, 16, 16)
                         .addComponent(btnreset1)
                         .addGap(18, 18, 18)
                         .addComponent(btnexportpdf1)))
@@ -213,15 +207,65 @@ public class laporanabsensi extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnexportpdf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnexportpdf1ActionPerformed
-        // TODO add your handling code here:
+         try {
+        // Memunculkan dialog print
+        boolean done = tblabsensi.print(
+                javax.swing.JTable.PrintMode.FIT_WIDTH,
+                new java.text.MessageFormat("Laporan Absensi Karyawan"),
+                new java.text.MessageFormat("Halaman {0}")
+        );
+        
+        if (done) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Berhasil disimpan ke PDF!\nPilih printer 'Microsoft Print to PDF' ya Sayang.");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Export PDF dibatalkan.");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                "Terjadi error: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnexportpdf1ActionPerformed
 
     private void btnreset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreset1ActionPerformed
-        // TODO add your handling code here:
+                                        
+    javax.swing.table.DefaultTableModel model = 
+        (javax.swing.table.DefaultTableModel) tblabsensi.getModel();
+    model.setRowCount(0);
+
+    JOptionPane.showMessageDialog(this, "Tabel berhasil direset!");
+    
     }//GEN-LAST:event_btnreset1ActionPerformed
 
     private void btntampilkan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntampilkan1ActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblabsensi.getModel();
+    model.setRowCount(0); // hapus data lama
+
+    try {
+        Connection conn = koneksi.getKoneksi(); // sesuaikan nama class koneksi kamu
+        Statement stmt = conn.createStatement();
+        String sql = "SELECT * FROM absensi ORDER BY tanggal DESC";
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getString("id"),
+                rs.getString("nama"),
+                rs.getString("jabatan"),
+                rs.getString("tanggal"),
+                rs.getString("jam_masuk"),
+                rs.getString("jam_pulang"),
+                rs.getString("status")
+            });
+        }
+
+        JOptionPane.showMessageDialog(this, "Data berhasil ditampilkan!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btntampilkan1ActionPerformed
 
     /**
@@ -256,8 +300,6 @@ public class laporanabsensi extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
