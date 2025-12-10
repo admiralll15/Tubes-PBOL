@@ -1,0 +1,7 @@
+# Ignore NetBeans build artifacts
+/build/
+nbproject/private/
+dist/
+
+# Ignore compiled Java classes
+*.class
