@@ -4,15 +4,27 @@
  */
 package controller;
 import model.Gajimodel;
+import java.sql.ResultSet;
+
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class Gaji {
 
     private Gajimodel model = new Gajimodel();
 
-    public boolean hitungDanSimpan(String id, int gapok, int lembur, int pot) {
-        return model.hitungDanSimpan(id, gapok, lembur, pot);
+    // Parameter diperlengkap sesuai Gajimodel.java
+    public boolean hitungDanSimpan(String id, int gapok, int jamLembur, int upahLemburPerJam, int pot, String bulan, String tahun) {
+        if(id.isEmpty() || bulan.isEmpty() || tahun.isEmpty()){
+            return false;
+        }
+        // Memanggil model dengan parameter lengkap
+        return model.hitungDanSimpan(id, gapok, jamLembur, upahLemburPerJam, pot, bulan, tahun);
+    }
+    
+    // Untuk menampilkan history gaji di tabel
+    public ResultSet getLaporanGaji() {
+        return model.getLaporanPenggajian();
     }
 }

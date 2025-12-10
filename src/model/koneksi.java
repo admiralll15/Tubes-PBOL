@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class koneksi {
     private static Connection koneksi;
@@ -16,7 +16,7 @@ public class koneksi {
     public static Connection getKoneksi() {
         if (koneksi == null) {
             try {
-                String url = "jdbc:mysql://localhost:3306/db_absensi";
+                String url = "jdbc:mysql://localhost:3306/pbol";
                 String user = "root";
                 String pass = "";
 

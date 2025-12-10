@@ -10,12 +10,13 @@ import HRD.HRDDashboard;
 import Karyawan.KaryawanDashboard;
 
 import javax.swing.JOptionPane;
+
 /**
  *
- * @author PUTRI SAHARA T
+ * @author 
  */
 public class users {
- private Usersmodel model = new Usersmodel();
+    private Usersmodel model = new Usersmodel();
 
     public void login(String username, String password, javax.swing.JFrame formLogin) {
 
@@ -27,7 +28,11 @@ public class users {
             return;
         }
 
-        switch (role.toLowerCase()) {
+        // PERBAIKAN: Hapus .toLowerCase() karena di database role-nya "Admin" (Huruf besar Awal)
+        // Dan di case bawah Anda menggunakan "Admin".
+        // "Admin".toLowerCase() hasilnya "admin". "admin" != "Admin".
+        
+        switch (role) { 
             case "Admin":
                 new AdminDashboard().setVisible(true);
                 formLogin.dispose();
@@ -45,8 +50,7 @@ public class users {
 
             default:
                 JOptionPane.showMessageDialog(formLogin, 
-                        "Role tidak dikenal!");
+                        "Role tidak dikenal: " + role);
         }
     }
 }
-
