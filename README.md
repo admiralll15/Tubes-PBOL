@@ -40,5 +40,24 @@ terjaga dan terkontrol.
 
 ## Cara Menjalankan Program
 1. Clone repository ini:
-   ```bash
    git clone https://github.com/admiralll15/Tubes-PBOL.git
+   
+   Atau download manual melalui GitHub (Code → Download ZIP), lalu extract.
+
+2. Membuka Project di NetBeans
+
+- Buka NetBeans IDE
+- Pilih menu File → Open Project
+- Arahkan ke folder Tubes-PBOL
+- Klik Open Project
+- NetBeans akan otomatis mengenali project Java (Ant).
+
+3. Konfigurasi Database
+
+Jalankan MySQL / XAMPP / LARAGON
+Buat database sesuai aplikasi (pbol.sql)
+Import file database (jika tersedia)
+
+4. Menjalankan Aplikasi
+
+Klik kanan project → Run
