@@ -1,14 +1,16 @@
 # Tugas Besar PBOL
 
+## Dosen mata kuliah: Umaya Ramadhani Putri Nasution, S.TI., M.Kom.,
+
 ## Anggota kelompok:
 
-1. Leondo Admiral Purba(241402053)
-2. ⁠Putri Sahara Tampubolon (241402015)
-3. Dolly Efredi Bukit (241402021)
+1. ⁠Ilma Mahmudah (241402003)
+2. Cindy Samosir (241402009)
+3. ⁠Putri Sahara Tampubolon (241402015)
 4. Anggun Dwikasih Mahrani Harahap (241402018)
-5. Willy Armando Sianipar (241402135)
-6. Cindy Samosir (241402009)
-7. ⁠Ilma Mahmudah (241402003)
+5. Dolly Efredi Bukit (241402021)
+6. Leondo Admiral Purba(241402053)
+7. Willy Armando Sianipar (241402135)
 
 ## Deskripsi Proyek
 Repository ini berisi Tugas Besar mata kuliah **Pemrograman Berorientasi Objek Lanjutan (PBOL)**.
